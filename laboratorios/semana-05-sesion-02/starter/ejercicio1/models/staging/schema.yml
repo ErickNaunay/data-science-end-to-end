@@ -2,11 +2,19 @@ version: 2
 
 models:
   - name: stg_clientes
+    description: "Datos de clientes preparados para usarse en las capas posteriores del proyecto."
     columns:
       - name: id_cliente
+        description: "Identificador unico de cada cliente."
         tests:
           - unique
           - not_null
 
-  # TODO 2: agrega stg_pedidos, con las pruebas unique y not_null sobre
-  # la columna que identifica cada pedido.
+  - name: stg_pedidos
+    description: "Datos de pedidos preparados para usarse en las capas posteriores del proyecto."
+    columns:
+      - name: id_pedido
+        description: "Identificador unico de cada pedido."
+        tests:
+          - unique
+          - not_null
