@@ -18,3 +18,10 @@ models:
         tests:
           - unique
           - not_null
+      - name: id_cliente
+        description: "Cliente que hizo el pedido."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_clientes')
+              field: id_cliente
