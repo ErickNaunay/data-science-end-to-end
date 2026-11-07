@@ -1,4 +1,4 @@
--- TODO 3: une las ventas con su producto y calcula el monto de cada venta
+-- DONE 3: une las ventas con su producto y calcula el monto de cada venta
 -- (unidades * precio), leyendo los modelos de staging.
 select
     v.id_venta,

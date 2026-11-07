@@ -1,4 +1,4 @@
--- TODO 4: monto total por categoria, a partir del modelo intermedio.
+-- DONE 4: monto total por categoria, a partir del modelo intermedio.
 select
     categoria,
     sum(monto) as monto_total
