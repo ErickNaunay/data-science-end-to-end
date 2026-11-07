@@ -2,7 +2,7 @@
 
 Mismos pasos del Ejercicio 1, sobre otros archivos. Corre el script con:
 
-    python3 ejercicio2_ventas.py
+    uv run ejercicio2_ventas.py
 
 Al final se imprime una comprobacion por cada TODO. No la modifiques:
 cuando las cinco digan OK, pasa a las preguntas del README.

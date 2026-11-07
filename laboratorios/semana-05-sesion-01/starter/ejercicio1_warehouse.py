@@ -2,13 +2,20 @@
 
 Corre el script antes de tocar nada:
 
-    python3 ejercicio1_warehouse.py
+    uv run ejercicio1_warehouse.py
 
 Corre sin errores y sin los TODO resueltos: mientras no exista la tabla,
 las consultas leen el CSV directamente.
 """
 
-import duckdb
+from importlib import import_module
+
+try:
+    duckdb = import_module("duckdb")
+except ModuleNotFoundError as error:
+    if error.name != "duckdb":
+        raise
+    raise SystemExit("Falta DuckDB. Ejecuta: uv sync, y corre el script con: uv run ejercicio1_warehouse.py") from error
 
 con = duckdb.connect("almacen.duckdb")
 
