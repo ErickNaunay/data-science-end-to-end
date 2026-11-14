@@ -45,18 +45,20 @@ guardar el SHA utilizado es lo que permite repetir exactamente una extracción.
 
 ## 3. Calidad y limpieza
 
-Antes de transformar los datos, revisé completitud, unicidad y plausibilidad
-de los campos disponibles en `RAW_REPORT_DATA`. Estos fueron los resultados y
-las decisiones que tomé:
+Antes de transformar los datos, revisé completitud, precisión, consistencia y
+validez con las reglas que permite comprobar la fuente. Estos fueron los
+resultados y las decisiones que tomé:
 
 | Dimensión / regla | Evidencia medida | Tratamiento |
 |---|---:|---|
-| Unicidad de origen `(experiment_id, id)` | 0 filas excedentes | Mantengo esta clave como `registro_id` y dbt comprueba que sea única y no nula. |
-| Completitud de RT | 0 RT nulos; 1 RT no positivo | Bronze conserva el valor y Silver excluye el único tiempo no positivo, que no representa una retención válida. |
+| Completitud de RT | 0 RT nulos | Bronze convierte RT a número; las filas sin valor numérico no avanzan como observaciones válidas. |
 | Completitud química | 0 InChIKey nulos | Conservo InChIKey para identificar los compuestos en Gold. |
 | Nombre del compuesto | 90,640 vacíos de 183,199 (49.5%) | No invento nombres que la fuente no entrega; el dato descriptivo puede quedar vacío. |
 | Nombre de columna | 2,603 vacíos (1.4%) | Mantengo la medición y dejo nulos los atributos de columna que faltan. |
 | Flujo | 12,177 ausentes o no positivos (6.6%) | No estimo caudales; las condiciones se identifican sin ocultar los valores ausentes. |
+| Consistencia de la clave de origen | 0 duplicados por `(experiment_id, id)` | Uso la clave compuesta como `registro_id`; dbt valida que no sea nula ni duplicada en Bronze y Silver. |
+| Consistencia referencial en Gold | 0 hechos sin compuesto o condición correspondiente; pasaron ambos tests `relationships` | Mantengo los hechos solo cuando sus claves encuentran una fila en cada dimensión. |
+| Validez de RT | 1 RT no positivo | Silver excluye ese registro: un tiempo de retención no positivo no es válido para este análisis. |
 | Precisión analítica | Sin medición externa de referencia | Uso los registros que RepoRT marca como canónicos exitosos, pero no afirmo que su precisión experimental haya sido verificada de forma independiente. |
 
 En Bronze normalizo los nombres y los tipos necesarios para el análisis. En

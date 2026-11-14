@@ -1,5 +1,15 @@
 # PSet 2 — Ingesta de RepoRT a Snowflake
 
+## Qué permite reproducir el enlace
+
+El repositorio contiene el código y los pasos para reconstruir el pipeline,
+pero abrir el enlace no inicia una ejecución ni concede acceso a Snowflake. Para
+reproducirlo, quien lo evalúe debe configurar credenciales propias fuera de Git,
+levantar Docker, importar el flow y su archivo Python en Kestra y ejecutar dbt
+y Spark siguiendo las secciones de abajo. Esta configuración inicial es
+necesaria para proteger las credenciales; una vez importado, Kestra conserva el
+trigger semanal del flow.
+
 Este flujo carga a Snowflake una instantánea completa de los experimentos RepoRT
 que tienen mediciones de retención canónicas exitosas. La URL anterior apuntaba a
 `main/data/report.csv`, que no existe: RepoRT usa la rama `master` y publica los
@@ -203,3 +213,7 @@ Con la regla de Silver actual se conservan 183,198 observaciones. Las
 dimensiones Gold tienen claves no nulas y únicas; las pruebas `relationships`
 validan que cada hecho encuentre su compuesto y condición, incluso cuando los
 atributos descriptivos de esa condición estén ausentes.
+Esto documenta la consistencia referencial entre la tabla de hechos y las dos
+dimensiones. La precisión analítica no se contrastó con una referencia
+experimental externa y se reporta como una limitación, no como una validación
+completada.
