@@ -1,4 +1,5 @@
-# PSet 2 — Pipeline de datos end-to-end
+# PSET2
+# Pipeline de datos end-to-end
 
 **Proyecto:** datos RepoRT para preparar un conjunto de modelado de retención
 cromatográfica.  
@@ -128,14 +129,33 @@ implementé streaming porque esos requisitos no existen en el caso actual.
 
 ## 7. Limitaciones y reproducibilidad
 
+El alcance comprobado en este PSet es la ingeniería del flujo con datos
+públicos de RepoRT. No entrené ni evalué aquí un modelo QSRR con mediciones de
+un laboratorio; por tanto, los conteos y pruebas reportados verifican el
+pipeline, no la precisión predictiva ni su transferencia a otro laboratorio.
+
 - RepoRT puede cambiar con el tiempo. Para repetir exactamente una carga hay
-  que guardar el SHA utilizado en `source_ref`.
-- Faltan nombres y metadatos de columna en una parte importante de los datos.
-  Los mantengo ausentes porque la fuente no ofrece valores fiables para
-  completarlos.
+  que guardar el SHA utilizado en source_ref.
 - No comparé la precisión experimental con mediciones externas de referencia.
 - RepoRT no publica el factor de retención requerido por el modelo; por eso
   queda nulo y no se deriva artificialmente.
+- Sin acceso a registros de laboratorio, la validación del proyecto se limita a
+  RepoRT. El ahorro del 30% en corridas queda como hipótesis por comprobar, no
+  como resultado medido ni como ahorro de negocio demostrado.
+- Tampoco dispongo de una línea base de consumo por método: faltan el volumen
+  de solvente por corrida y el número histórico de corridas preliminares. Esos
+  datos permitirían calcular el consumo preliminar como volumen por corrida
+  multiplicado por el número de corridas y luego compararlo con el proceso
+  actual; no los infiero de RepoRT.
+- La generalización a un laboratorio queda pendiente. Si se obtiene acceso,
+  habría que acordar con el laboratorio el número de corridas locales de
+  control y comparar el RMSE local con el de una evaluación del modelo en
+  RepoRT. No asigno un número de corridas sin datos ni un protocolo
+  experimental acordado.
+- La validación predictiva posterior se limitará a RepoRT para columnas C18,
+  sin extrapolar resultados a un laboratorio externo. Esta entrega conserva
+  toda la fuente y todavía no filtra a C18; el subconjunto y la evaluación del
+  modelo para esa fase quedan pendientes.
 - Kestra usa almacenamiento local/H2. En un entorno nuevo hay que importar el
   flujo y su archivo Python al namespace antes de ejecutarlos.
 - dbt necesita permisos para crear esquemas y tablas en Snowflake. La primera

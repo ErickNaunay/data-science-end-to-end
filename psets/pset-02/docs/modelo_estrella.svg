@@ -7,11 +7,11 @@
     </marker>
     <style>
       .box { rx: 14; stroke-width: 2; }
-      .head { font: 700 28px sans-serif; fill: #0f172a; }
-      .table { font: 700 21px sans-serif; fill: #0f172a; }
-      .field { font: 16px sans-serif; fill: #334155; }
+      .head { font: 700 28px MemoSans; fill: #0f172a; }
+      .table { font: 700 21px MemoSans; fill: #0f172a; }
+      .field { font: 16px MemoSans; fill: #334155; }
       .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
-      .foot { font: 16px sans-serif; fill: #475569; }
+      .foot { font: 16px MemoSans; fill: #475569; }
     </style>
   </defs>
   <rect width="1100" height="640" fill="#f8fafc"/>

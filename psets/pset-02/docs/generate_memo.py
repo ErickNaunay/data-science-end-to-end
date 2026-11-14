@@ -6,7 +6,7 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
@@ -27,7 +27,6 @@ from svglib.svglib import svg2rlg
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "PSet2_memo_Buenaño_Peñafiel.pdf"
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
-
 pdfmetrics.registerFont(TTFont("MemoSans", str(FONT_DIR / "DejaVuSans.ttf")))
 pdfmetrics.registerFont(TTFont("MemoSans-Bold", str(FONT_DIR / "DejaVuSans-Bold.ttf")))
 pdfmetrics.registerFont(
@@ -43,17 +42,52 @@ pdfmetrics.registerFontFamily(
     italic="MemoSans-Oblique",
     boldItalic="MemoSans-Bold",
 )
-
 styles = getSampleStyleSheet()
+styles.add(
+    ParagraphStyle(
+        name="MemoHeaderPset",
+        parent=styles["Title"],
+        fontName="MemoSans",
+        fontSize=19,
+        leading=23,
+        alignment=TA_CENTER,
+        textColor=colors.HexColor("#ff4d59"),
+        spaceAfter=0,
+    )
+)
+styles.add(
+    ParagraphStyle(
+        name="MemoHeaderTitle",
+        parent=styles["Title"],
+        fontName="MemoSans",
+        fontSize=22,
+        leading=27,
+        alignment=TA_CENTER,
+        textColor=colors.HexColor("#ff4d59"),
+        spaceAfter=8,
+    )
+)
+styles.add(
+    ParagraphStyle(
+        name="MemoHeaderMeta",
+        parent=styles["BodyText"],
+        fontName="MemoSans",
+        fontSize=7.5,
+        leading=10,
+        textColor=colors.HexColor("#e2e8f0"),
+        alignment=0,
+        spaceAfter=0,
+    )
+)
 styles.add(
     ParagraphStyle(
         name="MemoTitle",
         parent=styles["Title"],
-        fontName="MemoSans-Bold",
+        fontName="MemoSans",
         fontSize=17,
         leading=21,
         alignment=TA_CENTER,
-        textColor=colors.HexColor("#14324b"),
+        textColor=colors.HexColor("#c00000"),
         spaceAfter=8,
     )
 )
@@ -64,7 +98,7 @@ styles.add(
         fontName="MemoSans-Bold",
         fontSize=12,
         leading=15,
-        textColor=colors.HexColor("#165b78"),
+        textColor=colors.HexColor("#c00000"),
         spaceBefore=8,
         spaceAfter=4,
         keepWithNext=True,
@@ -77,7 +111,7 @@ styles.add(
         fontName="MemoSans-Bold",
         fontSize=10,
         leading=12,
-        textColor=colors.HexColor("#165b78"),
+        textColor=colors.HexColor("#c00000"),
         spaceBefore=6,
         spaceAfter=3,
         keepWithNext=True,
@@ -90,6 +124,7 @@ styles.add(
         fontName="MemoSans",
         fontSize=8.6,
         leading=11.2,
+        alignment=TA_JUSTIFY,
         spaceAfter=4,
     )
 )
@@ -98,7 +133,7 @@ styles.add(
         name="MemoBullet",
         parent=styles["MemoBody"],
         leftIndent=12,
-        firstLineIndent=-8,
+        firstLineIndent=0,
         spaceAfter=2,
     )
 )
@@ -108,6 +143,7 @@ styles.add(
         parent=styles["MemoBody"],
         fontSize=7.2,
         leading=9,
+        alignment=TA_JUSTIFY,
         spaceAfter=0,
     )
 )
@@ -123,10 +159,23 @@ styles.add(
     ParagraphStyle(
         name="MemoCode",
         parent=styles["MemoBody"],
-        fontName="MemoMono",
+        fontName="MemoSans",
         fontSize=7.8,
         backColor=colors.HexColor("#f1f5f9"),
         borderPadding=3,
+    )
+)
+styles.add(
+    ParagraphStyle(
+        name="MemoFigureCaption",
+        parent=styles["MemoBody"],
+        fontName="MemoSans-Oblique",
+        fontSize=8,
+        leading=10,
+        alignment=TA_CENTER,
+        textColor=colors.HexColor("#475569"),
+        spaceBefore=2,
+        spaceAfter=8,
     )
 )
 
@@ -134,7 +183,7 @@ styles.add(
 def markup(text: str) -> str:
     text = escape(text)
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
-    text = re.sub(r"`([^`]+)`", r'<font name="MemoMono">\1</font>', text)
+    text = re.sub(r"`([^`]+)`", r'<font name="MemoSans">\1</font>', text)
     text = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", r"<i>\1</i>", text)
     return text
 
@@ -187,14 +236,14 @@ def table_from_markdown(lines: list[str], available_width: float):
     table.setStyle(
         TableStyle(
             [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#165b78")),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#c00000")),
                 ("GRID", (0, 0), (-1, -1), 0.35, colors.HexColor("#cbd5e1")),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 4),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 4),
                 ("TOPPADDING", (0, 0), (-1, -1), 3),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f1f5f9")]),
+                ("BACKGROUND", (0, 1), (-1, -1), colors.white),
             ]
         )
     )
@@ -205,12 +254,61 @@ def build_story(available_width: float):
     source = (ROOT / "memo_tecnico.md").read_text(encoding="utf-8").splitlines()
     story = []
     paragraph_lines = []
-    index = 0
+    section_start = next(
+        (i for i, line in enumerate(source) if line.startswith("## ")),
+        len(source),
+    )
+    preamble = source[:section_start]
+    headings = [line[2:].strip() for line in preamble if line.startswith("# ")]
+    metadata = " ".join(
+        line.strip()
+        for line in preamble
+        if line.strip() and not line.startswith("# ")
+    )
+    if headings:
+        header_rows = [
+            [Paragraph(markup(headings[0]), styles["MemoHeaderPset"])],
+            [Paragraph(markup(headings[1] if len(headings) > 1 else ""), styles["MemoHeaderTitle"])],
+            [Paragraph(markup(metadata), styles["MemoHeaderMeta"])],
+        ]
+        header = Table(header_rows, colWidths=[available_width], hAlign="LEFT")
+        header.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#242424")),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+                    ("TOPPADDING", (0, 0), (-1, 0), 13),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 0),
+                    ("TOPPADDING", (0, 1), (-1, 1), 0),
+                    ("BOTTOMPADDING", (0, 1), (-1, 1), 8),
+                    ("TOPPADDING", (0, 2), (-1, 2), 7),
+                    ("BOTTOMPADDING", (0, 2), (-1, 2), 8),
+                    ("LINEABOVE", (0, 2), (-1, 2), 0.6, colors.HexColor("#94a3b8")),
+                ]
+            )
+        )
+        story.extend([header, Spacer(1, 8)])
+    index = section_start
+    in_limitations = False
+    figure_number = 0
 
     def flush_paragraph():
         if paragraph_lines:
             text = " ".join(line.strip() for line in paragraph_lines)
-            story.append(Paragraph(markup(text), styles["MemoBody"]))
+            style = styles["MemoBody"]
+            if in_limitations:
+                style = ParagraphStyle(
+                    "MemoLimitationsBody",
+                    parent=style,
+                    fontName="MemoSans",
+                    fontSize=8.1,
+                    leading=10,
+                    alignment=0,
+                    spaceBefore=0,
+                    spaceAfter=2,
+                )
+            story.append(Paragraph(markup(text), style))
             paragraph_lines.clear()
 
     while index < len(source):
@@ -231,11 +329,18 @@ def build_story(available_width: float):
                 story.extend([table, Spacer(1, 5)])
             continue
 
-        image_match = re.fullmatch(r"!\[[^]]*]\(([^)]+)\)", line.strip())
+        image_match = re.fullmatch(r"!\[([^]]*)]\(([^)]+)\)", line.strip())
         if image_match:
             flush_paragraph()
-            story.append(render_diagram(ROOT / image_match.group(1), available_width))
-            story.append(Spacer(1, 5))
+            figure_number += 1
+            alt_text, image_path = image_match.groups()
+            story.append(render_diagram(ROOT / image_path, available_width))
+            story.append(
+                Paragraph(
+                    f"Figura {figure_number}. {markup(alt_text)}",
+                    styles["MemoFigureCaption"],
+                )
+            )
             index += 1
             continue
 
@@ -246,7 +351,16 @@ def build_story(available_width: float):
             continue
         if line.startswith("## "):
             flush_paragraph()
-            story.append(Paragraph(markup(line[3:].strip()), styles["MemoH2"]))
+            in_limitations = line[3:].strip() == "7. Limitaciones y reproducibilidad"
+            heading_style = styles["MemoH2"]
+            if in_limitations:
+                heading_style = ParagraphStyle(
+                    "MemoLimitationsHeading",
+                    parent=heading_style,
+                    spaceBefore=4,
+                    spaceAfter=3,
+                )
+            story.append(Paragraph(markup(line[3:].strip()), heading_style))
             index += 1
             continue
         if line.startswith("### "):
@@ -256,9 +370,47 @@ def build_story(available_width: float):
             continue
         if line.startswith("- "):
             flush_paragraph()
-            story.append(
-                Paragraph("• " + markup(line[2:].strip()), styles["MemoBullet"])
-            )
+            style = styles["MemoBullet"]
+            if in_limitations:
+                bullet_text = line[2:].strip()
+                index += 1
+                while index < len(source) and source[index].startswith("  "):
+                    bullet_text += " " + source[index].strip()
+                    index += 1
+                style = ParagraphStyle(
+                    "MemoLimitationsBullet",
+                    parent=style,
+                    fontName="MemoSans",
+                    fontSize=8.1,
+                    leading=10,
+                    alignment=0,
+                    leftIndent=0,
+                    firstLineIndent=0,
+                    spaceAfter=0,
+                )
+                bullet_table = Table(
+                    [[
+                        Paragraph("•", style),
+                        Paragraph(markup(bullet_text), style),
+                    ]],
+                    colWidths=[12, available_width - 12],
+                    hAlign="LEFT",
+                )
+                bullet_table.setStyle(
+                    TableStyle(
+                        [
+                            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                            ("TOPPADDING", (0, 0), (-1, -1), 0),
+                            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                        ]
+                    )
+                )
+                story.append(bullet_table)
+                continue
+            else:
+                story.append(Paragraph("• " + markup(line[2:].strip()), style))
             index += 1
             continue
         if re.match(r"\d+\.\s", line):
