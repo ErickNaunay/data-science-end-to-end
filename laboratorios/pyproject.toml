@@ -13,7 +13,13 @@ dependencies = [
     "psycopg2-binary",
     "dbt-core>=1.12.6",
     "dbt-duckdb>=1.11.1",
+    "matplotlib>=3.11.2",
 ]
 
 [tool.uv]
 package = false
+
+[tool.uv.workspace]
+members = [
+    "semana-06-sesion-01/starter",
+]
