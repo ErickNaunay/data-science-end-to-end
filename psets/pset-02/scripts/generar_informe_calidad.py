@@ -75,11 +75,11 @@ lines += ['## Decisiones y límites para todas las columnas derivadas',
 
 La precisión real sigue sin verificarse externamente. El rango, IQR y coherencia pueden detectar sospechas, pero no prueban que un precio sea correcto. La bolsa actual, equivalencias parciales y universo incompleto limitan el uso financiero. Los perfiles no garantizan ausencia de sesgo de supervivencia o fuga temporal.''',
 '## Reproducir',
-'''Desde psets/pset-02, con credenciales locales y dependencias de requirements.txt:
+'''Desde psets/pset-02, con credenciales locales y el entorno uv (`uv sync`):
 
 ```bash
-python scripts/diagnosticar_calidad.py
-python scripts/generar_informe_calidad.py
+uv run python scripts/diagnosticar_calidad.py
+uv run python scripts/generar_informe_calidad.py
 ```
 
 Para el diagnóstico de entrada únicamente: `python scripts/diagnosticar_calidad.py --solo-raw` (necesita el seed de calendario si se ejecutan controles de sesiones). Las otras capas se excluyen del perfil, sin ejecutar transformaciones. Ejecutar el diagnóstico sobre RAW después de la ingesta y antes del siguiente dbt build; luego dbt produce staging/Bronze y Silver. Los snapshots guardados permiten comparar antes/después sin confundir sus denominadores.''']

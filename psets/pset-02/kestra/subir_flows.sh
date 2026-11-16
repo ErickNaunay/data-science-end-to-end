@@ -6,7 +6,11 @@
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
-[[ -f .env ]] && set -a && source <(grep -E '^KESTRA_(USUARIO|CLAVE)=' .env) && set +a
+# Carga solo KESTRA_USUARIO y KESTRA_CLAVE desde .env. Sin "source <(...)": el bash 3.2
+# de macOS no lee bien la sustitucion de procesos con source.
+if [[ -f .env ]]; then
+    while IFS= read -r linea; do export "$linea"; done < <(grep -E '^KESTRA_(USUARIO|CLAVE)=' .env)
+fi
 
 KESTRA=${KESTRA:-http://localhost:8090/api/v1/main}
 USUARIO="${KESTRA_USUARIO:-admin@kestra.io}:${KESTRA_CLAVE:?Define KESTRA_CLAVE en .env}"

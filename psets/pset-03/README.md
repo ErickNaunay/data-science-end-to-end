@@ -7,14 +7,16 @@ final en `psets/proyecto/` se hará al empaquetar el proyecto, sin duplicar data
 ## Preparación
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv sync                      # .venv con Python 3.11 y las versiones exactas de uv.lock
 cp .env.example .env
 # Completar credenciales localmente: nunca agregarlas a git.
-python -m src.datos
+uv run python -m src.datos
 docker compose up -d --build
 ```
+
+El entorno es un proyecto uv propio de esta carpeta (`pyproject.toml` + `uv.lock`).
+`requirements.txt` no se edita a mano: lo genera `bash exportar_requirements.sh`
+desde el lock y lo usan la imagen runner y el registro de MLflow.
 
 MLflow queda en http://localhost:5001, con SQLite como backend y artefactos en
 `mlflow/artifacts`; ambos persisten en `mlflow/`, excluido de Git. El snapshot

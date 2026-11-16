@@ -1,4 +1,6 @@
-FROM python:3.12-slim
+# Ejecuta notebooks y experimentos. Python 3.11, igual que la CI del curso.
+# requirements.txt se genera desde uv.lock (exportar_requirements.sh): versiones exactas.
+FROM python:3.11-slim
 WORKDIR /work
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt

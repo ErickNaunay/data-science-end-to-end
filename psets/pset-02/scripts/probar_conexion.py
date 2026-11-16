@@ -2,8 +2,8 @@
 llave privada). Verifica bodega, base, esquemas y tablas RAW creadas por setup.sql.
 
 Uso, desde psets/pset-02/:
-  pip install -r requirements.txt
-  python scripts/probar_conexion.py
+  uv sync
+  uv run python scripts/probar_conexion.py
 """
 from pathlib import Path
 import base64
