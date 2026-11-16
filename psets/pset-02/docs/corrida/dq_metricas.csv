@@ -6,7 +6,7 @@ completitud,GOLD,dias_miembro_sin_precio_pct,12.7629,%,Dias bursatiles en que un
 completitud,RAW,filas_cierre_ajustado_nulo_pct,0.0,%,Filas de RAW.PRECIOS_DIARIOS sin cierre ajustado.
 completitud,SILVER,acciones_con_hueco_largo,12.0,acciones,Acciones con al menos un tramo excluido por hueco largo.
 completitud,SILVER,dias_excluidos_por_hueco_largo,11331.0,dias,Dias bursatiles dentro de la vida de cada accion que no se imputaron por estar en un hueco largo; no pasan a Silver.
-completitud,SILVER,dias_imputados_pct,0.0,%,"Dias bursatiles sin precio valido que se imputaron (huecos de hasta max_hueco_imputable dias, interpolacion lineal del log-precio)."
+completitud,SILVER,dias_imputados_pct,0.0,%,"Dias bursatiles sin precio valido que se imputaron (huecos de hasta max_hueco_imputable dias, forward-fill del log-precio)."
 completitud,SILVER,dias_tasa_irx_rellenada_pct,0.0471,%,"Dias bursatiles sin cotizacion de ^IRX, rellenados con el ultimo valor."
 consistencia,BRONZE,empresas_con_cambio_de_simbolo,28.0,empresas,Empresas del historico que cambiaron de simbolo (aparecen con el simbolo antiguo y se tradujeron).
 consistencia,BRONZE,filas_composicion_con_simbolo_traducido_pct,2.3853,%,Filas de la composicion cuyo simbolo antiguo se tradujo al actual de Yahoo con el seed equivalencias_tickers.

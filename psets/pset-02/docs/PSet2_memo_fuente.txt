@@ -22,9 +22,11 @@ Seeds versionados | Calendario NYSE y equivalencias de símbolos.
 
 La extracción normaliza punto, barra y guion en los símbolos y traduce cambios de ticker mediante un seed. RAW conserva cargas append-only con LOTE_ID e INGESTA_TS (precio por símbolo-fecha-lote; fotos y listados por lote); una recarga aumenta las filas crudas, pero Bronze conserva la versión más reciente por clave. Esto permite repetir una ventana sin duplicar el hecho analítico.
 
+Frente al PSet 1 se añadieron chinobing (composición histórica, que el PSet 1 exigía sin nombrar fuente) y rreichel3 (bolsa); el respaldo de Kaggle no hizo falta.
+
 Trigger y frecuencia de ejecución
 
-El trigger cierre_nyse usa cron 30 18 * * 1-5 y zona America/New_York: lunes a viernes a las 18:30, después del cierre habitual. El cron no excluye feriados bursátiles. ingesta_diaria consulta desde fecha menos 11 días naturales hasta fecha, ambos inclusive; los lunes carga también composición y listados. recoverMissedSchedules=ALL configura la recuperación de horarios perdidos al reiniciar Kestra. El input fecha permite reprocesar un día. Se verificó por API, no mediante un disparo del reloj en su horario real.
+El trigger cierre_nyse usa cron 30 18 * * 1-5 y zona America/New_York: lunes a viernes a las 18:30, después del cierre habitual. El cron no excluye feriados bursátiles. ingesta_diaria consulta desde fecha menos 11 días naturales hasta fecha, ambos inclusive; los lunes carga también composición y listados. recoverMissedSchedules=ALL configura la recuperación de horarios perdidos al reiniciar Kestra. Se verificó por API, no mediante un disparo del reloj en su horario real.
 
 Manejo de errores y retries
 
@@ -38,9 +40,9 @@ backfill_historico se lanza por UI o API, sin trigger periódico, con anio_desde
 
 Evidencia operativa
 
-Backfill histórico SUCCESS: 3Fp8GRgzmNcyj7Xnd5GJf5; retry histórico fallido: 7LTsUVocdrwvwyhQxiiC4H (previos a esta revisión). Última corrida de punta a punta, con la imagen de ingesta en Python 3.11 (15-nov-2026): ingesta_diaria 5mNgM5uCz2x5OjKgoFPdgs y transformar 70422bkWyfGCphbma0n244, ambas SUCCESS. Recargó once días ya cargados: RAW creció en 5.050 filas y Gold no cambió, lo que comprueba la deduplicación. Estados y logs en docs/corrida/.
+Backfill histórico SUCCESS 3Fp8GRgzmNcyj7Xnd5GJf5; retry fallido 7LTsUVocdrwvwyhQxiiC4H. Últimas corridas (15-nov-2026, imágenes en Python 3.11): ingesta_diaria 5mNgM5uCz2x5OjKgoFPdgs recargó once días (RAW +5.050 filas, Gold sin cambios: deduplicación comprobada); transformar 4OsR2Nj3JNW42qJGrvNj1, ya con forward-fill, SUCCESS.
 
-Última construcción dbt: 97 resultados correctos, 1 advertencia(s) y 0 errores (14 modelos, 2 seeds, 82 tests). Evidencia: docs/corrida/kestra_transformar_70422bk.txt (log de esta corrida) y docs/corrida/run_results_gold.json (detalle por test). La prueba previa de frescura aprobó cuatro fuentes; no garantiza cobertura.
+Última construcción dbt: 97 resultados correctos, 1 advertencia(s) y 0 errores (14 modelos, 2 seeds, 82 tests). Evidencia en docs/corrida/: kestra_transformar_4OsR2Nj3.txt y run_results_gold.json. La frescura aprobó cuatro fuentes; no garantiza cobertura.
 
 3. Data Quality
 
@@ -50,14 +52,14 @@ Dimensión | Problema / evidencia RAW | Acción en dbt | Justificación
 Completitud | ES_ETF / ES_PRUEBA: 100,00 % / 100,00 % faltantes en 246.534 filas. | Bronze conserva NULL; convierte solo Y/N conocidos. | El JSON no aporta los flags. Se corrigió el reemplazo implícito por false.
 Validez | OPEN inválido: 2/3.713.348 (0,000054 %). Máximo de faltantes por columna OHLCV: 0,00 %. | Silver excluye observaciones inválidas; conserva RAW. | Un precio no positivo impide log-precios. No confundir filas presentes con cobertura completa.
 Consistencia (unicidad) | Reingestas: 50,34 % de filas de precios redundantes. | Bronze elige última ingesta/lote por clave. | RAW append-only conserva auditoría; no duplicar hechos.
-Precisión | Retornos atípicos (1,5 IQR por acción): 91.037/1.830.819 (4,97 %). | Revisar, sin borrado ni winsorización automática. | Colas financieras reales pueden ser atípicas; IQR no prueba error.
-Completitud | Sesiones sin fila, entre primera y última cotización: 11.331/1.842.759 (0,61 %). | Silver: grilla NYSE; interpolar huecos cortos, excluir largos. | No inventar historias de empresas sin precios. Denominador: sesiones esperadas en vida observada.
+Precisión | Retornos atípicos, z-score robusto (MAD) > 3,5 por acción: 44.148/1.830.807 (2,41 %). Con 1,5 IQR: 91.037/1.830.819 (4,97 %). | Marcar, sin borrado ni winsorización automática; cotejar con eventos reales. | Criterio del PSet 1. Días con más acciones marcadas: 2020-03-16 (435), 2020-03-12 (431), 2020-03-09 (398); detalle en calidad/outliers_mad_*.csv.
+Completitud | Sesiones sin fila, entre primera y última cotización: 11.331/1.842.759 (0,61 %). | Silver: grilla NYSE; forward-fill en huecos cortos, excluir largos. | No inventar historias de empresas sin precios. Denominador: sesiones esperadas en vida observada.
 Completitud | Solicitudes SIN_DATOS: 2.286/19.656 (11,63 %). | Conservar bitácora y limitación de cobertura. | 0 % de nulos en precios recibidos no significa que Yahoo respondió a todo.
 Completitud | Fotos con menos de 495 símbolos: 920/2.348 (39,18 %). | No completar miembros sin fuente verificable. | Métrica RAW; difiere de Bronze tras normalizar/deduplicar símbolos.
 
-Staging/Bronze se genera con dbt: tipos, normalización, claves y deduplicación. Silver continúa la limpieza: interpola log-cierre y log-apertura ajustados en huecos internos de hasta cinco sesiones, con marca; no imputa OHLC original ni volumen. Huecos largos se excluyen y el retorno al reanudar queda nulo. ^IRX usa el último valor observado. El snapshot registra 0 % de días interpolados.
+Staging/Bronze se genera con dbt: tipos, normalización, claves y deduplicación. Silver continúa la limpieza: rellena hacia adelante (forward-fill, como fija el PSet 1) log-cierre y log-apertura ajustados en huecos internos de hasta cinco sesiones, con marca; no imputa OHLC original ni volumen. Huecos largos se excluyen y el retorno al reanudar queda nulo. ^IRX usa el último valor observado. El snapshot registra 0 % de días imputados.
 
-Precisión: coherencia OHLC y retornos son pruebas de plausibilidad, no contraste oficial. La interpolación usa un vecino posterior y requiere auditar fuga temporal. La construcción dbt actual conserva la advertencia de cobertura: 1.615 fechas con menos de 400 miembros con precio. Los flags desconocidos de listados permanecen NULL.
+Precisión: coherencia OHLC y retornos son pruebas de plausibilidad, no contraste oficial. El valor imputado no usa precios futuros; solo el largo del hueco (imputar o excluir) mira el siguiente día observado. La construcción dbt actual conserva la advertencia de cobertura: 1.615 fechas con menos de 400 miembros con precio. Los flags desconocidos de listados permanecen NULL. Verificación con eventos reales: los días con más outliers MAD son de marzo de 2020 (COVID-19) y abril de 2025 (aranceles de EE. UU.), y casos como GL, PCG, OXY y FISV corresponden a noticias documentadas. El diagnóstico usa solo sesiones consecutivas: una acción fuera del índice puede tener años sin datos, y Silver tampoco convierte ese salto en retorno.
 
 4. Transformaciones y modelado
 
@@ -114,7 +116,7 @@ Streaming se justificaría si el caso cambiara a alertas intradía de riesgo que
 
 7. Limitaciones
 
-Persisten cobertura incompleta, bolsa actual sin historia SCD2, equivalencias por verificar y revisiones de precios ajustados. La composición histórica reduce, pero no elimina, sesgos. La interpolación puede usar un vecino futuro; se debe verificar su disponibilidad en inferencia. La precisión se evalúa por plausibilidad, no con cotizaciones oficiales; ^IRX se aproxima como tasa diaria simple.
+Persisten cobertura incompleta, bolsa actual sin historia SCD2, equivalencias por verificar y revisiones de precios ajustados. La composición histórica reduce, pero no elimina, sesgos. La regla que excluye huecos largos conoce el día de reanudación; en inferencia en tiempo real habría que aplicarla con retraso. La precisión se evalúa por plausibilidad, no con cotizaciones oficiales; ^IRX se aproxima como tasa diaria simple.
 
 Las incidencias de memoria y sus soluciones están en docs/cumplimiento.md: ejecutor Spark 2 GB, driver 1 GB y un core; ejecutar PSet 2 y PSet 3 separadamente. README.md documenta configuración y ejecución; docs/corrida/ conserva evidencia. El ZIP excluye credenciales, datos completos y cachés. El versionado y la publicación se registran en docs/revision_entrega.md.
 

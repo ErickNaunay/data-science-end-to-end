@@ -1,0 +1,15 @@
+[0m03:46:36  Done. PASS=97 WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=98
+[OK] dim_accion: filas = combinaciones distintas de ['accion_key']: esperado=1130 obtenido=1130
+[OK] dim_fecha: filas = combinaciones distintas de ['fecha_key']: esperado=4243 obtenido=4243
+[OK] fct_mercado_diario: filas = combinaciones distintas de ['fecha_key']: esperado=4243 obtenido=4243
+[OK] fct_precios_diarios: filas = combinaciones distintas de ['accion_key', 'fecha_key']: esperado=1831427 obtenido=1831427
+[OK] join fct_precios_diarios x dim_fecha conserva filas: esperado=1831427 obtenido=1831427
+[OK] join cierre x resumen del mes (uno a uno) conserva filas: esperado=87178 obtenido=87178
+[OK] join fct_mercado_diario x dim_fecha conserva filas: esperado=4243 obtenido=4243
+[OK] mercado mensual: filas = combinaciones distintas de ['anio_mes']: esperado=203 obtenido=203
+[OK] OBT sin meses huerfanos de mercado: esperado=0 obtenido=0
+[OK] join OBT x mercado mensual conserva filas: esperado=87178 obtenido=87178
+[OK] join OBT x dim_accion conserva filas: esperado=87178 obtenido=87178
+[OK] OBT (grano accion x mes): filas = combinaciones distintas de ['accion_key', 'anio_mes']: esperado=87178 obtenido=87178
+[OK] OBT tiene una fila por accion y mes cerrado: esperado=87178 obtenido=87178
+OBT_ACCION_MES escrita: 87178 filas, 58628 elegibles, 43 columnas

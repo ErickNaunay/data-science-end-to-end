@@ -1,5 +1,61 @@
 [
   {
+    "id": "4OsR2Nj3JNW42qJGrvNj1",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T03:40:35.910527Z"
+        },
+        {
+          "state": "QUEUED",
+          "date": "2026-11-16T03:40:35.913131Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T03:46:08.153086Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T03:51:38.792115Z"
+        }
+      ],
+      "duration": "PT11M2.881588S",
+      "startDate": "2026-11-16T03:40:35.910527Z",
+      "endDate": "2026-11-16T03:51:38.792115Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "4R0pJmCerFM35GFqWLfDrj",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T03:40:32.785976Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T03:40:32.819153Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T03:46:08.138964Z"
+        }
+      ],
+      "duration": "PT5M35.352988S",
+      "startDate": "2026-11-16T03:40:32.785976Z",
+      "endDate": "2026-11-16T03:46:08.138964Z"
+    },
+    "tasks": []
+  },
+  {
     "id": "70422bkWyfGCphbma0n244",
     "namespace": "usfq.portafolio",
     "flowId": "transformar",
