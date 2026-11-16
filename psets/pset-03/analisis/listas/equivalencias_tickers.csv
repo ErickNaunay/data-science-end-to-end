@@ -1,0 +1,44 @@
+ticker_antiguo,ticker_nuevo,ticker_yahoo,empresa,fecha_cambio_oficial,fecha_cambio_composicion,ultima_foto_antiguo,fecha_ingreso_indice,antiguo_cotiza_hoy_con_ese_simbolo,metodo,estado,fuente
+DWDP,DD,DD,,2019-06-03,,2019-06-01,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://tickericons.com/changes
+DOW,DWDP,DD,,2017-09-01,,2026-11-15,,True,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://tickericons.com/changes
+WR,EVRG,EVRG,,2018-06-05,,,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://tickericons.com/changes
+FBHS,FBIN,FBIN,,2022-12-15,,2022-11-08,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://stockanalysis.com/actions/changes/2022/
+FI,FISV,FISV,,2025-11-11,,2025-11-11,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://stockanalysis.com/actions/changes/
+KFT,MDLZ,MDLZ,,2012-10-02,,,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://tickericons.com/changes
+WSH,WLTW,WTW,,2016-01-05,,,,False,fuente publica,verificado (la composicion ya usa el simbolo nuevo en toda la historia),https://tickericons.com/changes
+PX,LIN,LIN,Linde plc,,2018-11-06,,1992-07-01,False,"Fusion de Praxair (PX) con Linde AG; la regla tomo CA, que salio el mismo dia por otra razon",manual: verificar,composicion historica
+HRS,LHX,LHX,L3Harris,,2019-06-01,2019-04-02,2008-09-22,False,fecha de ingreso vs primera foto,detectado,composicion historica
+BMS,AMCR,AMCR,,2019-06-11,2019-06-07,2014-12-04,,False,fuente publica,verificado,https://tickericons.com/changes
+TMK,GL,GL,Globe Life,,2019-08-08,2019-07-15,1989-04-30,False,fecha de ingreso vs primera foto,detectado,composicion historica
+BHGE,BKR,BKR,Baker Hughes,,2019-10-18,,2017-07-07,False,"Baker Hughes, a GE company (BHGE) se renombro Baker Hughes",manual: verificar,composicion historica
+SYMC,NLOK,GEN,,,2019-11-05,2019-10-18,,False,Symantec vendio su negocio de empresas y se renombro NortonLifeLock,manual: verificar,composicion historica
+BBT,TFC,TFC,Truist Financial,,2019-12-09,2019-12-05,1997-12-04,True,BB&T (BBT) absorbio a SunTrust (STI) y se renombro Truist,manual: verificar,composicion historica
+JEC,J,J,Jacobs Solutions,,2019-12-10,2019-12-09,2007-10-26,False,fecha de ingreso vs primera foto,detectado,composicion historica
+UTX,RTX,RTX,RTX Corporation,,2020-04-03,2020-03-03,1957-03-04,False,fecha de ingreso vs primera foto,detectado,composicion historica
+ARNC,HWM,HWM,Howmet Aerospace,,2020-04-06,,2016-10-21,False,Arconic (ARNC) se separo y la parte que quedo se renombro Howmet; RTN salio por la fusion con UTX,manual: verificar,composicion historica
+CTL,LUMN,LUMN,,,2020-09-18,2020-06-22,,False,CenturyLink se renombro Lumen Technologies,manual: verificar,composicion historica
+MYL,VTRS,VTRS,Viatris,,2020-11-17,2020-10-12,2004-04-23,False,fecha de ingreso vs primera foto,detectado,composicion historica
+COG,CTRA,CTRA,,,2021-10-04,2021-09-20,,False,Cabot Oil & Gas se fusiono con Cimarex y se renombro Coterra,manual: verificar,composicion historica
+WLTW,WTW,WTW,Willis Towers Watson,,2022-01-20,2021-12-20,2016-01-05,False,fecha de ingreso vs primera foto,detectado,composicion historica
+VIAC,PARA,SKYD,,,2022-02-17,2022-02-15,,False,ViacomCBS se renombro Paramount Global,manual: verificar,composicion historica
+BLL,BALL,BALL,Ball Corporation,,2022-05-10,2022-04-11,1984-10-31,False,fecha de ingreso vs primera foto,detectado,composicion historica
+FB,META,META,Meta Platforms,,2022-06-09,2022-06-08,2013-12-23,False,fecha de ingreso vs primera foto,verificado,https://wrds-www.wharton.upenn.edu/classroom/sp500-introduction/over-time/
+ANTM,ELV,ELV,Elevance Health,,2022-06-28,2022-06-21,2002-07-25,False,fecha de ingreso vs primera foto,detectado,composicion historica
+NLOK,GEN,GEN,Gen Digital,,2022-11-08,2022-11-01,2003-03-25,False,fecha de ingreso vs primera foto,detectado,composicion historica
+,CEG,CEG,Constellation Energy,,2023-05-17,,2022-02-02,,fecha de ingreso vs primera foto,no es cambio: hueco de la fuente (ya era miembro con el mismo simbolo),composicion historica
+,DOW,DOW,Dow Inc.,,2023-05-17,,2019-04-01,,fecha de ingreso vs primera foto,no es cambio: hueco de la fuente (ya era miembro con el mismo simbolo),composicion historica
+,FOX,FOX,Fox Corporation (Class B),,2023-05-17,,2019-03-19,,fecha de ingreso vs primera foto,no es cambio: hueco de la fuente (ya era miembro con el mismo simbolo),composicion historica
+,FOXA,FOXA,Fox Corporation (Class A),,2023-05-17,,2019-03-19,,fecha de ingreso vs primera foto,no es cambio: hueco de la fuente (ya era miembro con el mismo simbolo),composicion historica
+,IR,IR,Ingersoll Rand,,2023-05-17,,2020-03-03,,fecha de ingreso vs primera foto,no es cambio: hueco de la fuente (ya era miembro con el mismo simbolo),composicion historica
+PKI,RVTY,RVTY,Revvity,,2023-05-18,2023-05-17,1985-05-31,False,fecha de ingreso vs primera foto,detectado,composicion historica
+RE,EG,EG,Everest Group,2023-07-10,2023-07-11,2023-07-10,2017-06-19,False,fecha de ingreso vs primera foto,verificado,https://tickericons.com/changes
+ABC,COR,COR,Cencora,,2023-09-03,2023-09-01,2001-08-30,False,AmerisourceBergen (ABC) se renombro Cencora,manual: verificar,composicion historica
+CDAY,DAY,DAY,,,2024-02-02,2024-02-01,,False,Ceridian se renombro Dayforce,manual: verificar,composicion historica
+PEAK,DOC,DOC,Healthpeak Properties,,2024-03-04,2024-03-03,2008-03-31,False,fecha de ingreso vs primera foto,detectado,composicion historica
+FLT,CPAY,CPAY,Corpay,,2024-03-27,2024-03-25,2018-06-20,False,FleetCor (FLT) se renombro Corpay,manual: verificar,composicion historica
+PARA,PSKY,SKYD,,,2025-08-12,2025-08-09,,True,Paramount Global se fusiono con Skydance (Paramount Skydance),manual: verificar,composicion historica
+MMC,MRSH,MRSH,Marsh McLennan,2026-01-14,2026-01-15,2026-01-14,1987-08-31,False,fecha de ingreso vs primera foto,verificado,https://stockanalysis.com/actions/changes/
+BK,BNY,BNY,BNY Mellon,2026-05-21,2026-05-22,2026-05-21,1995-03-31,False,fecha de ingreso vs primera foto,verificado,https://stockanalysis.com/actions/changes/
+SATS,ECHO,ECHO,EchoStar,2026-06-24,2026-06-25,2026-06-24,2026-03-23,True,fecha de ingreso vs primera foto,verificado,https://stockanalysis.com/actions/changes/
+EQR,VMRK,VMRK,Vivmark Residential,,2026-08-18,2026-08-18,2001-12-03,False,Equity Residential (EQR) compro AvalonBay (AVB) y se renombro Vivmark (ver tickericons),manual: verificar,composicion historica
+PSKY,SKYD,SKYD,Skydance,,2026-10-08,2026-10-07,1994-09-30,False,Paramount Skydance (PSKY) cambio a SKYD,manual: verificar,composicion historica
