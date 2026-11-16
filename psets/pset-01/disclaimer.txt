@@ -33,5 +33,12 @@ Archivos de esta carpeta:
   - rubrica.md: sin cambios (rubrica del curso).
   - disclaimer.txt: este archivo.
 
-El ambiente del proyecto (Dockerfile, ingesta e infraestructura en psets/proyecto/) no
-formaba parte de la guia recibida; queda pendiente y se construye como base del PSet 2.
+El ambiente del proyecto (Dockerfile, ingesta e infraestructura) no formaba parte de la
+guia recibida. Se arma por fases: primero en psets/pset-02/ (pipeline de datos, PSet 2),
+luego en psets/pset-03/ (modelos y experimentos, incremental sobre el PSet 2) y al final
+todo se integra en psets/proyecto/.
+
+Actualizacion 2026-11-15 (decision de organizacion, no cambia la entrega del PSet 1):
+  Antes:   "El ambiente del proyecto (Dockerfile, ingesta e infraestructura en
+            psets/proyecto/) [...] queda pendiente y se construye como base del PSet 2."
+  Despues: el ambiente se arma por fases: pset-02 -> pset-03 -> proyecto.

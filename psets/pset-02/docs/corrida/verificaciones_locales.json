@@ -1,0 +1,10 @@
+{
+  "fecha_local": "2026-11-15",
+  "zona": "America/Guayaquil",
+  "ingesta_unitarias": {
+    "tests": 3,
+    "resultado": "OK"
+  },
+  "memo_paginas": 6,
+  "inspeccion_visual": "6 p\u00e1ginas revisadas; sin recortes"
+}
