@@ -52,9 +52,28 @@ contradice tambien se cubre:
     subir flows, plantilla de dbt, job de Spark) se reutilizaron como punto de partida.
 
 El trabajo vive en esta carpeta (psets/pset-02, antes psets/pset_2; el README original
-del curso quedo como README_curso.md). Al cerrar el PSet, el contenido se lleva ademas a
-psets/proyecto/ (orquestacion/ <- kestra/, warehouse/dbt/ <- dbt/, procesamiento/ <- spark/,
-docs/ <- docs/), como acordamos.
+del curso quedo como README_curso.md). El ambiente se arma por fases: primero aqui
+(pipeline), luego psets/pset-03 (modelos, incremental sobre este) y al final todo se
+integra en psets/proyecto/.
+
+COHERENCIA CON EL PSET 1 REVISADO (feedback/PSet1_memo_Gomez_Ehmig_v2, seccion 3.2)
+Revision del 15-nov-2026. Ante contradicciones del PSet 1 manda lo ultimo de la carpeta
+feedback. Tres diferencias encontradas y como se resolvieron:
+
+  Tema        PSet 1 v2 dice                         Antes                       Despues
+  ----------  -------------------------------------  --------------------------  ---------------------------------
+  Imputacion  Huecos aislados: forward-fill (no usa  Interpolacion lineal del    Forward-fill del log-precio en
+              el futuro) o Kalman; huecos largos:    log-precio con el vecino    huecos de hasta 5 sesiones;
+              excluir                                posterior                   largos se excluyen. 0 dias
+                                                                                 imputados: cifras sin cambio
+  Outliers    MAD/z-score, verificados contra        Umbral fijo |r|>0,40 y      Se agrega z-score robusto (MAD)
+              eventos reales                         1,5 IQR por accion          > 3,5 al diagnostico, con listas
+                                                                                 por caso y por fecha para cotejar
+                                                                                 con eventos; solo marca, no borra
+  Fuentes     yfinance (principal) y Kaggle de       chinobing y rreichel3 sin   Documentado en el memo: chinobing
+              respaldo; exige composicion historica  mencionar frente al PSet 1  da la composicion historica que
+              pero no nombra la fuente                                           el PSet 1 exigia; rreichel3 la
+                                                                                 bolsa; Kaggle no hizo falta
 
 Datos de prueba: pruebas_locales/ carga una muestra real pequena en DuckDB solo para
 verificar que el codigo de dbt y Spark corre sin cuenta de Snowflake. Usa VTI y QQQ

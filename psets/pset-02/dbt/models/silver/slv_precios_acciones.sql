@@ -4,11 +4,12 @@
 -- 1. Deteccion: la grilla accion x calendario NYSE muestra los dias en que la accion
 --    deberia tener precio. Falta un dia si no hay fila o si el precio no es valido (nulo,
 --    no positivo o maximo < minimo).
--- 2. Imputacion (huecos de hasta max_hueco_imputable dias): interpolacion lineal del
---    log-precio entre el ultimo dia observado y el siguiente, para el cierre ajustado y la
---    apertura ajustada. La comparación con ruido y Kalman pertenece al análisis de PSet 3;
---    aquí no se afirma superioridad sin evidencia. Usa un vecino posterior: auditar
---    disponibilidad temporal antes de emplear las features en entrenamiento.
+-- 2. Imputacion (huecos de hasta max_hueco_imputable dias): forward-fill del log-precio
+--    (cierre ajustado y apertura ajustada) con el ultimo dia observado, como fija el PSet 1
+--    ("forward-fill, no usa el futuro"). El retorno del dia imputado es 0 y el movimiento
+--    completo cae en el dia en que la accion vuelve a cotizar. El largo del hueco (que decide
+--    imputar o excluir) si mira el siguiente dia observado: es una regla de calidad sobre que
+--    tramos conservar, no un valor tomado del futuro.
 -- 3. Huecos mas largos: no se imputan y esos dias no pasan a Silver; el retorno del dia
 --    siguiente queda nulo, para no unir dos dias lejanos en un solo retorno.
 -- 4. Banderas: imputado, retorno extremo (se marca, no se borra: puede ser real), cierre
@@ -90,9 +91,9 @@ vecinos as (
         max(orden_obs)   over (partition by ticker, grupo_ant) as orden_ant,
         max(lp_cierre)   over (partition by ticker, grupo_ant) as lp_cierre_ant,
         max(lp_apertura) over (partition by ticker, grupo_ant) as lp_apertura_ant,
-        min(orden_obs)   over (partition by ticker, grupo_sig) as orden_sig,
-        max(lp_cierre)   over (partition by ticker, grupo_sig) as lp_cierre_sig,
-        max(lp_apertura) over (partition by ticker, grupo_sig) as lp_apertura_sig
+        -- Solo la posicion del siguiente dia observado (para medir el largo del hueco);
+        -- su precio no se usa.
+        min(orden_obs)   over (partition by ticker, grupo_sig) as orden_sig
     from grupos
 ),
 
@@ -104,14 +105,12 @@ imputada as (
         case
             when orden_obs is not null then lp_cierre
             when orden_sig - orden_ant - 1 <= {{ var('max_hueco_imputable') }}
-                then lp_cierre_ant + (lp_cierre_sig - lp_cierre_ant)
-                     * (orden_bursatil - orden_ant) / (orden_sig - orden_ant)
+                then lp_cierre_ant
         end                                                        as lp_cierre_final,
         case
             when orden_obs is not null then lp_apertura
             when orden_sig - orden_ant - 1 <= {{ var('max_hueco_imputable') }}
-                then lp_apertura_ant + (lp_apertura_sig - lp_apertura_ant)
-                     * (orden_bursatil - orden_ant) / (orden_sig - orden_ant)
+                then lp_apertura_ant
         end                                                        as lp_apertura_final
     from vecinos
 ),

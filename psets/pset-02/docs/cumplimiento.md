@@ -70,7 +70,7 @@ anterior ya había finalizado. No ejecutar cargas concurrentes deliberadamente.
 - 39,485% de fotos con menos de 495 símbolos, mínimo 444.
 - Bolsa actual, cambios de ticker parcialmente verificados y ajustes de precios
   retrospectivos limitan la interpretación point-in-time.
-- Interpolación con un vecino posterior: auditar disponibilidad antes de usarla
+- Imputación: desde el 15-nov-2026 es forward-fill (criterio del PSet 1), sin vecino posterior; antes era interpolación lineal (0 días imputados, cifras sin cambio)
   en entrenamiento. El snapshot actual registra 0% imputado.
 - Ventanas Spark basadas en filas no aseguran días consecutivos tras huecos.
 - No se verificó una ejecución disparada por el reloj en su horario real; se

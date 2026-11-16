@@ -103,7 +103,7 @@ metricas as (
     union all
     select 'completitud', 'SILVER', 'dias_imputados_pct',
            100.0 * sum(case when imputado then 1 else 0 end) / nullif(count(*), 0),
-           '%', 'Dias bursatiles sin precio valido que se imputaron (huecos de hasta max_hueco_imputable dias, interpolacion lineal del log-precio).'
+           '%', 'Dias bursatiles sin precio valido que se imputaron (huecos de hasta max_hueco_imputable dias, forward-fill del log-precio).'
     from slv
 
     union all

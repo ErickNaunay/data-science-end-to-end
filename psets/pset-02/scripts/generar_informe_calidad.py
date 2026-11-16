@@ -50,12 +50,12 @@ lines += ['## Staging en dbt y tratamientos posteriores',
 '''- `brz_precios_diarios.sql`: tipos, identidad, nombres normalizados, descarte de claves nulas y última versión por símbolo-fecha. No calcula medias globales ni reemplaza precios.
 - `brz_composicion_sp500.sql`: última carga, explosión de TICKERS, normalización y equivalencias temporales, con conservación del símbolo original y deduplicación.
 - `brz_listados_bolsa.sql`: última carga, normalización, exclusión de instrumentos fuera del alcance, deduplicación y conversión Y/N; los flags desconocidos permanecen NULL. Se corrigió la imputación implícita anterior a false.
-- Silver: grilla NYSE, exclusión de observaciones inválidas de acciones, interpolación de log-cierre/log-apertura ajustados para huecos internos de hasta cinco sesiones; no se imputan máximos, mínimos, OHLC original ni volumen. Los huecos mayores se excluyen y no se calcula un retorno que los atraviese.
+- Silver: grilla NYSE, exclusión de observaciones inválidas de acciones, forward-fill de log-cierre/log-apertura ajustados para huecos internos de hasta cinco sesiones; no se imputan máximos, mínimos, OHLC original ni volumen. Los huecos mayores se excluyen y no se calcula un retorno que los atraviese.
 - Mercado Silver: ^IRX se rellena hacia adelante con el último valor; las series ^GSPC/^NYA no se interpolan. ^IRX es una tasa: no aplicar indiscriminadamente la regla precio > 0.
 - Membresía Silver: une huecos de hasta siete días naturales; requiere revisión externa porque es una hipótesis de omisión, no identidad histórica certificada.
 - Gold/OBT: derivan claves, medidas, ventanas y flags; no sustituyen el saneamiento de staging. Los objetivos futuros no se imputan. La imputación estadística de features para modelos queda en PSet 3, dentro de entrenamiento.
 
-La interpolación puede usar una observación posterior: no garantiza disponibilidad point-in-time. El snapshot anterior registró 0% de días interpolados. No se ha probado que sea superior a otros métodos; no se atribuye esa conclusión. Para aplicar el pipeline a inferencia histórica se debe auditar la disponibilidad del vecino posterior.''',
+El forward-fill no usa precios posteriores (criterio del PSet 1); solo el largo del hueco, que decide imputar o excluir, mira el siguiente día observado. Antes (hasta el 15-nov-2026) se interpolaba linealmente con el vecino posterior; el snapshot registraba 0% de días imputados, así que el cambio no altera las cifras. Los outliers se diagnostican con z-score robusto (MAD > 3,5) y 1,5 IQR por acción; outliers_mad_top.csv y outliers_mad_por_fecha.csv permiten cotejarlos con eventos reales.''',
 '## Fuentes adicionales y repositorios',
 table(['Fuente','Uso real','Repositorio / archivo','Límite'],[
  ['Yahoo Finance / yfinance','OHLCV ajustado y no ajustado, ^GSPC, ^NYA, ^IRX','https://github.com/ranaroussi/yfinance','API no oficial; ajustes retrospectivos y cobertura incompleta'],

@@ -8,8 +8,8 @@ models:
     - not_null
     - unique
 - name: slv_precios_acciones
-  description: 'Precios en la grilla accion x calendario NYSE: faltantes detectados, huecos cortos imputados (lineal
-    en log), retornos y banderas.'
+  description: 'Precios en la grilla accion x calendario NYSE: faltantes detectados, huecos cortos imputados (forward-fill
+    del log-precio, sin usar el futuro), retornos y banderas.'
   data_tests:
   - combinacion_unica:
       arguments:

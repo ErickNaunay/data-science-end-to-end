@@ -40,6 +40,12 @@ ingesta = [
 dev = [
     "pytest>=8",
 ]
+# Dependencias de la imagen pset2-dbt (dbt/Dockerfile). Se exportan a dbt/requirements.txt
+# con versiones exactas del mismo uv.lock; dbt-core igual al del entorno local.
+dbt-imagen = [
+    "dbt-core==1.12.7",
+    "dbt-snowflake>=1.10,<2",
+]
 # Spark en modo local para pruebas_locales/ (requiere Java 17). Opcional porque pyspark pesa
 # ~317 MB y la corrida real usa Spark dentro de su imagen (pset2-spark), no este entorno.
 #   uv sync --group dev --group pruebas-locales

@@ -90,3 +90,34 @@ requirements.txt` (los reintentos reutilizan lo descargado; la imagen no crece).
 Ajuste posterior (mismo día): `kestra/subir_flows.sh` fallaba en macOS con "Define
 KESTRA_CLAVE en .env" aunque la clave existía. Antes: `source <(grep ... .env)`, que el bash
 3.2 de macOS no lee. Después: un bucle `while read ... export`, compatible con bash 3.2.
+
+## Coherencia con el PSet 1 revisado (2026-11-15)
+
+Revisión contra `psets/pset-01/feedback/PSet1_memo_Gomez_Ehmig_v2.pdf` (sección 3.2):
+
+| Tema | Antes | Después |
+|---|---|---|
+| Imputación (Silver) | Interpolación lineal del log-precio con el vecino posterior | Forward-fill del log-precio (criterio del PSet 1, sin usar el futuro); huecos > 5 sesiones se siguen excluyendo. 0 días imputados: cifras sin cambio. Verificado con DuckDB borrando dos días de ORCL |
+| Outliers (diagnóstico) | Umbral fijo 0,40 y 1,5 IQR por acción | Se agrega z-score robusto (MAD) > 3,5 por acción y dos listas (`calidad/outliers_mad_top.csv`, `calidad/outliers_mad_por_fecha.csv`) para cotejar con eventos reales. Solo marca |
+| Fuentes | chinobing y rreichel3 sin relacionarlas con el PSet 1 | Nota en el memo (sección 2) y en `disclaimer.txt` |
+
+Archivos: `dbt/models/silver/slv_precios_acciones.sql`, `_silver.yml`, `dbt/models/calidad/dq_metricas.sql`,
+`scripts/diagnosticar_calidad.py`, `scripts/generar_informe_calidad.py`, `scripts/generar_memo.py`,
+comentario en `spark/jobs/construir_obt.py`, `docs/cumplimiento.md`, `docs/revision_capas_modelo.md`.
+
+Ajuste posterior (mismo día): la imagen `pset2-dbt` (`dbt/Dockerfile`) había quedado en
+`python:3.12-slim` con `dbt-core>=1.10,<2` sin fijar. Ahora usa `python:3.11-slim`,
+`dbt/requirements.txt` exportado del lock (grupo `dbt-imagen`: dbt-core 1.12.7, dbt-snowflake
+1.12.5) y la caché de pip de BuildKit. Verificado: instalación en Python 3.11 limpio y
+`dbt parse --target snowflake` (14 modelos, 82 tests, 2 seeds). Como la imagen copia el
+proyecto dbt adentro, cualquier cambio de modelos requiere `docker compose build dbt`.
+
+Verificación del diagnóstico MAD (mismo día). La primera versión medía retornos con `LAG`
+sobre RAW sin mirar la distancia entre fechas, y 7 de los 30 casos más extremos caían en el
+primer día hábil de enero (p. ej. JBL 3-ene-2023, TER 2-ene-2020). Consulta a RAW: el factor
+`adj_close/close` es constante (no hay escalón de ajuste); lo que falta son años completos,
+porque la ingesta histórica descarga cada año solo a los miembros del índice de ese año.
+Consulta a Gold: `ret_log_diario` es nulo en esos días (Silver ya excluye el tramo). Antes: el
+diagnóstico incluía saltos de varios años. Después: solo retornos entre sesiones consecutivas
+(<= 7 días naturales); 0 casos de enero en el top 30; MAD marca 44.148/1.830.807 (2,41 %).
+Corridas de evidencia: `transformar` 4OsR2Nj3JNW42qJGrvNj1 (forward-fill, dbt en Python 3.11).

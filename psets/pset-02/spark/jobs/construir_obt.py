@@ -128,8 +128,8 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
     w = Window.partitionBy("accion_key").orderBy("fecha")
     w21, w63, w252 = w.rowsBetween(-20, 0), w.rowsBetween(-62, 0), w.rowsBetween(-251, 0)
     r = F.col("ret_log_diario")
-    # La volatilidad se mide solo con dias observados: la interpolacion lineal de Silver
-    # reparte el retorno de un hueco en partes iguales y la subestimaria.
+    # La volatilidad se mide solo con dias observados: el forward-fill de Silver deja
+    # retorno 0 en los dias imputados y la subestimaria.
     r_obs = F.when(~F.col("imputado"), r)
     diario = (diario
               .withColumn("vol_21d", F.stddev(r_obs).over(w21) * F.sqrt(F.lit(252.0)))

@@ -30,7 +30,7 @@ Los seeds son referencias versionadas, no tablas derivadas de Gold. Que Bronze l
 | Tabla | Grano | Transformaciones |
 |---|---|---|
 | `SLV_CALENDARIO_NYSE` | Día bursátil | Seed NYSE acotado desde 2010 hasta la última fecha de precios; orden bursátil y media jornada. |
-| `SLV_PRECIOS_ACCIONES` | Símbolo normalizado y sesión conservada | Descarta observaciones OHLC inválidas, crea grilla durante la vida observada, interpola log-cierre/log-apertura ajustados hasta cinco sesiones, excluye huecos largos, calcula retornos y banderas. No imputa volumen ni OHLC originales. |
+| `SLV_PRECIOS_ACCIONES` | Símbolo normalizado y sesión conservada | Descarta observaciones OHLC inválidas, crea grilla durante la vida observada, rellena hacia adelante (forward-fill) log-cierre/log-apertura ajustados hasta cinco sesiones, excluye huecos largos, calcula retornos y banderas. No imputa volumen ni OHLC originales. |
 | `SLV_MERCADO_DIARIO` | Día bursátil | Pivota ^GSPC/^NYA/^IRX, calcula retornos, rellena ^IRX hacia adelante, deriva tasa diaria aproximada. |
 | `SLV_MEMBRESIA_SP500` | Intervalo de membresía por símbolo | Normaliza continuidad de fotos, crea fecha_inicio/fecha_fin, une huecos hasta siete días y genera periodo_key; vigente tiene fecha_fin nula. |
 | `SLV_ACCIONES` | Símbolo normalizado | Une universo de membresías y precios con listado actual; resume fechas, períodos y cobertura. Conserva atributos desconocidos. |
