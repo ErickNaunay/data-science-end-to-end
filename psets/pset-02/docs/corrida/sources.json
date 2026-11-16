@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/sources/v3.json",
+    "dbt_version": "1.12.7",
+    "generated_at": "2026-11-16T00:39:38.453178Z",
+    "invocation_id": "116c8c22-22b8-48fb-9065-a72a14506f3f",
+    "invocation_started_at": "2026-11-16T00:39:35.090160Z",
+    "env": {}
+  },
+  "results": [
+    {
+      "unique_id": "source.portafolio.raw.listados_bolsa",
+      "status": "pass",
+      "max_loaded_at": "2026-11-15T20:37:29.174413+00:00",
+      "snapshotted_at": "2026-11-16T00:39:36.947000+00:00",
+      "age": null
+    },
+    {
+      "unique_id": "source.portafolio.raw.composicion_sp500",
+      "status": "pass",
+      "max_loaded_at": "2026-11-15T20:37:29.174413+00:00",
+      "snapshotted_at": "2026-11-16T00:39:36.947000+00:00",
+      "age": null
+    },
+    {
+      "unique_id": "source.portafolio.raw.precios_diarios",
+      "status": "pass",
+      "max_loaded_at": "2026-11-16T00:32:44.103565+00:00",
+      "snapshotted_at": "2026-11-16T00:39:36.945000+00:00",
+      "age": null
+    },
+    {
+      "unique_id": "source.portafolio.raw.ingesta_log",
+      "status": "pass",
+      "max_loaded_at": "2026-11-16T00:32:44.103565+00:00",
+      "snapshotted_at": "2026-11-16T00:39:36.947000+00:00",
+      "age": null
+    }
+  ]
+}

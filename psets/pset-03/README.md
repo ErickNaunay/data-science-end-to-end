@@ -1,70 +1,100 @@
-# PSet 3: Exploración, features y modelo del proyecto
+# PSet 3 — Experimentación desde la OBT
 
-**Asignado:** Semana 8, Sesión 2. **Vence:** Semana 12, Sesión 1.
+La guía vigente es `CD_PSet_3.pdf`. Esta carpeta desarrolla incrementalmente el
+PSet 2; el README original del curso queda en `README_curso.md`. La integración
+final en `psets/proyecto/` se hará al empaquetar el proyecto, sin duplicar datasets.
 
-Del archivo limpio que deja tu pipeline (PSet 2) a un modelo elegido con evidencia: qué encontraste al explorar los datos, qué features construiste a partir de eso, la preparación convertida en un script que tus modelos importan, los candidatos entrenados y comparados con la misma división, cada corrida registrada en MLflow, la validación que corresponde a tus datos y una decisión escrita que alguien más puede verificar. Cada pieza sale del Ejercicio 3 de una sesión de las Semanas 8 a 11.
+## Preparación
 
-## Paso 0: ordena tu proyecto en `psets/proyecto/`
-
-Antes de entregar, mueve lo que construiste en las semanas anteriores a la estructura de [`psets/proyecto/`](../proyecto/) que describe [`psets/README.md`](../README.md). Este PSet se califica sobre esa estructura, y la Semana 12 empaqueta tu modelo como un servicio que la necesita en un solo lugar.
-
-Mueve cada archivo con `git mv`, no copiándolo: así git conserva su historia y el archivo no queda duplicado en dos carpetas.
-
+```bash
+uv sync                      # .venv con Python 3.11 y las versiones exactas de uv.lock
+cp .env.example .env
+# Completar credenciales localmente: nunca agregarlas a git.
+uv run python -m src.datos
+docker compose up -d --build
 ```
-git mv laboratorios/semana-09-sesion-02/plantilla-pipeline/pipeline_proyecto.py psets/proyecto/modelado/
+
+El entorno es un proyecto uv propio de esta carpeta (`pyproject.toml` + `uv.lock`).
+`requirements.txt` no se edita a mano: lo genera `bash exportar_requirements.sh`
+desde el lock y lo usan la imagen runner y el registro de MLflow.
+
+MLflow queda en http://localhost:5001, con SQLite como backend y artefactos en
+`mlflow/artifacts`; ambos persisten en `mlflow/`, excluido de Git. El snapshot
+`data/obt.parquet` tiene un manifiesto con tabla, fecha y SHA-256. No se publica.
+
+## Orden de trabajo
+
+1. `notebooks/01_eda.ipynb`: distribución, faltantes, IQR, Z-score, Spearman y tres hallazgos.
+2. `02_features.ipynb`: volatilidad relativa y momentum normalizado por riesgo;
+   comprobar disponibilidad y posteriormente aporte por ablación en CV.
+3. `03_baseline_candidatos.ipynb`: código preparado en `src/experimentos.py` para
+   dos bases y cuatro familias. Falta integrar la quinta familia fundacional y
+   probar el LLM por prompting o justificar su inaplicabilidad.
+4. `04_tuning.ipynb`: preparar los tres mejores usando solo CV; al menos 30
+   configuraciones por modelo y corridas hijas. Aún no ejecutado.
+5. `05_seleccion.ipynb`: guía pendiente de implementación final; comparar dos
+   finalistas una sola vez en hold-out, calcular métrica de negocio, registrar
+   champion/challenger y recargar el ganador en una sesión limpia.
+
+El target es el retorno log del mes siguiente. El corte usa el mes del objetivo:
+objetivos hasta diciembre de 2023 en entrenamiento; posteriores en hold-out.
+La CV separa meses completos y purga un mes. Imputación y escalado se ajustan
+adentro de cada Pipeline/ColumnTransformer. Se excluyen columnas del futuro y
+atributos actuales como `sigue_en_sp500` de los predictores.
+
+## Estado y límites
+
+La estructura está preparada; no es una entrega completa de PSet 3. No se ha
+elegido ganador, consumido hold-out ni inventado corridas.csv o un memo final.
+Faltan quinta familia, ablación, experimento LLM, 90 configuraciones, métrica de
+negocio alineada con PSet 1, selección/registro y memo de hasta 6 páginas.
+Antes de entrenar, revisar ajustes retrospectivos de precios, bolsa actual,
+interpolación y cobertura del universo documentados en el memo del PSet 2.
+
+El trabajo previo de análisis permanece en la rama `draft`, en
+`psets/pset-02/analisis/`. No se duplica en esta entrega: parte de Yahoo/DuckDB
+y no satisface el protocolo experimental de la OBT que exige el PDF.
+Los notebooks finales se entregan con Restart y Run All y salidas guardadas.
+
+### Comprobaciones realizadas
+
+Los notebooks 01 y 02 se ejecutaron completos con el snapshot de 87.178 filas,
+con salidas y gráficos guardados. El entrenamiento elegible contiene 46.926
+filas y 158 meses. Tres pruebas verifican corte por objetivo, separación de
+meses e imputación ajustada solo con entrenamiento. Los notebooks 03-05
+son guías de ejecución; no contienen resultados de experimentación.
+
+MLflow se construyó en Docker. Se configura con un solo worker y límite de 1 GB para reducir
+consumo. No ejecutar a la vez que Spark en el entorno de 8 GB: durante la
+verificación la coexistencia de ambos provocó un OOM de Kestra.
+
+## Verificación funcional aislada
+
+Primero ejecuta `docker compose down` desde `../pset-02/`, sin `-v`; Snowflake
+conserva las tablas. No se necesita Kestra ni Spark para ejecutar PSet 3:
+la única dependencia compartida es la OBT ya materializada en Snowflake.
+
+```bash
+docker compose down
+docker compose --profile verificacion build
+docker compose up -d mlflow
+GIT_COMMIT="$(git rev-parse HEAD)" GIT_DIRTY=true \
+  docker compose --profile verificacion run --rm verificar
+docker compose down
 ```
 
-| Lo que tienes | A dónde va |
-|---|---|
-| Tu Dockerfile y tu `requirements.txt` (Semana 3, Sesión 1) | `proyecto/`, en la raíz |
-| Tu script de ingesta | `proyecto/ingesta/` |
-| Tu `docker-compose.yml` o `main.tf` | `proyecto/infra/` |
-| `flow_proyecto.yml` | `proyecto/orquestacion/` |
-| Tu notebook de diagnóstico y tu script de limpieza | `proyecto/calidad/` |
-| Tu `construir_warehouse.py` y tu proyecto de dbt | `proyecto/warehouse/` y `proyecto/warehouse/dbt/` |
-| Tu job de Spark, y tu productor y consumidor si los tienes | `proyecto/procesamiento/` |
-| Tus notebooks de exploración, features, modelos y experimentos, `pipeline_proyecto.py` y sus tablas `.csv` | `proyecto/modelado/` |
-| Tu canvas, tu propuesta y tu presentación (PSet 1) | `proyecto/docs/` |
-| Tus archivos de datos | `proyecto/data/raw/` (crudos) y `proyecto/data/processed/` (limpios) |
+`src/verificar_entorno.py` consulta Snowflake, crea un snapshot nuevo, ejecuta
+EDA/features y registra media, retorno cero y Ridge con CV temporal en un
+experimento separado, `portafolio-verificacion-entorno`. Registra y recarga
+Ridge con alias `verificacion` en `portafolio-verificacion-modelo`, y comprueba
+que reproduce su RMSE de entrenamiento. No asigna champion, no elige ganador,
+no utiliza el hold-out y no sustituye las 98 corridas mínimas del PDF.
+La evidencia de esa prueba queda en `docs/verificacion/`.
 
-Después de mover, actualiza las rutas que cambiaron. Las que más se rompen son la ruta a los datos (desde `modelado/` es `../data/processed/<archivo>`), los `COPY` del Dockerfile (ahora los scripts están en subcarpetas, como `ingesta/`), la ruta al `.duckdb` en el `profiles.yml` de dbt y el comando del flow de Kestra si cambió la ruta del script dentro de la imagen. Comprueba que `python pipeline_proyecto.py` corre desde `modelado/` y que `docker build -t <tu-imagen> .` corre desde `proyecto/`.
+Los notebooks 03-05 y el programa de tuning siguen siendo la preparación para
+el trabajo experimental completo. Sus pendientes están en
+[docs/pendientes_entrega.md](docs/pendientes_entrega.md).
 
-## Entregables
+## Cadencia de negocio y futura inferencia
 
-Todo en [`../proyecto/modelado/`](../proyecto/modelado/), sobre el archivo limpio de `data/processed/`, salvo la decisión, que va en `docs/`:
-
-| Pieza | Archivo | Sale de |
-|---|---|---|
-| La exploración, con tres hallazgos que afectan el modelado | `explorar_proyecto.ipynb` | Semana 8, Sesión 2 |
-| Dos features, con su evidencia y su justificación | `features_proyecto.ipynb` | Semana 9, Sesión 1 |
-| La preparación y la división, como script | `pipeline_proyecto.py` | Semana 9, Sesión 2 |
-| Línea base, modelo lineal y ensamblaje, con su tabla | `modelos_proyecto.ipynb` y `resultados_proyecto.csv` | Semana 10, Sesión 1 |
-| Ensamblaje contra red neuronal, y la prueba del LLM | `comparar_proyecto.ipynb` | Semana 10, Sesión 2 |
-| Cada modelo registrado en MLflow, y el modelo final recuperado del registro | `experimentos_proyecto.ipynb` y `corridas_proyecto.csv` | Semana 11, Sesión 1 |
-| Validación cruzada con el esquema de tus datos, y la métrica del negocio | `validacion_proyecto.ipynb` | Semana 11, Sesión 2 |
-| La decisión del modelo final | `proyecto/docs/decision_modelo.md` | Semanas 10 y 11 |
-
-`corridas_proyecto.csv` es la evidencia del registro: tu servidor de MLflow vive en tu Codespace y yo no lo veo, así que la tabla exportada tiene que salir de una corrida completa del notebook (borra antes las corridas de prueba del experimento).
-
-### `docs/decision_modelo.md`
-
-Una a dos páginas, escritas para alguien del equipo que no estuvo en clase y tiene que decidir si ese modelo pasa a producción:
-
-1. Qué modelo elegiste, con su `run_id` en MLflow.
-2. Contra qué lo comparaste: la línea base y los demás candidatos, con la métrica de prueba de cada uno, la misma división y la misma huella de datos.
-3. Si la diferencia con el segundo mejor es real: el promedio y la desviación de la validación cruzada, con el esquema que corresponde a tus datos.
-4. Qué error es más caro en tu proyecto, cuánto, y qué dice la métrica del negocio del modelo elegido.
-5. Costo y explicabilidad: segundos de entrenamiento, y si alguien puede entender por qué el modelo predice lo que predice.
-6. Qué necesita otra persona para obtener exactamente el mismo número, y qué de eso quedó registrado en MLflow.
-
-En `proyecto/README.md`, completa **Cómo entrenar y evaluar el modelo** (qué archivo lee `pipeline_proyecto.py`, cómo divide los datos, y qué notebook corre cada etapa y en qué orden) y **Modelo final** (el modelo, su `run_id` y la métrica que lo sostiene).
-
-## Lo que reviso
-
-Que cada decisión tenga detrás un número o un gráfico de tu propio dataset o de tu registro. Un hallazgo de la exploración vale cuando dice qué cambia en el modelo por su causa; una feature vale cuando muestra su evidencia y existe en el momento en que el modelo va a predecir; un modelo vale contra una línea base, con la misma división y la misma métrica que los demás.
-
-`pipeline_proyecto.py` tiene que correr solo desde una terminal nueva, y todos los notebooks de modelos lo importan en vez de copiar su código. Los notebooks se califican con la salida guardada de una corrida completa (**Restart** y **Run All**).
-
-## Cómo se evalúa
-
-La rúbrica, con sus cinco criterios y niveles, está en [`rubrica.md`](./rubrica.md). Para entregar, sigue la sección "Cómo entregar" de [`psets/README.md`](../README.md): el tag de este PSet es `pset-03`.
+Según PSet 1 revisado, la inferencia y propuesta de compra son mensuales; los datos se actualizan diariamente en PSet 2. El reporte de desempeño también es mensual. No se establece una frecuencia de reentrenamiento ni se implementa aquí un scheduler productivo de scoring. `preparar()` filtra targets nulos para entrenamiento: la futura inferencia necesitará conservar esas filas del mes cerrado sin usar columnas futuras. Ver [temporalidad y disponibilidad del cierre](../pset-02/docs/temporalidad_batch.md).

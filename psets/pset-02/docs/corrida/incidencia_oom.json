@@ -1,0 +1,148 @@
+[
+  {
+    "id": "7dSIMLkpyO1qhLmaQmnups",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "KILLING",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:10:05.215338Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:10:05.329018Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:17:46.300309Z"
+        }
+      ],
+      "startDate": "2026-11-16T00:10:05.215338Z"
+    },
+    "tasks": [
+      {
+        "id": "2Vmfku39nWzMioMoXR7o0f",
+        "taskId": "dbt_build",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:10:05.327251Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:10:05.329053Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:10:05.460630Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:10:34.560668Z"
+            }
+          ],
+          "duration": "PT29.233417S",
+          "startDate": "2026-11-16T00:10:05.327251Z",
+          "endDate": "2026-11-16T00:10:34.560668Z"
+        }
+      },
+      {
+        "id": "2COuFDTZFZJnfaVyBSODyn",
+        "taskId": "obt_spark",
+        "state": {
+          "current": "RUNNING",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:10:34.702742Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:10:34.703944Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:10:34.718040Z"
+            }
+          ],
+          "startDate": "2026-11-16T00:10:34.702742Z"
+        }
+      }
+    ]
+  },
+  {
+    "id": "47NA7QQfKxmUvkHq60Bw0H",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "KILLING",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:09:08.586559Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:09:08.594823Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:17:46.267261Z"
+        }
+      ],
+      "startDate": "2026-11-16T00:09:08.586559Z"
+    },
+    "tasks": [
+      {
+        "id": "gvsFNVsmxcjGZhDHvDbwC",
+        "taskId": "extraer_cargar_raw",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:09:08.592707Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:09:08.594882Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:09:09.098445Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:10:05.106168Z"
+            }
+          ],
+          "duration": "PT56.513461S",
+          "startDate": "2026-11-16T00:09:08.592707Z",
+          "endDate": "2026-11-16T00:10:05.106168Z"
+        }
+      },
+      {
+        "id": "1nIpIIVSlEANaJhv9Prveu",
+        "taskId": "transformar",
+        "state": {
+          "current": "RUNNING",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:10:05.210398Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:10:05.213226Z"
+            }
+          ],
+          "startDate": "2026-11-16T00:10:05.210398Z"
+        }
+      }
+    ]
+  }
+]

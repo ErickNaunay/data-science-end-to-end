@@ -1,0 +1,822 @@
+{
+  "metadata": {
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/run-results/v6.json",
+    "dbt_version": "1.12.7",
+    "generated_at": "2026-11-16T00:08:42.605252Z",
+    "invocation_id": "cd6853b1-2d2f-4b7e-ae1d-f544a3f108c1",
+    "invocation_started_at": "2026-11-16T00:08:11.817221Z",
+    "env": {}
+  },
+  "results": [
+    {
+      "unique_id": "test.portafolio.source_not_null_raw_precios_diarios_fecha.a3035aab86",
+      "status": "pass",
+      "execution_time": 0.39723825454711914,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.brz_listados_bolsa",
+      "status": "success",
+      "execution_time": 0.5805418491363525,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.source_not_null_raw_precios_diarios_ticker.0479cd5fa7",
+      "status": "pass",
+      "execution_time": 0.23662233352661133,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_brz_listados_bolsa_ticker.91738c6ad3",
+      "status": "pass",
+      "execution_time": 1.0436570644378662,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_brz_listados_bolsa_codigo_bolsa__N__A__Q__P__Z__V.7daa689ad8",
+      "status": "pass",
+      "execution_time": 1.1907920837402344,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_brz_listados_bolsa_ticker.46347c4607",
+      "status": "pass",
+      "execution_time": 0.5657896995544434,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.brz_precios_diarios",
+      "status": "success",
+      "execution_time": 0.4729924201965332,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_brz_precios_diarios_fecha.994fc45b57",
+      "status": "pass",
+      "execution_time": 0.48209500312805176,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "seed.portafolio.equivalencias_tickers",
+      "status": "success",
+      "execution_time": 2.8583388328552246,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_equivalencias_tickers_estado__verificado__detectado__manual.3fdd80e19b",
+      "status": "pass",
+      "execution_time": 0.37588953971862793,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "seed.portafolio.calendario_nyse",
+      "status": "success",
+      "execution_time": 3.368361473083496,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_equivalencias_sin_conflictos",
+      "status": "pass",
+      "execution_time": 0.32807278633117676,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_equivalencias_tickers_ticker_antiguo.97cc57231e",
+      "status": "pass",
+      "execution_time": 0.21856975555419922,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_equivalencias_tickers_ticker_yahoo.b80e90060e",
+      "status": "pass",
+      "execution_time": 0.19785404205322266,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_equivalencias_tickers_valido_hasta.e78aa21b9f",
+      "status": "pass",
+      "execution_time": 0.19969964027404785,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_calendario_nyse_fecha.50c4f541ef",
+      "status": "pass",
+      "execution_time": 0.26807212829589844,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_calendario_nyse_fecha.07a2a7be3f",
+      "status": "pass",
+      "execution_time": 0.2921774387359619,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_brz_precios_diarios_ticker.0b395bd993",
+      "status": "pass",
+      "execution_time": 1.4507391452789307,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.combinacion_unica_brz_precios_diarios_ticker__fecha.351fe410d9",
+      "status": "pass",
+      "execution_time": 2.0433146953582764,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.brz_composicion_sp500",
+      "status": "success",
+      "execution_time": 0.45940518379211426,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_calendario_cubre_sp500",
+      "status": "pass",
+      "execution_time": 0.4622206687927246,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_brz_composicion_sp500_fecha_foto.95db2546ee",
+      "status": "pass",
+      "execution_time": 0.8644332885742188,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_miembros_por_foto",
+      "status": "pass",
+      "execution_time": 1.612734317779541,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.combinacion_unica_brz_composicion_sp500_fecha_foto__ticker.46f5890066",
+      "status": "pass",
+      "execution_time": 1.6628844738006592,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_brz_composicion_sp500_ticker.cc56020816",
+      "status": "pass",
+      "execution_time": 1.2324004173278809,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.slv_calendario_nyse",
+      "status": "success",
+      "execution_time": 2.114781141281128,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_calendario_nyse_fecha.b91b7903f7",
+      "status": "pass",
+      "execution_time": 0.5117015838623047,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_slv_calendario_nyse_fecha.0dbf00982e",
+      "status": "pass",
+      "execution_time": 0.5091466903686523,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.dim_fecha",
+      "status": "success",
+      "execution_time": 1.0704171657562256,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_dim_fecha_conjunto__entrenamiento__prueba.5dc4cb9aac",
+      "status": "pass",
+      "execution_time": 0.2770419120788574,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.slv_mercado_diario",
+      "status": "success",
+      "execution_time": 1.4529943466186523,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_dim_fecha_dia_semana_iso__False__1__2__3__4__5.6b129919fa",
+      "status": "pass",
+      "execution_time": 0.3139352798461914,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_conjunto_respeta_corte",
+      "status": "pass",
+      "execution_time": 0.3976597785949707,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_dim_fecha_fecha.10aa6b8bf6",
+      "status": "pass",
+      "execution_time": 0.2296750545501709,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_un_cierre_por_mes",
+      "status": "pass",
+      "execution_time": 0.4190366268157959,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_dim_fecha_fecha_key.87ee199893",
+      "status": "pass",
+      "execution_time": 0.20466399192810059,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_dim_fecha_fecha.b997263365",
+      "status": "pass",
+      "execution_time": 0.22514724731445312,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_dim_fecha_fecha_key.314389aacd",
+      "status": "pass",
+      "execution_time": 0.2032167911529541,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_mercado_diario_cierre_sp500.0b027d3826",
+      "status": "pass",
+      "execution_time": 0.3037736415863037,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.slv_membresia_sp500",
+      "status": "success",
+      "execution_time": 3.2954423427581787,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_mercado_diario_tasa_irx_anual_pct.52f2ed4c27",
+      "status": "pass",
+      "execution_time": 0.22313332557678223,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_mercado_diario_fecha.d78db27dfe",
+      "status": "pass",
+      "execution_time": 0.3611788749694824,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_slv_mercado_diario_ret_log_sp500__0_25___0_25.ba6259bd0a",
+      "status": "pass",
+      "execution_time": 0.23681163787841797,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_slv_mercado_diario_tasa_irx_anual_pct__20___1.beb5e00f1c",
+      "status": "pass",
+      "execution_time": 0.2758677005767822,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_slv_mercado_diario_fecha.05c04e6bb3",
+      "status": "pass",
+      "execution_time": 0.2949492931365967,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_membresia_sp500_periodo_key.298d38a6ef",
+      "status": "pass",
+      "execution_time": 0.20625686645507812,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_membresia_sp500_fecha_inicio.32d6686877",
+      "status": "pass",
+      "execution_time": 0.25339245796203613,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_membresia_sin_solapes",
+      "status": "pass",
+      "execution_time": 0.394345760345459,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_membresia_sp500_ticker.9f0fa46886",
+      "status": "pass",
+      "execution_time": 0.28055882453918457,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_slv_membresia_sp500_periodo_key.eca494d4a9",
+      "status": "pass",
+      "execution_time": 0.2677955627441406,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.fct_mercado_diario",
+      "status": "success",
+      "execution_time": 0.8143982887268066,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_fct_mercado_diario_rf_diaria.b4ec8a5c7b",
+      "status": "pass",
+      "execution_time": 0.2712225914001465,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_fct_mercado_diario_rf_diaria__0_001___0_0001.d39a8022e2",
+      "status": "pass",
+      "execution_time": 0.28138208389282227,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_fct_mercado_diario_fecha_key.4d4ebc56de",
+      "status": "pass",
+      "execution_time": 0.28316593170166016,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_fct_mercado_diario_fecha_key.09d659496a",
+      "status": "pass",
+      "execution_time": 0.25530552864074707,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.relationships_fct_mercado_diario_fecha_key__fecha_key__ref_dim_fecha_.49998aeed1",
+      "status": "pass",
+      "execution_time": 0.2708930969238281,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.slv_precios_acciones",
+      "status": "success",
+      "execution_time": 5.487358331680298,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_precios_acciones_imputado.f722df2347",
+      "status": "pass",
+      "execution_time": 0.3055257797241211,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_imputacion_solo_huecos_cortos",
+      "status": "pass",
+      "execution_time": 0.31670665740966797,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_precios_acciones_precio_apertura_ajustado.c572db18ba",
+      "status": "pass",
+      "execution_time": 0.3163294792175293,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.combinacion_unica_slv_precios_acciones_ticker__fecha.9353f8bbd5",
+      "status": "pass",
+      "execution_time": 0.3896608352661133,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_precios_acciones_precio_cierre_ajustado.fb0296fe88",
+      "status": "pass",
+      "execution_time": 0.27588438987731934,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_slv_precios_acciones_precio_apertura_ajustado__1e_07.aa6e2d8a2b",
+      "status": "pass",
+      "execution_time": 0.28049802780151367,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_slv_precios_acciones_precio_cierre_ajustado__1e_07.63a6601a3a",
+      "status": "pass",
+      "execution_time": 0.31689953804016113,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.slv_acciones",
+      "status": "success",
+      "execution_time": 1.38502836227417,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_slv_acciones_ticker.dff7b58cad",
+      "status": "pass",
+      "execution_time": 0.3274555206298828,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_slv_acciones_ticker.108000f4b6",
+      "status": "pass",
+      "execution_time": 0.32970595359802246,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.dim_accion",
+      "status": "success",
+      "execution_time": 0.8765921592712402,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_dim_accion_ticker.10f253243f",
+      "status": "pass",
+      "execution_time": 0.273500919342041,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_dim_accion_accion_key.67e09feaa1",
+      "status": "pass",
+      "execution_time": 0.29026031494140625,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_dim_accion_codigo_bolsa__N__A__P__Z__V__Q.1310051c79",
+      "status": "pass",
+      "execution_time": 0.29234814643859863,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_dim_accion_accion_key.49d83b29b3",
+      "status": "pass",
+      "execution_time": 0.30319976806640625,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_dim_accion_ticker.f06c5b467d",
+      "status": "pass",
+      "execution_time": 0.1978001594543457,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.fct_precios_diarios",
+      "status": "success",
+      "execution_time": 1.9966199398040771,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_ohlc_coherente",
+      "status": "pass",
+      "execution_time": 0.30268239974975586,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.combinacion_unica_fct_precios_diarios_accion_key__fecha_key.84a5ef8ba7",
+      "status": "pass",
+      "execution_time": 0.3845648765563965,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_cobertura_sp500_por_dia",
+      "status": "warn",
+      "execution_time": 0.4003291130065918,
+      "failures": 1615,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_fct_precios_diarios_accion_key.60248364b9",
+      "status": "pass",
+      "execution_time": 0.17501044273376465,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.assert_retornos_extremos_marcados",
+      "status": "pass",
+      "execution_time": 0.6419827938079834,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_fct_precios_diarios_precio_cierre_ajustado.81dbc9da7b",
+      "status": "pass",
+      "execution_time": 0.27402520179748535,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_fct_precios_diarios_fecha_key.d0b3815316",
+      "status": "pass",
+      "execution_time": 0.2893247604370117,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_fct_precios_diarios_precio_cierre_ajustado__1e_07.e22c874557",
+      "status": "pass",
+      "execution_time": 0.33083486557006836,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.rango_valores_fct_precios_diarios_volumen__0.14631c1b51",
+      "status": "pass",
+      "execution_time": 0.1780383586883545,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.relationships_fct_precios_diarios_accion_key__accion_key__ref_dim_accion_.73c7b082a0",
+      "status": "pass",
+      "execution_time": 0.26767730712890625,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.relationships_fct_precios_diarios_fecha_key__fecha_key__ref_dim_fecha_.8b24c8da7b",
+      "status": "pass",
+      "execution_time": 0.33942723274230957,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.relationships_fct_precios_diarios_periodo_sp500_key__periodo_key__ref_slv_membresia_sp500_.2b820fb8d3",
+      "status": "pass",
+      "execution_time": 0.3493363857269287,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "model.portafolio.dq_metricas",
+      "status": "success",
+      "execution_time": 6.252717733383179,
+      "failures": null,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.accepted_values_dq_metricas_dimension__completitud__precision__consistencia__validez.8291c21668",
+      "status": "pass",
+      "execution_time": 0.29619407653808594,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.not_null_dq_metricas_metrica.91a3720d36",
+      "status": "pass",
+      "execution_time": 0.299424409866333,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    },
+    {
+      "unique_id": "test.portafolio.unique_dq_metricas_metrica.fa6eaf5b93",
+      "status": "pass",
+      "execution_time": 0.30062270164489746,
+      "failures": 0,
+      "max_loaded_at": null,
+      "snapshotted_at": null,
+      "age": null
+    }
+  ]
+}
