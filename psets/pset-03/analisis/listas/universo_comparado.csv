@@ -1,0 +1,798 @@
+ticker,nombre,sector,primera_foto,ultima_foto,fotos,en_ultima_foto,siempre_miembro_desde_2010,nombre_listado,bolsa,en_sp500_actual,en_sp500_historico,cotiza_hoy,es_nyse_hoy,categoria
+A,Agilent Technologies,Health Care,2010-01-06,2026-11-15,2330,True,True,Agilent Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AAL,,,2015-03-23,2024-09-21,1025,False,False,American Airlines Group Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+AAP,,,2015-07-09,2023-08-28,606,False,False,Advance Auto Parts Inc.,NYSE,False,True,True,True,solo_historico_cotiza
+AAPL,Apple Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,Apple Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ABBV,AbbVie,Health Care,2013-01-02,2026-11-15,2019,True,False,AbbVie Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ABC,,,2010-01-06,2023-09-01,1179,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ABMD,,,2018-05-31,2022-12-19,144,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ABNB,Airbnb,Consumer Discretionary,2023-09-18,2026-11-15,1135,True,False,Airbnb Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ABT,Abbott Laboratories,Health Care,2010-01-06,2026-11-15,2330,True,True,Abbott Laboratories Common Stock,NYSE,True,True,True,True,actual_e_historico
+ACGL,Arch Capital Group,Financials,2022-11-01,2026-11-15,1269,True,False,Arch Capital Group Ltd. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ACN,Accenture,Information Technology,2011-07-06,2026-11-15,2178,True,False,Accenture plc Class A Ordinary Shares (Ireland),NYSE,True,True,True,True,actual_e_historico
+ACS,,,2010-01-06,2010-02-02,9,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ADBE,Adobe Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,Adobe Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ADI,Analog Devices,Information Technology,2010-01-06,2026-11-15,2330,True,True,Analog Devices Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ADM,Archer Daniels Midland,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Archer-Daniels-Midland Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+ADP,Automatic Data Processing,Industrials,2010-01-06,2026-11-15,2330,True,True,Automatic Data Processing Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ADS,,,2013-12-23,2020-05-22,611,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ADSK,Autodesk,Information Technology,2010-01-06,2026-11-15,2330,True,True,Autodesk Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AEE,Ameren,Utilities,2010-01-06,2026-11-15,2330,True,True,Ameren Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AEP,American Electric Power,Utilities,2010-01-06,2026-11-15,2330,True,True,American Electric Power Company Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AES,AES Corporation,Utilities,2010-01-06,2026-11-15,2330,True,True,The AES Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AET,,,2010-01-06,2018-11-28,983,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AFL,Aflac,Financials,2010-01-06,2026-11-15,2330,True,True,AFLAC Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+AIG,American International Group,Financials,2010-01-06,2026-11-15,2330,True,True,American International Group Inc. New Common Stock,NYSE,True,True,True,True,actual_e_historico
+AIV,,,2010-01-06,2020-11-17,1031,False,False,Apartment Investment and Management Company Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+AIZ,Assurant,Financials,2010-01-06,2026-11-15,2330,True,True,Assurant Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AJG,Arthur J. Gallagher & Co.,Financials,2016-05-31,2026-11-15,1632,True,False,Arthur J. Gallagher & Co. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AKAM,Akamai Technologies,Information Technology,2010-01-06,2026-11-15,2330,True,True,Akamai Technologies Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ALB,Albemarle Corporation,Materials,2016-07-01,2026-11-15,1619,True,False,Albemarle Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ALGN,Align Technology,Health Care,2017-06-19,2026-11-15,1512,True,False,Align Technology Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ALK,,,2016-05-13,2023-12-16,593,False,False,Alaska Air Group Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+ALL,Allstate,Financials,2010-01-06,2026-11-15,2330,True,True,Allstate Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+ALLE,Allegion,Industrials,2013-12-02,2026-11-15,1925,True,False,Allegion plc Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+ALXN,,,2012-05-25,2021-06-04,794,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AMAT,Applied Materials,Information Technology,2010-01-06,2026-11-15,2330,True,True,Applied Materials Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AMCR,Amcor,Materials,2019-06-07,2026-11-15,1326,True,False,Amcor plc Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+AMD,Advanced Micro Devices,Information Technology,2010-01-06,2026-11-15,1923,True,False,Advanced Micro Devices Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AME,Ametek,Industrials,2013-09-23,2026-11-15,1946,True,False,AMETEK Inc.,NYSE,True,True,True,True,actual_e_historico
+AMG,,,2014-07-01,2019-12-10,552,False,False,Affiliated Managers Group Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+AMGN,Amgen,Health Care,2010-01-06,2026-11-15,2330,True,True,Amgen Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AMP,Ameriprise Financial,Financials,2010-01-06,2026-11-15,2330,True,True,Ameriprise Financial Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AMT,American Tower,Real Estate,2010-01-06,2026-11-15,2330,True,True,American Tower Corporation (REIT) Common Stock,NYSE,True,True,True,True,actual_e_historico
+AMTM,,,2024-10-01,2024-12-26,87,False,False,Amentum Holdings Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+AMZN,Amazon,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Amazon.com Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AN,,,2010-01-06,2017-08-07,835,False,False,AutoNation Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+ANDV,,,2010-01-06,2018-09-24,966,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ANET,Arista Networks,Information Technology,2018-08-28,2026-11-15,1379,True,False,Arista Networks Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ANF,,,2010-01-06,2013-12-18,414,False,False,Abercrombie & Fitch Company Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+ANSS,,,2017-06-19,2025-07-17,1032,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ANTM,,,2010-01-06,2022-06-21,1057,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AON,Aon plc,Financials,2010-01-06,2026-11-15,2330,True,True,Aon plc Class A Ordinary Shares (Ireland),NYSE,True,True,True,True,actual_e_historico
+AOS,A. O. Smith,Industrials,2017-07-26,2026-11-15,1501,True,False,A.O. Smith Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+APA,APA Corporation,Energy,2010-01-06,2026-11-15,2330,True,True,APA Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+APC,,,2010-01-06,2019-08-08,1008,False,False,ARKO Petroleum Corp. Class A Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+APD,Air Products,Materials,2010-01-06,2026-11-15,2330,True,True,Air Products and Chemicals Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+APH,Amphenol,Information Technology,2010-01-06,2026-11-15,2330,True,True,Amphenol Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+APO,Apollo Global Management,Financials,2024-12-26,2026-11-15,673,True,False,Apollo Global Management Inc. (New) Common Stock,NYSE,True,True,True,True,actual_e_historico
+APOL,,,2010-01-06,2013-06-27,362,False,False,,,False,True,False,False,solo_historico_no_cotiza
+APP,AppLovin,Communication Services,2025-09-06,2026-11-15,417,True,False,Applovin Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+APTV,Aptiv,Consumer Discretionary,2012-12-24,2026-11-15,2023,True,False,Aptiv PLC Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+ARE,Alexandria Real Estate Equities,Real Estate,2017-03-20,2026-11-15,1539,True,False,Alexandria Real Estate Equities Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ARES,Ares Management,Financials,2025-12-13,2026-11-15,338,True,False,Ares Management Corporation Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+ARG,,,2010-01-06,2016-05-20,696,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ATGE,,,2010-01-06,2012-09-25,283,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ATI,,,2010-01-06,2015-07-01,566,False,False,ATI Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+ATO,Atmos Energy,Utilities,2019-02-15,2026-11-15,1331,True,False,Atmos Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ATVI,,,2015-08-31,2023-10-12,632,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AVB,,,2010-01-06,2026-08-18,2241,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AVGO,Broadcom,Information Technology,2014-05-08,2026-11-15,1879,True,False,Broadcom Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AVP,,,2010-01-06,2015-03-19,537,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AVY,Avery Dennison,Materials,2010-01-06,2026-11-15,2330,True,True,Avery Dennison Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AWK,American Water Works,Utilities,2016-03-04,2026-11-15,1673,True,False,American Water Works Company Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AXON,Axon Enterprise,Industrials,2023-05-07,2026-11-15,1262,True,False,Axon Enterprise Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+AXP,American Express,Financials,2010-01-06,2026-11-15,2330,True,True,American Express Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+AYE,,,2010-01-06,2011-02-23,113,False,False,,,False,True,False,False,solo_historico_no_cotiza
+AYI,,,2016-05-03,2018-06-15,246,False,False,Acuity Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+AZO,AutoZone,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,AutoZone Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BA,Boeing,Industrials,2010-01-06,2026-11-15,2330,True,True,Boeing Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+BAC,Bank of America,Financials,2010-01-06,2026-11-15,2330,True,True,Bank of America Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BALL,Ball Corporation,Materials,2022-05-10,2026-11-15,1277,True,False,Ball Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BAX,Baxter International,Health Care,2010-01-06,2026-11-15,2330,True,True,Baxter International Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BBBY,,,2010-01-06,2017-07-25,829,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BBT,,,2010-01-06,2019-12-05,1016,False,False,Beacon Financial Corporation Common stock,NYSE,False,True,True,True,solo_historico_cotiza
+BBWI,,,2021-08-03,2024-09-30,531,False,False,Bath & Body Works Inc.,NYSE,False,True,True,True,solo_historico_cotiza
+BBY,Best Buy,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Best Buy Co. Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BCR,,,2010-01-06,2017-12-27,876,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BDK,,,2010-01-06,2010-03-11,24,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BDX,Becton Dickinson,Health Care,2010-01-06,2026-11-15,2330,True,True,Becton Dickinson and Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+BE,Bloom Energy,Industrials,2026-09-21,2026-11-15,56,True,False,Bloom Energy Corporation Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+BEN,Franklin Resources,Financials,2010-01-06,2026-11-15,2330,True,True,Franklin Templeton Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BF-B,Brown–Forman,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Brown Forman Corporation,NYSE,True,True,True,True,actual_e_historico
+BG,Bunge Global,Consumer Staples,2023-03-15,2026-11-15,1264,True,False,Bunge Limited Common Shares,NYSE,True,True,True,True,actual_e_historico
+BHF,,,2017-08-07,2019-02-27,167,False,False,Brighthouse Financial Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+BIG,,,2010-01-06,2013-02-06,321,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BIIB,Biogen,Health Care,2010-01-06,2026-11-15,2330,True,True,Biogen Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+BIO,,,2020-06-22,2024-09-21,537,False,False,Bio-Rad Laboratories Inc. Class A Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+BJS,,,2010-01-06,2010-04-21,34,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BK,,,2010-01-06,2026-05-21,2152,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BKNG,Booking Holdings,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Booking Holdings Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+BKR,Baker Hughes,Energy,2019-10-18,2026-11-15,1318,True,False,Baker Hughes Company Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+BLDR,,,2023-12-17,2026-09-20,991,False,False,Builders FirstSource Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+BLK,BlackRock,Financials,2011-04-04,2026-11-15,2206,True,False,BlackRock Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BLL,,,2010-01-06,2022-04-11,1053,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BMS,,,2010-01-06,2014-12-04,511,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BMY,Bristol Myers Squibb,Health Care,2010-01-06,2026-11-15,2330,True,True,Bristol-Myers Squibb Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+BNI,,,2010-01-06,2010-02-10,12,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BNY,BNY Mellon,Financials,2026-05-22,2026-11-15,178,True,False,The Bank of New York Mellon Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BR,Broadridge Financial Solutions,Industrials,2018-06-18,2026-11-15,1400,True,False,Broadridge Financial Solutions Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BRCM,,,2010-01-06,2016-01-26,645,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BRK-B,Berkshire Hathaway,Financials,2010-02-16,2026-11-15,2318,True,False,Berkshire Hathaway Inc.,NYSE,True,True,True,True,actual_e_historico
+BRO,Brown & Brown,Financials,2021-09-20,2026-11-15,1288,True,False,Brown & Brown Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BSX,Boston Scientific,Health Care,2010-01-06,2026-11-15,2330,True,True,Boston Scientific Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BTUUQ,,,2010-01-06,2014-09-19,491,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BWA,,,2011-12-19,2025-03-25,1549,False,False,BorgWarner Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+BX,Blackstone Inc.,Financials,2023-09-18,2026-11-15,1135,True,False,Blackstone Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BXLT,,,2015-07-01,2016-06-01,135,False,False,,,False,True,False,False,solo_historico_no_cotiza
+BXP,"BXP, Inc.",Real Estate,2010-01-06,2026-11-15,2330,True,True,BXP Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+C,Citigroup,Financials,2010-01-06,2026-11-15,2330,True,True,Citigroup Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CA,,,2010-01-06,2018-10-31,975,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CAG,,,2010-01-06,2026-06-29,2191,False,False,ConAgra Brands Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+CAH,Cardinal Health,Health Care,2010-01-06,2026-11-15,2330,True,True,Cardinal Health Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CAM,,,2010-01-06,2016-03-31,670,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CARR,Carrier Global,Industrials,2020-04-03,2026-11-15,1309,True,False,Carrier Global Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CASY,Casey's,Consumer Staples,2026-04-09,2026-11-15,221,True,False,Casey's General Stores Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CAT,Caterpillar Inc.,Industrials,2010-01-06,2026-11-15,2330,True,True,Caterpillar Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CB,Chubb Limited,Financials,2010-01-06,2026-11-15,2330,True,True,Chubb Limited  Common Stock,NYSE,True,True,True,True,actual_e_historico
+CBE,,,2011-11-23,2012-11-27,109,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CBOE,Cboe Global Markets,Financials,2017-03-01,2026-11-15,1548,True,False,,,True,True,False,False,actual_e_historico
+CBRE,CBRE Group,Real Estate,2010-01-06,2026-11-15,2330,True,True,CBRE Group Inc Common Stock Class A,NYSE,True,True,True,True,actual_e_historico
+CBS,,,2010-01-06,2019-11-21,1015,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CCI,Crown Castle,Real Estate,2012-03-13,2026-11-15,2110,True,False,Crown Castle Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CCL,Carnival Corporation,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Carnival Corporation Ltd. Common Shares,NYSE,True,True,True,True,actual_e_historico
+CDAY,,,2021-09-20,2024-02-01,288,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CDNS,Cadence Design Systems,Information Technology,2017-09-18,2026-11-15,1480,True,False,Cadence Design Systems Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CDW,CDW Corporation,Information Technology,2019-09-23,2026-11-15,1321,True,False,CDW Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CE,,,2018-12-24,2025-03-25,756,False,False,Celanese Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+CEG,Constellation Energy,Utilities,2023-05-17,2026-11-15,1256,True,False,Constellation Energy Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CELG,,,2010-01-06,2019-11-05,1014,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CEPH,,,2010-01-06,2011-10-11,176,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CERN,,,2010-04-30,2022-05-10,1019,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CF,CF Industries,Materials,2010-01-06,2026-11-15,2330,True,True,CF Industries Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CFG,Citizens Financial Group,Financials,2016-02-01,2026-11-15,1685,True,False,Citizens Financial Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CFN,,,2010-01-06,2015-03-13,534,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CHD,Church & Dwight,Consumer Staples,2015-12-29,2026-11-15,1699,True,False,Church & Dwight Company Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CHRW,C.H. Robinson,Industrials,2010-01-06,2026-11-15,2330,True,True,C.H. Robinson Worldwide Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CHTR,Charter Communications,Communication Services,2016-09-08,2026-11-15,1598,True,False,Charter Communications Inc. Class A Common Stock New,Nasdaq,True,True,True,False,actual_e_historico
+CI,Cigna,Health Care,2010-01-06,2026-11-15,2330,True,True,The Cigna Group Common Stock,NYSE,True,True,True,True,actual_e_historico
+CIEN,Ciena,Information Technology,2026-02-08,2026-11-15,281,True,False,Ciena Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CINF,Cincinnati Financial,Financials,2010-01-06,2026-11-15,2330,True,True,Cincinnati Financial Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CL,Colgate-Palmolive,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Colgate-Palmolive Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+CLF,,,2010-01-06,2014-04-01,440,False,False,Cleveland-Cliffs Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+CLX,Clorox,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Clorox Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+CMA,,,2010-01-06,2024-06-22,1471,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CMCSA,Comcast,Communication Services,2010-01-06,2026-11-15,2330,True,True,Comcast Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CMCSK,,,2015-09-21,2015-12-09,31,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CME,CME Group,Financials,2010-01-06,2026-11-15,2330,True,True,CME Group Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CMG,Chipotle Mexican Grill,Consumer Discretionary,2011-04-28,2026-11-15,2199,True,False,Chipotle Mexican Grill Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CMI,Cummins,Industrials,2010-01-06,2026-11-15,2330,True,True,Cummins Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CMS,CMS Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,CMS Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CNC,Centene Corporation,Health Care,2016-03-30,2026-11-15,1662,True,False,Centene Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CNP,CenterPoint Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,CenterPoint Energy Inc (Holding Co) Common Stock,NYSE,True,True,True,True,actual_e_historico
+CNX,,,2010-01-06,2016-03-03,657,False,False,CNX Resources Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+COF,Capital One,Financials,2010-01-06,2026-11-15,2330,True,True,Capital One Financial Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+COG,,,2010-01-06,2021-09-20,1043,False,False,,,False,True,False,False,solo_historico_no_cotiza
+COHR,Coherent Corp.,Information Technology,2026-03-25,2026-11-15,236,True,False,Coherent Corp. Common Stock,NYSE,True,True,True,True,actual_e_historico
+COIN,Coinbase,Financials,2025-05-13,2026-11-15,543,True,False,Coinbase Global Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+COL,,,2010-01-06,2018-11-15,981,False,False,,,False,True,False,False,solo_historico_no_cotiza
+COO,Cooper Companies (The),Health Care,2016-09-23,2026-11-15,1593,True,False,The Cooper Companies Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+COP,ConocoPhillips,Energy,2010-01-06,2026-11-15,2330,True,True,ConocoPhillips Common Stock,NYSE,True,True,True,True,actual_e_historico
+COR,Cencora,Health Care,2023-09-03,2026-11-15,1149,True,False,Cencora Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+COST,Costco,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Costco Wholesale Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+COTY,,,2016-10-03,2020-09-18,287,False,False,Coty Inc. Class A Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+COV,,,2011-03-01,2015-01-15,407,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CPAY,Corpay,Financials,2024-03-27,2026-11-15,947,True,False,Corpay Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CPB,,,2010-01-06,2026-06-19,2181,False,False,The Campbell's Company Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+CPGX,,,2015-07-02,2016-06-27,145,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CPRI,,,2016-01-04,2020-04-06,389,False,False,Capri Holdings Limited Ordinary Shares,NYSE,False,True,True,True,solo_historico_cotiza
+CPRT,Copart,Industrials,2018-07-02,2026-11-15,1395,True,False,Copart Inc. (DE) Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CPT,Camden Property Trust,Real Estate,2022-04-04,2026-11-15,1279,True,False,Camden Property Trust Common Stock,NYSE,True,True,True,True,actual_e_historico
+CRH,CRH plc,Materials,2026-01-02,2026-11-15,318,True,False,CRH PLC Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+CRL,Charles River Laboratories,Health Care,2021-05-14,2026-11-15,1293,True,False,Charles River Laboratories International Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CRM,Salesforce,Information Technology,2010-01-06,2026-11-15,2330,True,True,Salesforce Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CRWD,CrowdStrike,Information Technology,2024-06-23,2026-11-15,859,True,False,CrowdStrike Holdings Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CSCO,Cisco,Information Technology,2010-01-06,2026-11-15,2330,True,True,Cisco Systems Inc. Common Stock (DE),Nasdaq,True,True,True,False,actual_e_historico
+CSGP,CoStar Group,Real Estate,2022-09-19,2026-11-15,1272,True,False,CoStar Group Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CSRA,,,2015-11-30,2018-04-02,284,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CSX,CSX Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,CSX Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CTAS,Cintas,Industrials,2010-01-06,2026-11-15,2330,True,True,Cintas Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CTL,,,2010-01-06,2020-06-22,1026,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CTLT,,,2020-09-21,2024-12-18,623,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CTRA,,,2021-10-04,2026-05-06,1094,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CTSH,Cognizant,Information Technology,2010-01-06,2026-11-15,2330,True,True,Cognizant Technology Solutions Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+CTVA,,,2019-06-03,2026-10-07,1288,False,False,Corteva Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+CTXS,,,2010-01-06,2022-09-19,1059,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CVC,,,2010-12-20,2016-06-20,611,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CVNA,Carvana,Consumer Discretionary,2026-01-02,2026-11-15,318,True,False,Carvana Co. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+CVS,CVS Health,Health Care,2010-01-06,2026-11-15,2330,True,True,CVS Health Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CVX,Chevron Corporation,Energy,2010-01-06,2026-11-15,2330,True,True,Chevron Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CXO,,,2016-02-22,2021-01-07,382,False,False,,,False,True,False,False,solo_historico_no_cotiza
+CZR,,,2021-03-22,2025-09-22,878,False,False,Caesars Entertainment Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+D,Dominion Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Dominion Energy Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DAL,Delta Air Lines,Industrials,2013-09-11,2026-11-15,1951,True,False,Delta Air Lines Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DASH,DoorDash,Consumer Discretionary,2025-03-25,2026-11-15,584,True,False,DoorDash Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+DAY,,,2024-02-02,2026-02-05,717,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DD,DuPont,Industrials,2010-01-06,2026-11-15,2172,True,False,DuPont de Nemours Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DDOG,Datadog,Information Technology,2025-07-11,2026-11-15,487,True,False,Datadog Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+DE,Deere & Company,Industrials,2010-01-06,2026-11-15,2330,True,True,Deere & Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+DECK,Deckers Brands,Consumer Discretionary,2024-03-18,2026-11-15,956,True,False,Deckers Outdoor Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DELL,Dell Technologies,Information Technology,2024-09-22,2026-11-15,768,True,False,Dell Technologies Inc. Class C Common Stock,NYSE,True,True,True,True,actual_e_historico
+DF,,,2010-01-06,2013-05-17,349,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DFS,,,2010-01-06,2025-05-17,1789,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DG,Dollar General,Consumer Staples,2012-12-03,2026-11-15,2032,True,False,Dollar General Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DGX,Quest Diagnostics,Health Care,2010-01-06,2026-11-15,2330,True,True,Quest Diagnostics Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+DHI,D. R. Horton,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,D.R. Horton Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DHR,Danaher Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Danaher Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DIS,Walt Disney Company (The),Communication Services,2010-01-06,2026-11-15,2330,True,True,Walt Disney Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+DISCA,,,2010-03-01,2022-04-04,1034,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DISCK,,,2014-08-07,2022-04-04,574,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DISH,,,2017-03-13,2023-06-19,320,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DLR,Digital Realty,Real Estate,2016-05-18,2026-11-15,1637,True,False,Digital Realty Trust Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DLTR,Dollar Tree,Consumer Staples,2011-12-19,2026-11-15,2132,True,False,Dollar Tree Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+DNR,,,2010-01-06,2015-03-19,537,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DOC,Healthpeak Properties,Real Estate,2024-03-04,2026-11-15,970,True,False,Healthpeak Properties Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DOV,Dover Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Dover Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DOW,Dow Inc.,Materials,2023-05-17,2026-11-15,1256,True,False,Dow Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DPZ,Domino's,Consumer Discretionary,2020-05-12,2026-11-15,1307,True,False,Domino's Pizza Inc Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+DRE,,,2017-07-26,2022-09-19,230,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DRI,Darden Restaurants,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Darden Restaurants Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DTE,DTE Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,DTE Energy Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+DUK,Duke Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Duke Energy Corporation (Holding Company) Common Stock,NYSE,True,True,True,True,actual_e_historico
+DVA,DaVita,Health Care,2010-01-06,2026-11-15,2330,True,True,DaVita Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DVN,Devon Energy,Energy,2010-01-06,2026-11-15,2330,True,True,Devon Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DWDP,,,2017-09-01,2019-06-01,158,False,False,,,False,True,False,False,solo_historico_no_cotiza
+DXC,,,2010-01-06,2023-10-05,1037,False,False,DXC Technology Company Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+DXCM,Dexcom,Health Care,2020-05-12,2026-11-15,1307,True,False,DexCom Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+EA,,,2010-01-06,2026-08-05,2228,False,False,,,False,True,False,False,solo_historico_no_cotiza
+EBAY,eBay Inc.,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,eBay Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ECHO,EchoStar,Communication Services,2026-06-25,2026-11-15,144,True,False,EchoStar  Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ECL,Ecolab,Materials,2010-01-06,2026-11-15,2330,True,True,Ecolab Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ED,Consolidated Edison,Utilities,2010-01-06,2026-11-15,2330,True,True,Consolidated Edison Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EFX,Equifax,Industrials,2010-01-06,2026-11-15,2330,True,True,Equifax Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EG,Everest Group,Financials,2023-07-11,2026-11-15,1202,True,False,Everest Group Ltd. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EIX,Edison International,Utilities,2010-01-06,2026-11-15,2330,True,True,Edison International Common Stock,NYSE,True,True,True,True,actual_e_historico
+EKDKQ,,,2010-01-06,2010-12-17,95,False,False,,,False,True,False,False,solo_historico_no_cotiza
+EL,Estée Lauder Companies (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Estee Lauder Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+ELV,Elevance Health,Health Care,2022-06-28,2026-11-15,1273,True,False,Elevance Health Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EME,Emcor,Industrials,2025-09-06,2026-11-15,417,True,False,EMCOR Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EMN,,,2010-01-06,2025-11-05,1960,False,False,Eastman Chemical Company Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+EMR,Emerson Electric,Industrials,2010-01-06,2026-11-15,2330,True,True,Emerson Electric Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+ENDP,,,2015-01-27,2017-03-01,262,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ENPH,,,2021-01-07,2025-09-22,881,False,False,Enphase Energy Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+EOG,EOG Resources,Energy,2010-01-06,2026-11-15,2330,True,True,EOG Resources Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EP,,,2010-01-06,2012-05-23,245,False,False,Empire Petroleum Corporation Common Stock,NYSE American,False,True,True,False,solo_historico_cotiza
+EPAM,,,2021-12-14,2026-06-03,1121,False,False,EPAM Systems Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+EQIX,Equinix,Real Estate,2015-03-23,2026-11-15,1793,True,False,Equinix Inc. Common Stock REIT,Nasdaq,True,True,True,False,actual_e_historico
+EQR,,,2010-01-06,2026-08-18,2241,False,False,,,False,True,False,False,solo_historico_no_cotiza
+EQT,EQT Corporation,Energy,2010-01-06,2026-11-15,2249,True,False,EQT Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ERIE,Erie Indemnity,Financials,2024-09-22,2026-11-15,768,True,False,Erie Indemnity Company Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ES,Eversource Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Eversource Energy (D/B/A) Common Stock,NYSE,True,True,True,True,actual_e_historico
+ESRX,,,2010-01-06,2018-12-19,990,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ESS,Essex Property Trust,Real Estate,2014-04-02,2026-11-15,1890,True,False,Essex Property Trust Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ESV,,,2012-07-31,2016-03-29,401,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ETFC,,,2010-01-06,2020-09-21,1028,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ETN,Eaton Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Eaton Corporation PLC Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+ETR,Entergy,Utilities,2010-01-06,2026-11-15,2330,True,True,Entergy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ETSY,,,2020-09-21,2024-09-21,535,False,False,Etsy Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+EVHC,,,2016-12-02,2018-10-10,212,False,False,,,False,True,False,False,solo_historico_no_cotiza
+EVRG,Evergy,Utilities,2018-06-05,2026-11-15,1408,True,False,Evergy Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+EW,Edwards Lifesciences,Health Care,2011-04-01,2026-11-15,2207,True,False,Edwards Lifesciences Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+EXC,Exelon,Utilities,2010-01-06,2026-11-15,2330,True,True,Exelon Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+EXE,Expand Energy,Energy,2025-03-25,2026-11-15,584,True,False,Expand Energy Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+EXPD,Expeditors International,Industrials,2010-01-06,2026-11-15,2330,True,True,Expeditors International of Washington Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EXPE,Expedia Group,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Expedia Group Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+EXR,Extra Space Storage,Real Estate,2016-01-19,2026-11-15,1691,True,False,Extra Space Storage Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+F,Ford Motor Company,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Ford Motor Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+FANG,Diamondback Energy,Energy,2018-12-03,2026-11-15,1346,True,False,Diamondback Energy Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FAST,Fastenal,Industrials,2010-01-06,2026-11-15,2330,True,True,Fastenal Company Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FB,,,2013-12-23,2022-06-08,641,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FBHS,,,2016-06-24,2022-11-08,354,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FCPT,,,2015-11-10,2015-11-10,1,False,False,Four Corners Property Trust Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+FCX,Freeport-McMoRan,Materials,2010-01-06,2026-11-15,2330,True,True,Freeport-McMoRan Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FDO,,,2010-01-06,2015-07-06,568,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FDS,FactSet,Financials,2021-12-20,2026-11-15,1285,True,False,FactSet Research Systems Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FDX,FedEx,Industrials,2010-01-06,2026-11-15,2330,True,True,FedEx Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+FDXF,FedEx Freight,Industrials,2026-06-04,2026-11-15,165,True,False,FedEx Freight Holding Company Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FE,FirstEnergy,Utilities,2010-01-06,2026-11-15,2330,True,True,FirstEnergy Corp. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FERG,Ferguson Enterprises,Industrials,2026-08-06,2026-11-15,102,True,False,Ferguson Enterprises Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FFIV,"F5, Inc.",Information Technology,2010-12-20,2026-11-15,2235,True,False,F5 Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FHN,,,2010-01-06,2013-06-19,358,False,False,First Horizon Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+FI,,,2023-06-08,2025-11-11,870,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FICO,Fair Isaac,Information Technology,2023-03-20,2026-11-15,1263,True,False,Fair Isaac Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+FII,,,2010-01-06,2012-12-28,311,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FIS,Fidelity National Information Services,Financials,2010-01-06,2026-11-15,2330,True,True,Fidelity National Information Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FISV,Fiserv,Financials,2010-01-06,2026-11-15,1460,True,False,Fiserv Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FITB,Fifth Third Bancorp,Financials,2010-01-06,2026-11-15,2330,True,True,Fifth Third Bancorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+FIX,Comfort Systems USA,Industrials,2026-01-01,2026-11-15,319,True,False,Comfort Systems USA Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FL,,,2016-04-04,2019-08-08,338,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FLEX,Flex Ltd.,Information Technology,2026-06-20,2026-11-15,149,True,False,Flex Ltd. Ordinary Shares,Nasdaq,True,True,True,False,actual_e_historico
+FLIR,,,2010-01-06,2021-04-20,1037,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FLR,,,2010-01-06,2019-06-01,1003,False,False,Fluor Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+FLS,,,2010-01-06,2021-02-12,1035,False,False,Flowserve Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+FLT,,,2018-06-20,2024-03-25,450,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FMC,,,2010-01-06,2025-03-25,1747,False,False,FMC Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+FOX,Fox Corporation (Class B),Communication Services,2023-05-17,2026-11-15,1256,True,False,Fox Corporation Class B Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FOXA,Fox Corporation (Class A),Communication Services,2023-05-17,2026-11-15,1256,True,False,Fox Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FRC,,,2019-01-02,2023-03-20,76,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FRT,Federal Realty Investment Trust,Real Estate,2016-02-01,2026-11-15,1685,True,False,Federal Realty Investment Trust Common Stock,NYSE,True,True,True,True,actual_e_historico
+FRX,,,2010-01-06,2014-06-24,466,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FSLR,First Solar,Information Technology,2010-01-06,2026-11-15,2058,True,False,First Solar Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FTI,,,2010-01-06,2021-01-21,1034,False,False,TechnipFMC plc Ordinary Share,NYSE,False,True,True,True,solo_historico_cotiza
+FTNT,Fortinet,Information Technology,2018-10-11,2026-11-15,1361,True,False,Fortinet Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+FTR,,,2010-01-06,2017-03-17,791,False,False,,,False,True,False,False,solo_historico_no_cotiza
+FTV,Fortive,Industrials,2016-07-05,2026-11-15,1618,True,False,Fortive Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+GD,General Dynamics,Industrials,2010-01-06,2026-11-15,2330,True,True,General Dynamics Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+GDDY,GoDaddy,Information Technology,2024-06-23,2026-11-15,859,True,False,GoDaddy Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+GE,GE Aerospace,Industrials,2010-01-06,2026-11-15,2330,True,True,GE Aerospace Common Stock,NYSE,True,True,True,True,actual_e_historico
+GEHC,GE HealthCare,Health Care,2023-01-04,2026-11-15,1265,True,False,GE HealthCare Technologies Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+GEN,Gen Digital,Information Technology,2022-11-08,2026-11-15,1268,True,False,Gen Digital Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+GENZ,,,2010-01-06,2011-04-01,124,False,False,,,False,True,False,False,solo_historico_no_cotiza
+GEV,GE Vernova,Industrials,2024-04-03,2026-11-15,940,True,False,GE Vernova Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GGP,,,2013-12-10,2018-08-20,543,False,False,,,False,True,False,False,solo_historico_no_cotiza
+GHC,,,2010-01-06,2014-09-19,491,False,False,Graham Holdings Company Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+GILD,Gilead Sciences,Health Care,2010-01-06,2026-11-15,2330,True,True,Gilead Sciences Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+GIS,General Mills,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,General Mills Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GL,Globe Life,Financials,2019-08-08,2026-11-15,1323,True,False,Globe Life Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GLW,Corning Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,Corning Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+GM,General Motors,Consumer Discretionary,2013-06-07,2026-11-15,1976,True,False,General Motors Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+GMCR,,,2014-03-24,2016-02-26,222,False,False,,,False,True,False,False,solo_historico_no_cotiza
+GME,,,2010-01-06,2016-04-20,680,False,False,GameStop Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+GNRC,Generac,Industrials,2021-03-22,2026-11-15,1295,True,False,Generac Holdlings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GNW,,,2010-01-06,2015-11-17,614,False,False,Genworth Financial Inc Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+GOOG,Alphabet Inc. (Class C),Communication Services,2014-04-03,2026-11-15,1889,True,False,Alphabet Inc. Class C Capital Stock,Nasdaq,True,True,True,False,actual_e_historico
+GOOGL,Alphabet Inc. (Class A),Communication Services,2010-01-06,2026-11-15,2330,True,True,Alphabet Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+GPC,Genuine Parts Company,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Genuine Parts Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+GPN,Global Payments,Financials,2016-04-25,2026-11-15,1650,True,False,Global Payments Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GPS,,,2010-01-06,2022-01-20,1047,False,False,,,False,True,False,False,solo_historico_no_cotiza
+GR,,,2010-01-06,2012-07-26,265,False,False,,,False,True,False,False,solo_historico_no_cotiza
+GRMN,Garmin,Consumer Discretionary,2012-12-12,2026-11-15,2027,True,False,Garmin Ltd. Common Stock (Switzerland),NYSE,True,True,True,True,actual_e_historico
+GS,Goldman Sachs,Financials,2010-01-06,2026-11-15,2330,True,True,Goldman Sachs Group Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+GT,,,2010-01-06,2019-02-15,1000,False,False,The Goodyear Tire & Rubber Company Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+GWW,W. W. Grainger,Industrials,2010-01-06,2026-11-15,2330,True,True,W.W. Grainger Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HAL,Halliburton,Energy,2010-01-06,2026-11-15,2330,True,True,Halliburton Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+HAS,Hasbro,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Hasbro Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HBAN,Huntington Bancshares,Financials,2010-01-06,2026-11-15,2330,True,True,Huntington Bancshares Incorporated Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HBI,,,2015-03-23,2021-12-14,508,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HCA,HCA Healthcare,Health Care,2015-01-27,2026-11-15,1809,True,False,HCA Healthcare Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HCBK,,,2010-01-06,2015-10-28,607,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HD,Home Depot (The),Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Home Depot Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+HES,,,2010-01-06,2025-07-22,1855,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HFC,,,2018-06-18,2021-05-14,108,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HIG,Hartford (The),Financials,2010-01-06,2026-11-15,2330,True,True,The Hartford Insurance Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HII,Huntington Ingalls Industries,Industrials,2018-01-03,2026-11-15,1452,True,False,Huntington Ingalls Industries Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HLT,Hilton Worldwide,Consumer Discretionary,2017-06-19,2026-11-15,1512,True,False,Hilton Worldwide Holdings Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HNZ,,,2010-01-06,2013-06-06,354,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HOG,,,2010-01-06,2020-05-22,1025,False,False,Harley-Davidson Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+HOLX,,,2016-03-30,2026-04-08,1441,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HON,Honeywell Technologies,Industrials,2010-01-06,2026-11-15,2330,True,True,Honeywell International Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HONA,Honeywell Aerospace,Industrials,2026-06-30,2026-11-15,139,True,False,Honeywell Aerospace Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HOOD,Robinhood Markets,Financials,2025-09-06,2026-11-15,417,True,False,Robinhood Markets Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HP,,,2010-03-01,2020-05-12,1006,False,False,Helmerich & Payne Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+HPE,Hewlett Packard Enterprise,Information Technology,2015-11-02,2026-11-15,1723,True,False,Hewlett Packard Enterprise Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+HPQ,HP Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,HP Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HRB,,,2010-01-06,2020-09-18,1027,False,False,H&R Block Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+HRL,Hormel Foods,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Hormel Foods Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+HRS,,,2010-01-06,2019-04-02,1002,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HSIC,Henry Schein,Health Care,2015-03-18,2026-11-15,1795,True,False,Henry Schein Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HSP,,,2010-01-06,2015-09-01,590,False,False,,,False,True,False,False,solo_historico_no_cotiza
+HST,Host Hotels & Resorts,Real Estate,2010-01-06,2026-11-15,2330,True,True,Host Hotels & Resorts Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+HSY,Hershey Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,The Hershey Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+HUBB,Hubbell Incorporated,Industrials,2023-10-18,2026-11-15,1106,True,False,Hubbell Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+HUM,Humana,Health Care,2010-01-06,2026-11-15,2330,True,True,Humana Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HWM,Howmet Aerospace,Industrials,2020-04-06,2026-11-15,1308,True,False,Howmet Aerospace Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IBKR,Interactive Brokers,Financials,2025-08-27,2026-11-15,441,True,False,Interactive Brokers Group Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+IBM,IBM,Information Technology,2010-01-06,2026-11-15,2330,True,True,International Business Machines Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ICE,Intercontinental Exchange,Financials,2010-01-06,2026-11-15,2330,True,True,Intercontinental Exchange Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IDXX,Idexx Laboratories,Health Care,2017-01-05,2026-11-15,1565,True,False,IDEXX Laboratories Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+IEX,IDEX Corporation,Industrials,2019-08-09,2026-11-15,1322,True,False,IDEX Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+IFF,International Flavors & Fragrances,Materials,2010-01-06,2026-11-15,2330,True,True,International Flavors & Fragrances Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IGT,,,2010-01-06,2014-06-19,463,False,False,,,False,True,False,False,solo_historico_no_cotiza
+ILMN,"Illumina, Inc.",Health Care,2015-11-19,2026-11-15,912,True,False,Illumina Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+INCY,Incyte,Health Care,2017-02-28,2026-11-15,1549,True,False,Incyte Corp. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+INFO,,,2017-06-02,2022-02-17,238,False,False,,,False,True,False,False,solo_historico_no_cotiza
+INTC,Intel,Information Technology,2010-01-06,2026-11-15,2330,True,True,Intel Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+INTU,Intuit,Information Technology,2010-01-06,2026-11-15,2330,True,True,Intuit Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+INVH,Invitation Homes,Real Estate,2022-09-19,2026-11-15,1272,True,False,Invitation Homes Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IP,International Paper,Materials,2010-01-06,2026-11-15,2330,True,True,International Paper Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+IPG,,,2010-01-06,2025-11-29,1983,False,False,,,False,True,False,False,solo_historico_no_cotiza
+IPGP,,,2018-03-07,2022-06-09,161,False,False,IPG Photonics Corporation Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+IQV,IQVIA,Health Care,2017-08-29,2026-11-15,1488,True,False,IQVIA Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IR,Ingersoll Rand,Industrials,2023-05-17,2026-11-15,1256,True,False,Ingersoll Rand Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IRM,Iron Mountain,Real Estate,2010-01-06,2026-11-15,2330,True,True,Iron Mountain Incorporated (Delaware)Common Stock REIT,NYSE,True,True,True,True,actual_e_historico
+ISRG,Intuitive Surgical,Health Care,2010-01-06,2026-11-15,2330,True,True,Intuitive Surgical Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+IT,Gartner,Information Technology,2017-04-05,2026-11-15,1532,True,False,Gartner Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ITT,,,2010-01-06,2011-10-31,183,False,False,ITT Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+ITW,Illinois Tool Works,Industrials,2010-01-06,2026-11-15,2330,True,True,Illinois Tool Works Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IVZ,Invesco,Financials,2010-01-06,2026-11-15,2330,True,True,Invesco Ltd Common Stock,NYSE,True,True,True,True,actual_e_historico
+J,Jacobs Solutions,Industrials,2019-12-10,2026-11-15,1313,True,False,Jacobs Solutions Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+JBHT,J.B. Hunt,Industrials,2015-07-01,2026-11-15,1765,True,False,J.B. Hunt Transport Services Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+JBL,Jabil,Information Technology,2010-01-06,2026-11-15,1548,True,False,Jabil Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+JCI,Johnson Controls,Industrials,2010-01-06,2026-11-15,2330,True,True,Johnson Controls International plc Ordinary Share,NYSE,True,True,True,True,actual_e_historico
+JCP,,,2010-01-06,2013-11-27,405,False,False,,,False,True,False,False,solo_historico_no_cotiza
+JEC,,,2010-01-06,2019-12-09,1017,False,False,,,False,True,False,False,solo_historico_no_cotiza
+JEF,,,2010-01-06,2019-09-23,1010,False,False,Jefferies Financial Group Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+JKHY,Jack Henry & Associates,Financials,2018-11-13,2026-11-15,1352,True,False,Jack Henry & Associates Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+JNJ,Johnson & Johnson,Health Care,2010-01-06,2026-11-15,2330,True,True,Johnson & Johnson Common Stock,NYSE,True,True,True,True,actual_e_historico
+JNPR,,,2010-01-06,2025-07-03,1836,False,False,,,False,True,False,False,solo_historico_no_cotiza
+JNS,,,2010-01-06,2011-11-18,189,False,False,,,False,True,False,False,solo_historico_no_cotiza
+JOY,,,2011-02-28,2015-10-05,489,False,False,,,False,True,False,False,solo_historico_no_cotiza
+JPM,JPMorgan Chase,Financials,2010-01-06,2026-11-15,2330,True,True,JP Morgan Chase & Co. Common Stock,NYSE,True,True,True,True,actual_e_historico
+JWN,,,2010-01-06,2020-05-22,1025,False,False,,,False,True,False,False,solo_historico_no_cotiza
+K,,,2010-01-06,2025-12-12,1992,False,False,,,False,True,False,False,solo_historico_no_cotiza
+KDP,Keurig Dr Pepper,Consumer Staples,2010-01-06,2026-11-15,2209,True,False,Keurig Dr Pepper Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+KEY,KeyCorp,Financials,2010-01-06,2026-11-15,2330,True,True,KeyCorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+KEYS,Keysight Technologies,Information Technology,2018-11-06,2026-11-15,1355,True,False,Keysight Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+KHC,Kraft Heinz,Consumer Staples,2015-07-06,2026-11-15,1763,True,False,The Kraft Heinz Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+KIM,Kimco Realty,Real Estate,2010-01-06,2026-11-15,2330,True,True,Kimco Realty Corporation (HC) Common Stock,NYSE,True,True,True,True,actual_e_historico
+KKR,KKR & Co.,Financials,2024-06-23,2026-11-15,859,True,False,KKR & Co. Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+KLAC,KLA Corporation,Information Technology,2010-01-06,2026-11-15,2330,True,True,KLA Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+KMB,Kimberly-Clark,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Kimberly-Clark Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+KMI,Kinder Morgan,Energy,2012-05-25,2026-11-15,2085,True,False,Kinder Morgan Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+KMX,,,2010-06-28,2025-10-31,1906,False,False,CarMax Inc,NYSE,False,True,True,True,solo_historico_cotiza
+KO,Coca-Cola Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Coca-Cola Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+KORS,,,2013-11-13,2018-09-18,563,False,False,,,False,True,False,False,solo_historico_no_cotiza
+KR,Kroger,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Kroger Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+KRFT,,,2012-10-02,2015-07-02,283,False,False,,,False,True,False,False,solo_historico_no_cotiza
+KSS,,,2010-01-06,2020-09-18,1027,False,False,Kohl's Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+KSU,,,2013-05-24,2021-10-04,695,False,False,,,False,True,False,False,solo_historico_no_cotiza
+KVUE,,,2023-08-29,2026-11-04,1143,False,False,,,False,True,False,False,solo_historico_no_cotiza
+L,Loews Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Loews Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+LB,,,2010-01-06,2021-07-21,1040,False,False,LandBridge Corporation Class A Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+LDOS,Leidos,Industrials,2010-01-06,2026-11-15,1706,True,False,Leidos Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LEG,,,2010-01-06,2021-12-14,1045,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LEN,Lennar,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Lennar Corporation Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+LH,Labcorp,Health Care,2010-01-06,2026-11-15,2330,True,True,Labcorp Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LHX,L3Harris,Industrials,2019-06-01,2026-11-15,1328,True,False,L3Harris Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LII,Lennox International,Industrials,2024-12-24,2026-11-15,675,True,False,Lennox International Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LIN,Linde plc,Materials,2018-11-06,2026-11-15,1355,True,False,Linde plc Ordinary Shares,Nasdaq,True,True,True,False,actual_e_historico
+LITE,Lumentum,Information Technology,2026-03-25,2026-11-15,236,True,False,Lumentum Holdings Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+LKQ,,,2016-05-23,2025-12-23,1307,False,False,LKQ Corporation Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+LLTC,,,2010-01-06,2017-03-10,787,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LLY,Lilly (Eli),Health Care,2010-01-06,2026-11-15,2330,True,True,Eli Lilly and Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+LM,,,2010-01-06,2016-11-29,757,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LMT,Lockheed Martin,Industrials,2010-01-06,2026-11-15,2330,True,True,Lockheed Martin Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+LNC,,,2010-01-06,2023-09-17,1195,False,False,Lincoln National Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+LNT,Alliant Energy,Utilities,2016-07-01,2026-11-15,1619,True,False,Alliant Energy Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+LO,,,2010-01-06,2015-06-11,560,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LOW,Lowe's,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Lowe's Companies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LRCX,Lam Research,Information Technology,2012-06-05,2026-11-15,2080,True,False,Lam Research Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+LSI,,,2010-01-06,2014-05-06,450,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LULU,Lululemon Athletica,Consumer Discretionary,2023-10-18,2026-11-15,1106,True,False,lululemon athletica inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+LUMN,,,2020-09-18,2023-03-15,41,False,False,Lumen Technologies Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+LUV,Southwest Airlines,Industrials,2010-01-06,2026-11-15,2330,True,True,Southwest Airlines Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+LVLT,,,2014-11-05,2017-10-10,358,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LVS,Las Vegas Sands,Consumer Discretionary,2019-10-03,2026-11-15,1319,True,False,Las Vegas Sands Corp. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LW,,,2018-12-03,2026-03-24,1110,False,False,Lamb Weston Holdings Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+LXK,,,2010-01-06,2012-09-25,283,False,False,,,False,True,False,False,solo_historico_no_cotiza
+LYB,LyondellBasell,Materials,2012-09-05,2026-11-15,2054,True,False,LyondellBasell Industries NV Ordinary Shares Class A (Netherlands),NYSE,True,True,True,True,actual_e_historico
+LYV,Live Nation Entertainment,Communication Services,2019-12-23,2026-11-15,1312,True,False,Live Nation Entertainment Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+M,,,2010-01-06,2020-04-03,1022,False,False,Macy's Inc Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MA,Mastercard,Financials,2010-01-06,2026-11-15,2330,True,True,Mastercard Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+MAA,Mid-America Apartment Communities,Real Estate,2016-12-02,2026-11-15,1573,True,False,Mid-America Apartment Communities Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MAC,,,2013-05-09,2019-12-10,675,False,False,Macerich Company (The) Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MAR,Marriott International,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Marriott International Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MAS,Masco,Industrials,2010-01-06,2026-11-15,2330,True,True,Masco Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MAT,,,2010-01-06,2019-06-03,1004,False,False,Mattel Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+MCD,McDonald's,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,McDonald's Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MCHP,Microchip Technology,Information Technology,2010-01-06,2026-11-15,2330,True,True,Microchip Technology Incorporated Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MCK,McKesson,Health Care,2010-01-06,2026-11-15,2330,True,True,McKesson Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MCO,Moody's Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Moody's Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MDLZ,Mondelez International,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Mondelez International Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MDP,,,2010-01-06,2010-12-31,100,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MDT,Medtronic,Health Care,2010-01-06,2026-11-15,2330,True,True,Medtronic plc. Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+MEE,,,2010-01-06,2011-05-23,140,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MET,MetLife,Financials,2010-01-06,2026-11-15,2330,True,True,MetLife Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+META,Meta Platforms,Communication Services,2022-06-09,2026-11-15,1275,True,False,Meta Platforms Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MGM,MGM Resorts,Consumer Discretionary,2017-07-26,2026-11-15,1501,True,False,MGM Resorts International Common Stock,NYSE,True,True,True,True,actual_e_historico
+MHK,,,2013-12-23,2025-12-23,1589,False,False,Mohawk Industries Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MHS,,,2010-01-06,2012-03-22,226,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MJN,,,2010-01-06,2017-06-07,816,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MKC,McCormick & Company,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,McCormick & Company Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+MKTX,,,2019-07-01,2025-09-22,908,False,False,MarketAxess Holdings Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+MLM,Martin Marietta Materials,Materials,2014-07-02,2026-11-15,1863,True,False,Martin Marietta Materials Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MMC,,,2010-01-06,2026-01-14,2025,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MMI,,,2011-01-04,2012-05-15,143,False,False,Marcus & Millichap Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MMM,3M,Industrials,2010-01-06,2026-11-15,2330,True,True,3M Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+MNST,Monster Beverage,Consumer Staples,2012-06-29,2026-11-15,2073,True,False,Monster Beverage Corporation,Nasdaq,True,True,True,False,actual_e_historico
+MO,Altria,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Altria Group Inc.,NYSE,True,True,True,True,actual_e_historico
+MOH,,,2022-03-02,2026-03-24,1044,False,False,Molina Healthcare Inc Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MOLX,,,2010-01-06,2013-12-03,407,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MOS,Mosaic Company (The),Materials,2011-09-26,2026-11-15,2160,True,False,Mosaic Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+MPC,Marathon Petroleum,Energy,2011-07-01,2026-11-15,2180,True,False,Marathon Petroleum Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MPWR,Monolithic Power Systems,Information Technology,2021-02-12,2026-11-15,1296,True,False,Monolithic Power Systems Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MRK,Merck & Co.,Health Care,2010-01-06,2026-11-15,2330,True,True,Merck & Company Inc. Common Stock (new),NYSE,True,True,True,True,actual_e_historico
+MRNA,Moderna,Health Care,2021-07-21,2026-11-15,1291,True,False,Moderna Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MRO,,,2010-01-06,2024-11-23,1625,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MRSH,Marsh McLennan,Financials,2026-01-15,2026-11-15,305,True,False,Marsh Common Stock,NYSE,True,True,True,True,actual_e_historico
+MRVL,Marvell Technology,Information Technology,2026-06-20,2026-11-15,149,True,False,Marvell Technology Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MS,Morgan Stanley,Financials,2010-01-06,2026-11-15,2330,True,True,Morgan Stanley Common Stock,NYSE,True,True,True,True,actual_e_historico
+MSCI,MSCI,Financials,2018-04-04,2026-11-15,1426,True,False,MSCI Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MSFT,Microsoft,Information Technology,2010-01-06,2026-11-15,2330,True,True,Microsoft Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MSI,Motorola Solutions,Information Technology,2010-01-06,2026-11-15,2330,True,True,Motorola Solutions Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MTB,M&T Bank,Financials,2010-01-06,2026-11-15,2330,True,True,M&T Bank Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MTCH,,,2021-09-20,2026-03-24,1052,False,False,Match Group Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+MTD,Mettler Toledo,Health Care,2016-09-06,2026-11-15,1600,True,False,Mettler-Toledo International Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MU,Micron Technology,Information Technology,2010-01-06,2026-11-15,2330,True,True,Micron Technology Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+MUR,,,2010-01-06,2017-07-25,829,False,False,Murphy Oil Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+MWV,,,2010-01-06,2015-07-01,566,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MWW,,,2010-01-06,2011-12-14,198,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MXIM,,,2018-12-03,2021-08-03,57,False,False,,,False,True,False,False,solo_historico_no_cotiza
+MYL,,,2010-01-06,2020-10-12,1030,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NAVI,,,2014-05-01,2018-06-01,475,False,False,Navient Holdings Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+NBL,,,2010-01-06,2020-10-07,1029,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NBR,,,2010-01-06,2015-03-19,537,False,False,Nabors Industries Ltd.,NYSE,False,True,True,True,solo_historico_cotiza
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,2017-10-13,2026-11-15,1471,True,False,Norwegian Cruise Line Holdings Ltd. Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+NDAQ,"Nasdaq, Inc.",Financials,2010-01-06,2026-11-15,2330,True,True,Nasdaq Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NDSN,Nordson Corporation,Industrials,2022-02-15,2026-11-15,1282,True,False,Nordson Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NEE,NextEra Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,NextEra Energy Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NEM,Newmont,Materials,2010-01-06,2026-11-15,2330,True,True,Newmont Corporation,NYSE,True,True,True,True,actual_e_historico
+NFLX,Netflix,Communication Services,2010-12-20,2026-11-15,2235,True,False,Netflix Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NFX,,,2010-12-20,2019-01-18,904,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NI,NiSource,Utilities,2010-01-06,2026-11-15,2330,True,True,NiSource Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+NKE,"Nike, Inc.",Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Nike Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NKTR,,,2018-03-19,2019-09-26,112,False,False,Nektar Therapeutics  Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+NLOK,,,2019-11-05,2022-11-01,49,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NLSN,,,2013-07-09,2022-10-03,696,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NOC,Northrop Grumman,Industrials,2010-01-06,2026-11-15,2330,True,True,Northrop Grumman Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NOV,,,2010-01-06,2021-08-30,1042,False,False,NOV Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+NOVL,,,2010-01-06,2011-04-25,131,False,False,,,False,True,False,False,solo_historico_no_cotiza
+NOW,ServiceNow,Information Technology,2019-11-21,2026-11-15,1316,True,False,ServiceNow Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NRG,NRG Energy,Utilities,2010-01-29,2026-11-15,2324,True,False,NRG Energy Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NSC,Norfolk Southern,Industrials,2010-01-06,2026-11-15,2330,True,True,Norfolk Southern Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NTAP,NetApp,Information Technology,2010-01-06,2026-11-15,2330,True,True,NetApp Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NTRS,Northern Trust,Financials,2010-01-06,2026-11-15,2330,True,True,Northern Trust Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NUE,Nucor,Materials,2010-01-06,2026-11-15,2330,True,True,Nucor Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NVDA,Nvidia,Information Technology,2010-01-06,2026-11-15,2330,True,True,NVIDIA Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NVR,"NVR, Inc.",Consumer Discretionary,2019-09-26,2026-11-15,1320,True,False,NVR Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NWL,,,2010-01-06,2023-09-17,1195,False,False,Newell Brands Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+NWS,News Corp (Class B),Communication Services,2015-09-21,2026-11-15,1734,True,False,News Corporation Class B Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NWSA,News Corp (Class A),Communication Services,2013-07-01,2026-11-15,1968,True,False,News Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NXPI,NXP Semiconductors,Information Technology,2021-03-22,2026-11-15,1295,True,False,NXP Semiconductors N.V. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+NYT,,,2010-01-06,2010-12-17,95,False,False,New York Times Company (The) Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+NYX,,,2010-01-06,2013-11-07,399,False,False,,,False,True,False,False,solo_historico_no_cotiza
+O,Realty Income,Real Estate,2015-04-07,2026-11-15,1787,True,False,Realty Income Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ODFL,Old Dominion,Industrials,2019-12-09,2026-11-15,1314,True,False,Old Dominion Freight Line Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ODP,,,2010-01-06,2010-12-17,95,False,False,,,False,True,False,False,solo_historico_no_cotiza
+OGN,,,2021-06-04,2023-10-17,186,False,False,Organon & Co. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+OI,,,2010-01-06,2016-11-29,757,False,False,O-I Glass Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+OKE,Oneok,Energy,2010-03-15,2026-11-15,2306,True,False,ONEOK Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+OKTA,"Okta, Inc.",Information Technology,2026-11-05,2026-11-15,11,True,False,Okta Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+OMC,Omnicom Group,Communication Services,2010-01-06,2026-11-15,2330,True,True,Omnicom Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ON,ON Semiconductor,Information Technology,2022-06-21,2026-11-15,1274,True,False,ON Semiconductor Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ORCL,Oracle Corporation,Information Technology,2010-01-06,2026-11-15,2330,True,True,Oracle Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ORLY,O'Reilly Automotive,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,O'Reilly Automotive Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+OTIS,Otis Worldwide,Industrials,2020-04-03,2026-11-15,1309,True,False,Otis Worldwide Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+OXY,Occidental Petroleum,Energy,2010-01-06,2026-11-15,2330,True,True,Occidental Petroleum Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+P,Everpure,Information Technology,2026-09-21,2026-11-15,56,True,False,Everpure Inc. Class A common stock,NYSE,True,True,True,True,actual_e_historico
+PANW,Palo Alto Networks,Information Technology,2023-06-03,2026-11-15,1223,True,False,Palo Alto Networks Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PARA,,,2022-02-17,2025-08-09,824,False,False,Parabolic Technologies Inc. Class A Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+PAYC,,,2020-01-28,2026-03-24,1075,False,False,Paycom Software Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+PAYX,Paychex,Industrials,2010-01-06,2026-11-15,2330,True,True,Paychex Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PBCT,,,2010-01-06,2022-03-02,1051,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PBG,,,2010-01-06,2010-02-26,18,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PBI,,,2010-01-06,2017-02-28,782,False,False,Pitney Bowes Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+PCAR,Paccar,Industrials,2010-01-06,2026-11-15,2330,True,True,PACCAR Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PCG,PG&E Corporation,Utilities,2010-01-06,2026-11-15,2269,True,False,Pacific Gas & Electric Co. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PDCO,,,2010-01-06,2018-03-16,899,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PEAK,,,2019-11-05,2024-03-03,347,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PEG,Public Service Enterprise Group,Utilities,2010-01-06,2026-11-15,2330,True,True,Public Service Enterprise Group Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+PENN,,,2021-03-22,2022-06-28,23,False,False,PENN Entertainment Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+PEP,PepsiCo,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,PepsiCo Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PETM,,,2012-10-05,2015-03-11,245,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PFE,Pfizer,Health Care,2010-01-06,2026-11-15,2330,True,True,Pfizer Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PFG,Principal Financial Group,Financials,2010-01-06,2026-11-15,2330,True,True,Principal Financial Group Inc Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PG,Procter & Gamble,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Procter & Gamble Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PGR,Progressive Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Progressive Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PH,Parker Hannifin,Industrials,2010-01-06,2026-11-15,2330,True,True,Parker-Hannifin Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PHM,PulteGroup,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,PulteGroup Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PKG,Packaging Corporation of America,Materials,2017-07-26,2026-11-15,1501,True,False,Packaging Corporation of America Common Stock,NYSE,True,True,True,True,actual_e_historico
+PKI,,,2010-01-06,2023-05-17,1075,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PLD,Prologis,Real Estate,2010-01-06,2026-11-15,2330,True,True,Prologis Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PLTR,Palantir Technologies,Information Technology,2024-09-22,2026-11-15,768,True,False,Palantir Technologies Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PM,Philip Morris International,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Philip Morris International Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+PNC,PNC Financial Services,Financials,2010-01-06,2026-11-15,2330,True,True,PNC Financial Services Group Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PNR,Pentair,Industrials,2012-10-01,2026-11-15,2047,True,False,Pentair plc. Ordinary Share,NYSE,True,True,True,True,actual_e_historico
+PNW,Pinnacle West Capital,Utilities,2010-01-06,2026-11-15,2330,True,True,Pinnacle West Capital Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PODD,Insulet Corporation,Health Care,2023-03-15,2026-11-15,1264,True,False,Insulet Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+POOL,,,2020-10-07,2026-06-19,1153,False,False,Pool Corporation Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+PPG,PPG Industries,Materials,2010-01-06,2026-11-15,2330,True,True,PPG Industries Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PPL,PPL Corporation,Utilities,2010-01-06,2026-11-15,2330,True,True,PPL Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PRGO,,,2011-12-19,2021-08-30,844,False,False,Perrigo Company plc Ordinary Shares,NYSE,False,True,True,True,solo_historico_cotiza
+PRU,Prudential Financial,Financials,2010-01-06,2026-11-15,2330,True,True,Prudential Financial Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PSA,Public Storage,Real Estate,2010-01-06,2026-11-15,2330,True,True,Public Storage Common Stock,NYSE,True,True,True,True,actual_e_historico
+PSKY,,,2025-08-12,2026-10-07,416,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PSX,Phillips 66,Energy,2012-05-01,2026-11-15,2095,True,False,Phillips 66 Common Stock,NYSE,True,True,True,True,actual_e_historico
+PTC,PTC Inc.,Information Technology,2021-04-20,2026-11-15,1294,True,False,PTC Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+PVH,,,2013-02-14,2022-06-28,737,False,False,PVH Corp. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+PWR,Quanta Services,Industrials,2010-01-06,2026-11-15,2330,True,True,Quanta Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PXD,,,2010-01-06,2024-05-03,1421,False,False,,,False,True,False,False,solo_historico_no_cotiza
+PYPL,PayPal,Financials,2015-07-20,2026-11-15,1757,True,False,PayPal Holdings Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+Q,Qnity Electronics,Information Technology,2025-11-06,2026-11-15,370,True,False,Qnity Electronics Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+QCOM,Qualcomm,Information Technology,2010-01-06,2026-11-15,2330,True,True,QUALCOMM Incorporated Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+QEP,,,2010-07-01,2015-06-30,514,False,False,,,False,True,False,False,solo_historico_no_cotiza
+QLGC,,,2010-01-06,2011-01-12,103,False,False,,,False,True,False,False,solo_historico_no_cotiza
+QRVO,,,2015-06-12,2024-12-26,1098,False,False,,,False,True,False,False,solo_historico_no_cotiza
+R,,,2010-01-06,2017-06-16,818,False,False,Ryder System Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+RAI,,,2010-01-06,2017-07-20,828,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RCL,Royal Caribbean Group,Consumer Discretionary,2014-12-05,2026-11-15,1819,True,False,Royal Caribbean Cruises Ltd. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RDC,,,2010-01-06,2014-08-13,483,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RDDT,Reddit,Communication Services,2026-08-18,2026-11-15,90,True,False,Reddit Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+RE,,,2017-06-19,2023-07-10,310,False,False,,,False,True,False,False,solo_historico_no_cotiza
+REG,Regency Centers,Real Estate,2017-03-02,2026-11-15,1547,True,False,Regency Centers Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+REGN,Regeneron Pharmaceuticals,Health Care,2013-05-01,2026-11-15,1991,True,False,Regeneron Pharmaceuticals Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+RF,Regions Financial Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Regions Financial Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+RHI,,,2010-01-06,2024-06-22,1471,False,False,Robert Half Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+RHT,,,2010-01-06,2019-07-01,1006,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RJF,Raymond James Financial,Financials,2017-03-20,2026-11-15,1539,True,False,Raymond James Financial Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RL,Ralph Lauren Corporation,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Ralph Lauren Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+RMD,ResMed,Health Care,2017-07-26,2026-11-15,1501,True,False,ResMed Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ROK,Rockwell Automation,Industrials,2010-01-06,2026-11-15,2330,True,True,Rockwell Automation Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ROL,"Rollins, Inc.",Industrials,2018-10-01,2026-11-15,1364,True,False,Rollins Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ROP,Roper Technologies,Information Technology,2010-01-06,2026-11-15,2330,True,True,Roper Technologies Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ROST,Ross Stores,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Ross Stores Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+RRC,,,2010-01-06,2018-06-15,930,False,False,Range Resources Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+RRD,,,2010-01-06,2012-12-07,303,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RSG,Republic Services,Industrials,2010-01-06,2026-11-15,2330,True,True,Republic Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RTN,,,2010-01-06,2020-04-03,1022,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RTX,RTX Corporation,Industrials,2020-04-03,2026-11-15,1309,True,False,RTX Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+RVTY,Revvity,Health Care,2023-05-18,2026-11-15,1254,True,False,Revvity Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RVTY (PREVIOUSLY PKI),,,2023-12-31,2023-12-31,1,False,False,,,False,True,False,False,solo_historico_no_cotiza
+RX,,,2010-01-06,2010-02-23,17,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SATS,,,2026-03-25,2026-06-24,92,False,False,Strive Inc. 15% Series A Perpetual SATS Preferred Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+SBAC,SBA Communications,Real Estate,2017-09-01,2026-11-15,1485,True,False,SBA Communications Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SBNY,,,2021-12-20,2023-01-04,21,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SBUX,Starbucks,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Starbucks Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SCG,,,2010-01-06,2018-12-24,992,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SCHW,Charles Schwab Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Charles Schwab Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SEDG,,,2021-12-20,2023-12-16,238,False,False,SolarEdge Technologies Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+SEE,,,2010-01-06,2023-12-16,1283,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SHW,Sherwin-Williams,Materials,2010-01-06,2026-11-15,2330,True,True,Sherwin-Williams Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SIAL,,,2010-01-06,2015-11-17,614,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SIVB,,,2018-03-19,2023-01-04,167,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SJM,J.M. Smucker Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,The J.M. Smucker Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+SKYD,Skydance,Communication Services,2026-10-08,2026-11-15,39,True,False,Skydance Corporation Class B Common Stock,NYSE,True,True,True,True,actual_e_historico
+SLB,Schlumberger,Energy,2010-01-06,2026-11-15,2330,True,True,SLB Limited Common Shares,NYSE,True,True,True,True,actual_e_historico
+SLG,,,2015-03-23,2021-02-12,498,False,False,SL Green Realty Corp Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+SLM,,,2010-01-06,2014-04-22,447,False,False,SLM Corporation Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+SMCI,Supermicro,Information Technology,2024-03-18,2026-11-15,956,True,False,Super Micro Computer Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SNA,Snap-on,Industrials,2010-01-06,2026-11-15,2330,True,True,Snap-On Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+SNDK,Sandisk,Information Technology,2010-01-06,2026-11-15,1034,True,False,Sandisk Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SNI,,,2010-01-06,2018-02-28,895,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SNPS,Synopsys,Information Technology,2017-03-16,2026-11-15,1541,True,False,Synopsys Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SO,Southern Company,Utilities,2010-01-06,2026-11-15,2330,True,True,Southern Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SOLS,,,2025-10-31,2026-01-01,58,False,False,Solstice Advanced Materials Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+SOLV,Solventum,Health Care,2024-04-02,2026-11-15,941,True,False,Solventum Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+SPG,Simon Property Group,Real Estate,2010-01-06,2026-11-15,2330,True,True,Simon Property Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SPGI,S&P Global,Financials,2010-01-06,2026-11-15,2330,True,True,S&P Global Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SPLS,,,2010-01-06,2017-09-12,848,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SRCL,,,2010-01-06,2018-11-29,984,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SRE,Sempra,Utilities,2010-01-06,2026-11-15,2330,True,True,DBA Sempra Common Stock,NYSE,True,True,True,True,actual_e_historico
+STE,Steris,Health Care,2019-12-23,2026-11-15,1312,True,False,STERIS plc (Ireland) Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+STI,,,2010-01-06,2019-12-05,1016,False,False,Solidion Technology Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+STJ,,,2010-01-06,2017-01-03,765,False,False,,,False,True,False,False,solo_historico_no_cotiza
+STLD,Steel Dynamics,Materials,2022-12-22,2026-11-15,1266,True,False,Steel Dynamics Inc.,Nasdaq,True,True,True,False,actual_e_historico
+STT,State Street Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,State Street Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+STX,Seagate Technology,Information Technology,2012-07-02,2026-11-15,2072,True,False,Seagate Technology Holdings PLC Ordinary Shares (Ireland),Nasdaq,True,True,True,False,actual_e_historico
+STZ,Constellation Brands,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Constellation Brands Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SVU,,,2010-01-06,2012-04-30,235,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SW,Smurfit Westrock,Materials,2024-07-12,2026-11-15,840,True,False,Smurfit WestRock plc Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+SWK,Stanley Black & Decker,Industrials,2010-01-06,2026-11-15,2330,True,True,Stanley Black & Decker Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SWKS,Skyworks Solutions,Information Technology,2015-03-12,2026-11-15,1798,True,False,Skyworks Solutions Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+SWN,,,2010-01-06,2017-03-30,797,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SWY,,,2010-01-06,2015-01-15,521,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SYF,Synchrony Financial,Financials,2015-11-18,2026-11-15,1716,True,False,Synchrony Financial Common Stock,NYSE,True,True,True,True,actual_e_historico
+SYK,Stryker Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Stryker Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+SYMC,,,2010-01-06,2019-10-18,1013,False,False,,,False,True,False,False,solo_historico_no_cotiza
+SYY,Sysco,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Sysco Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+T,AT&T,Communication Services,2010-01-06,2026-11-15,2330,True,True,AT&T Inc.,NYSE,True,True,True,True,actual_e_historico
+TAP,,,2010-01-06,2026-09-20,2274,False,False,Molson Coors Beverage Company Class B Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+TDC,,,2010-01-06,2017-06-16,818,False,False,Teradata Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+TDG,TransDigm Group,Industrials,2016-06-03,2026-11-15,1630,True,False,Transdigm Group Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+TDY,Teledyne Technologies,Information Technology,2020-06-22,2026-11-15,1305,True,False,Teledyne Technologies Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+TE,,,2010-01-06,2016-06-27,711,False,False,T1 Energy Inc. Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+TECH,Bio-Techne,Health Care,2021-08-30,2026-11-15,1289,True,False,Bio-Techne Corp Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TEL,TE Connectivity,Information Technology,2011-10-17,2026-11-15,2153,True,False,TE Connectivity plc Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+TER,Teradyne,Information Technology,2010-01-06,2026-11-15,1717,True,False,Teradyne Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TFC,Truist Financial,Financials,2019-12-09,2026-11-15,1314,True,False,Truist Financial Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+TFX,,,2019-01-18,2025-03-25,749,False,False,Teleflex Incorporated Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+TGNA,,,2010-01-06,2017-05-23,812,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TGT,Target Corporation,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Target Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+THC,,,2010-01-06,2016-04-15,677,False,False,Tenet Healthcare Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+TIE,,,2010-01-06,2012-12-21,307,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TIF,,,2010-01-06,2020-12-21,1032,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TJX,TJX Companies,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,TJX Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+TKO,TKO Group Holdings,Communication Services,2025-03-25,2026-11-15,584,True,False,TKO Group Holdings Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+TLAB,,,2010-01-06,2011-12-20,200,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TMK,,,2010-01-06,2019-07-15,1007,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TMO,Thermo Fisher Scientific,Health Care,2010-01-06,2026-11-15,2330,True,True,Thermo Fisher Scientific Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+TMUS,T-Mobile US,Communication Services,2010-01-06,2026-11-15,1663,True,False,T-Mobile US Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TPL,Texas Pacific Land Corporation,Energy,2024-11-26,2026-11-15,703,True,False,Texas Pacific Land Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+TPR,"Tapestry, Inc.",Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Tapestry Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TRGP,Targa Resources,Energy,2022-10-12,2026-11-15,1270,True,False,Targa Resources Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TRIP,,,2011-12-21,2019-12-10,818,False,False,TripAdvisor Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+TRMB,Trimble Inc.,Information Technology,2021-01-21,2026-11-15,1297,True,False,Trimble Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TROW,T. Rowe Price,Financials,2010-01-06,2026-11-15,2330,True,True,T. Rowe Price Group Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TRV,Travelers Companies (The),Financials,2010-01-06,2026-11-15,2330,True,True,The Travelers Companies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TSCO,Tractor Supply,Consumer Discretionary,2014-01-24,2026-11-15,1909,True,False,Tractor Supply Company Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TSLA,"Tesla, Inc.",Consumer Discretionary,2020-12-21,2026-11-15,1299,True,False,Tesla Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TSN,Tyson Foods,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Tyson Foods Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TSS,,,2010-01-06,2019-08-09,1009,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TT,Trane Technologies,Industrials,2020-03-03,2026-11-15,1310,True,False,Trane Technologies plc,NYSE,True,True,True,True,actual_e_historico
+TTD,,,2025-07-18,2026-09-20,424,False,False,The Trade Desk Inc. Class A Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+TTWO,Take-Two Interactive,Communication Services,2018-03-19,2026-11-15,1431,True,False,Take-Two Interactive Software Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TWC,,,2010-01-06,2016-05-17,693,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TWLO,Twilio,Information Technology,2026-10-08,2026-11-15,39,True,False,Twilio Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+TWTR,,,2018-06-07,2022-10-12,137,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TWX,,,2010-01-06,2018-06-14,929,False,False,,,False,True,False,False,solo_historico_no_cotiza
+TXN,Texas Instruments,Information Technology,2010-01-06,2026-11-15,2330,True,True,Texas Instruments Incorporated Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+TXT,Textron,Industrials,2010-01-06,2026-11-15,2330,True,True,Textron Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TYL,Tyler Technologies,Information Technology,2020-06-22,2026-11-15,1305,True,False,Tyler Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+UA,,,2016-04-08,2022-06-09,384,False,False,Under Armour Inc. Class C Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+UAA,,,2014-05-01,2022-06-09,609,False,False,Under Armour Inc. Class A Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+UAL,United Airlines Holdings,Industrials,2015-09-03,2026-11-15,1740,True,False,United Airlines Holdings Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+UBER,Uber,Industrials,2023-12-17,2026-11-15,1047,True,False,Uber Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+UDR,"UDR, Inc.",Real Estate,2016-03-07,2026-11-15,1672,True,False,UDR Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+UHS,Universal Health Services,Health Care,2014-09-22,2026-11-15,1839,True,False,Universal Health Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ULTA,Ulta Beauty,Consumer Discretionary,2016-04-18,2026-11-15,1653,True,False,Ulta Beauty Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+UNH,UnitedHealth Group,Health Care,2010-01-06,2026-11-15,2330,True,True,UnitedHealth Group Incorporated Common Stock (DE),NYSE,True,True,True,True,actual_e_historico
+UNM,,,2010-01-06,2021-08-30,1042,False,False,Unum Group Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+UNP,Union Pacific Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Union Pacific Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+UPS,United Parcel Service,Industrials,2010-01-06,2026-11-15,2330,True,True,United Parcel Service Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+URI,United Rentals,Industrials,2014-09-22,2026-11-15,1839,True,False,United Rentals Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+USB,U.S. Bancorp,Financials,2010-01-06,2026-11-15,2330,True,True,U.S. Bancorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+UTX,,,2010-01-06,2020-03-03,1021,False,False,,,False,True,False,False,solo_historico_no_cotiza
+V,Visa Inc.,Financials,2010-01-06,2026-11-15,2330,True,True,Visa Inc.,NYSE,True,True,True,True,actual_e_historico
+VAR,,,2010-01-06,2021-03-22,1036,False,False,,,False,True,False,False,solo_historico_no_cotiza
+VEEV,Veeva Systems,Health Care,2026-05-07,2026-11-15,193,True,False,Veeva Systems Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+VFC,,,2010-01-06,2024-04-03,1391,False,False,V.F. Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+VIAB,,,2010-01-06,2019-11-21,1015,False,False,,,False,True,False,False,solo_historico_no_cotiza
+VIAC,,,2019-12-05,2022-02-15,34,False,False,,,False,True,False,False,solo_historico_no_cotiza
+VIAV,,,2010-01-06,2013-12-18,414,False,False,Viavi Solutions Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+VICI,Vici Properties,Real Estate,2022-06-08,2026-11-15,1276,True,False,VICI Properties Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+VLO,Valero Energy,Energy,2010-01-06,2026-11-15,2330,True,True,Valero Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+VLTO,Veralto,Industrials,2023-10-06,2026-11-15,1117,True,False,Veralto Corp Common Stock,NYSE,True,True,True,True,actual_e_historico
+VMC,Vulcan Materials Company,Materials,2010-01-06,2026-11-15,2330,True,True,Vulcan Materials Company (Holding Company) Common Stock,NYSE,True,True,True,True,actual_e_historico
+VMRK,Vivmark Residential,Real Estate,2026-08-18,2026-11-15,90,True,False,Vivmark Residential Common Shares of Beneficial Interest,NYSE,True,True,True,True,actual_e_historico
+VNO,,,2010-01-06,2022-12-22,1065,False,False,Vornado Realty Trust Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+VNT,,,2020-10-12,2021-02-12,6,False,False,Vontier Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+VRSK,Verisk Analytics,Industrials,2015-10-08,2026-11-15,1728,True,False,Verisk Analytics Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+VRSN,Verisign,Information Technology,2010-01-06,2026-11-15,2330,True,True,VeriSign Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+VRT,Vertiv,Industrials,2026-03-25,2026-11-15,236,True,False,Vertiv Holdings LLC Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+VRTX,Vertex Pharmaceuticals,Health Care,2013-09-23,2026-11-15,1946,True,False,Vertex Pharmaceuticals Incorporated Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+VST,Vistra Corp.,Utilities,2024-05-08,2026-11-15,905,True,False,Vistra Corp. Common Stock,NYSE,True,True,True,True,actual_e_historico
+VTR,Ventas,Real Estate,2010-01-06,2026-11-15,2330,True,True,Ventas Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+VTRS,Viatris,Health Care,2020-11-17,2026-11-15,1300,True,False,Viatris Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+VYLR,Vylor,Consumer Staples,2026-10-08,2026-11-15,39,True,False,Vylor Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+VZ,Verizon,Communication Services,2010-01-06,2026-11-15,2330,True,True,Verizon Communications Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WAB,Wabtec,Industrials,2019-02-27,2026-11-15,1330,True,False,Westinghouse Air Brake Technologies Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+WAT,Waters Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Waters Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+WBA,,,2010-01-06,2025-08-29,1892,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WBD,,,2022-04-11,2026-10-07,1239,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WCG,,,2018-09-17,2019-12-23,59,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WDAY,"Workday, Inc.",Information Technology,2024-12-26,2026-11-15,673,True,False,Workday Inc. Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+WDC,Western Digital,Information Technology,2010-01-06,2026-11-15,2330,True,True,Western Digital Corporation Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+WEC,WEC Energy Group,Utilities,2010-01-06,2026-11-15,2330,True,True,WEC Energy Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WELL,Welltower,Real Estate,2010-01-06,2026-11-15,2330,True,True,Welltower Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WFC,Wells Fargo,Financials,2010-01-06,2026-11-15,2330,True,True,Wells Fargo & Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+WFM,,,2010-01-06,2017-08-17,841,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WHR,,,2010-01-06,2024-03-17,1374,False,False,Whirlpool Corporation Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+WIN,,,2010-01-06,2015-03-31,543,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WLTW,,,2016-01-05,2021-12-20,411,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WM,Waste Management,Industrials,2010-01-06,2026-11-15,2330,True,True,Waste Management Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WMB,Williams Companies,Energy,2010-01-06,2026-11-15,2330,True,True,Williams Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+WMT,Walmart,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Walmart Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+WPX,,,2012-01-03,2014-03-12,228,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WRB,W. R. Berkley Corporation,Financials,2019-12-05,2026-11-15,1315,True,False,W.R. Berkley Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+WRK,,,2015-07-02,2024-07-08,921,False,False,,,False,True,False,False,solo_historico_no_cotiza
+WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,2025-03-25,2026-11-15,584,True,False,Williams-Sonoma Inc. Common Stock (DE),NYSE,True,True,True,True,actual_e_historico
+WST,West Pharmaceutical Services,Health Care,2020-05-22,2026-11-15,1306,True,False,West Pharmaceutical Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WTW,Willis Towers Watson,Financials,2022-01-20,2026-11-15,1284,True,False,Willis Towers Watson Public Limited Company Ordinary Shares,Nasdaq,True,True,True,False,actual_e_historico
+WU,,,2010-01-06,2021-12-14,1045,False,False,Western Union Company (The) Common Stock,NYSE,False,True,True,True,solo_historico_cotiza
+WY,Weyerhaeuser,Real Estate,2010-01-06,2026-11-15,2330,True,True,Weyerhaeuser Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+WYNN,Wynn Resorts,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Wynn Resorts Limited Common stock,Nasdaq,True,True,True,False,actual_e_historico
+X,,,2010-01-06,2014-07-01,467,False,False,,,False,True,False,False,solo_historico_no_cotiza
+XEC,,,2014-06-20,2020-01-28,557,False,False,,,False,True,False,False,solo_historico_no_cotiza
+XEL,Xcel Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Xcel Energy Inc. Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+XLNX,,,2010-01-06,2022-02-02,1048,False,False,,,False,True,False,False,solo_historico_no_cotiza
+XOM,ExxonMobil,Energy,2010-01-06,2026-11-15,2330,True,True,ExxonMobil Holdings Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+XRAY,,,2010-01-06,2024-04-03,1391,False,False,DENTSPLY SIRONA Inc. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+XRX,,,2010-01-06,2021-02-12,1035,False,False,Xerox Holdings Corporation Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+XTO,,,2010-01-06,2010-06-21,49,False,False,,,False,True,False,False,solo_historico_no_cotiza
+XYL,Xylem Inc.,Industrials,2011-11-01,2026-11-15,2147,True,False,Xylem Inc. Common Stock New,NYSE,True,True,True,True,actual_e_historico
+XYZ,"Block, Inc.",Financials,2025-07-23,2026-11-15,475,True,False,Block Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+YUM,Yum! Brands,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Yum! Brands Inc.,NYSE,True,True,True,True,actual_e_historico
+ZBH,Zimmer Biomet,Health Care,2010-01-06,2026-11-15,2330,True,True,Zimmer Biomet Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ZBRA,Zebra Technologies,Information Technology,2019-12-23,2026-11-15,1312,True,False,Zebra Technologies Corporation Class A Common Stock,Nasdaq,True,True,True,False,actual_e_historico
+ZION,,,2010-01-06,2024-03-17,1374,False,False,Zions Bancorporation N.A. Common Stock,Nasdaq,False,True,True,False,solo_historico_cotiza
+ZTS,Zoetis,Health Care,2013-06-24,2026-11-15,1972,True,False,Zoetis Inc. Class A Common Stock,NYSE,True,True,True,True,actual_e_historico

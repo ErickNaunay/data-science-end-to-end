@@ -51,9 +51,11 @@ negocio alineada con PSet 1, selección/registro y memo de hasta 6 páginas.
 Antes de entrenar, revisar ajustes retrospectivos de precios, bolsa actual,
 interpolación y cobertura del universo documentados en el memo del PSet 2.
 
-El trabajo previo de análisis permanece en la rama `draft`, en
-`psets/pset-02/analisis/`. No se duplica en esta entrega: parte de Yahoo/DuckDB
-y no satisface el protocolo experimental de la OBT que exige el PDF.
+El trabajo previo de análisis (antes en la rama `draft`, `psets/pset-02/analisis/`)
+está en `analisis/`, con su grupo de dependencias (`uv sync --group analisis`).
+Es exploratorio: parte de Yahoo con cachés DuckDB locales (no versionadas) y no
+satisface el protocolo experimental de la OBT que exige el PDF; sirve como
+referencia para elegir familias y técnicas. El plan de trabajo está en `plan.txt`.
 Los notebooks finales se entregan con Restart y Run All y salidas guardadas.
 
 ### Comprobaciones realizadas
