@@ -3,6 +3,7 @@
 #
 # Uso, desde psets/pset-03:
 #   uv sync                          crea .venv con Python 3.11 y estas versiones exactas
+#   uv sync --group analisis         agrega lo que usan los scripts de analisis/
 #   uv run python -m pytest tests
 #
 # requirements.txt (imagen runner y artefacto que se registra en MLflow) NO se edita a mano:
@@ -31,6 +32,17 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8",
+]
+# Scripts de analisis/ (traidos de draft:psets/pset-02/analisis): Yahoo con cache DuckDB,
+# imputacion, ARIMA por accion y comparacion de los modelos del PSet 1.
+#   uv sync --group analisis        (xgboost en macOS requiere: brew install libomp)
+# Opcionales, no incluidos: torch, chronos-forecasting, timesfm, uni2ts (Moirai).
+analisis = [
+    "duckdb>=2,<3",              # mismo formato de archivo .duckdb en todas las maquinas
+    "pandas-market-calendars>=4.4",
+    "statsmodels>=0.14",
+    "xgboost>=2.0",
+    "yfinance>=1.0,<2",
 ]
 
 [tool.uv]

@@ -1,0 +1,194 @@
+ticker,nombre,sector,primera_foto,ultima_foto,fotos,en_ultima_foto,siempre_miembro_desde_2010,nombre_listado,bolsa,en_sp500_actual,en_sp500_historico,cotiza_hoy,es_nyse_hoy,categoria
+A,Agilent Technologies,Health Care,2010-01-06,2026-11-15,2330,True,True,Agilent Technologies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ABT,Abbott Laboratories,Health Care,2010-01-06,2026-11-15,2330,True,True,Abbott Laboratories Common Stock,NYSE,True,True,True,True,actual_e_historico
+ADM,Archer Daniels Midland,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Archer-Daniels-Midland Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+AEE,Ameren,Utilities,2010-01-06,2026-11-15,2330,True,True,Ameren Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AES,AES Corporation,Utilities,2010-01-06,2026-11-15,2330,True,True,The AES Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AFL,Aflac,Financials,2010-01-06,2026-11-15,2330,True,True,AFLAC Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+AIG,American International Group,Financials,2010-01-06,2026-11-15,2330,True,True,American International Group Inc. New Common Stock,NYSE,True,True,True,True,actual_e_historico
+AIZ,Assurant,Financials,2010-01-06,2026-11-15,2330,True,True,Assurant Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ALL,Allstate,Financials,2010-01-06,2026-11-15,2330,True,True,Allstate Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+AMP,Ameriprise Financial,Financials,2010-01-06,2026-11-15,2330,True,True,Ameriprise Financial Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+AMT,American Tower,Real Estate,2010-01-06,2026-11-15,2330,True,True,American Tower Corporation (REIT) Common Stock,NYSE,True,True,True,True,actual_e_historico
+AON,Aon plc,Financials,2010-01-06,2026-11-15,2330,True,True,Aon plc Class A Ordinary Shares (Ireland),NYSE,True,True,True,True,actual_e_historico
+APD,Air Products,Materials,2010-01-06,2026-11-15,2330,True,True,Air Products and Chemicals Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+APH,Amphenol,Information Technology,2010-01-06,2026-11-15,2330,True,True,Amphenol Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AVY,Avery Dennison,Materials,2010-01-06,2026-11-15,2330,True,True,Avery Dennison Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+AXP,American Express,Financials,2010-01-06,2026-11-15,2330,True,True,American Express Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+AZO,AutoZone,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,AutoZone Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BA,Boeing,Industrials,2010-01-06,2026-11-15,2330,True,True,Boeing Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+BAC,Bank of America,Financials,2010-01-06,2026-11-15,2330,True,True,Bank of America Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BAX,Baxter International,Health Care,2010-01-06,2026-11-15,2330,True,True,Baxter International Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BBY,Best Buy,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Best Buy Co. Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BDX,Becton Dickinson,Health Care,2010-01-06,2026-11-15,2330,True,True,Becton Dickinson and Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+BEN,Franklin Resources,Financials,2010-01-06,2026-11-15,2330,True,True,Franklin Templeton Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+BF-B,Brown–Forman,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Brown Forman Corporation,NYSE,True,True,True,True,actual_e_historico
+BMY,Bristol Myers Squibb,Health Care,2010-01-06,2026-11-15,2330,True,True,Bristol-Myers Squibb Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+BSX,Boston Scientific,Health Care,2010-01-06,2026-11-15,2330,True,True,Boston Scientific Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+BXP,"BXP, Inc.",Real Estate,2010-01-06,2026-11-15,2330,True,True,BXP Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+C,Citigroup,Financials,2010-01-06,2026-11-15,2330,True,True,Citigroup Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CAH,Cardinal Health,Health Care,2010-01-06,2026-11-15,2330,True,True,Cardinal Health Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CAT,Caterpillar Inc.,Industrials,2010-01-06,2026-11-15,2330,True,True,Caterpillar Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CB,Chubb Limited,Financials,2010-01-06,2026-11-15,2330,True,True,Chubb Limited  Common Stock,NYSE,True,True,True,True,actual_e_historico
+CBRE,CBRE Group,Real Estate,2010-01-06,2026-11-15,2330,True,True,CBRE Group Inc Common Stock Class A,NYSE,True,True,True,True,actual_e_historico
+CCL,Carnival Corporation,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Carnival Corporation Ltd. Common Shares,NYSE,True,True,True,True,actual_e_historico
+CF,CF Industries,Materials,2010-01-06,2026-11-15,2330,True,True,CF Industries Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CI,Cigna,Health Care,2010-01-06,2026-11-15,2330,True,True,The Cigna Group Common Stock,NYSE,True,True,True,True,actual_e_historico
+CL,Colgate-Palmolive,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Colgate-Palmolive Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+CLX,Clorox,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Clorox Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+CMI,Cummins,Industrials,2010-01-06,2026-11-15,2330,True,True,Cummins Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CMS,CMS Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,CMS Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CNP,CenterPoint Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,CenterPoint Energy Inc (Holding Co) Common Stock,NYSE,True,True,True,True,actual_e_historico
+COF,Capital One,Financials,2010-01-06,2026-11-15,2330,True,True,Capital One Financial Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+COP,ConocoPhillips,Energy,2010-01-06,2026-11-15,2330,True,True,ConocoPhillips Common Stock,NYSE,True,True,True,True,actual_e_historico
+CRM,Salesforce,Information Technology,2010-01-06,2026-11-15,2330,True,True,Salesforce Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+CVS,CVS Health,Health Care,2010-01-06,2026-11-15,2330,True,True,CVS Health Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+CVX,Chevron Corporation,Energy,2010-01-06,2026-11-15,2330,True,True,Chevron Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+D,Dominion Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Dominion Energy Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DE,Deere & Company,Industrials,2010-01-06,2026-11-15,2330,True,True,Deere & Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+DGX,Quest Diagnostics,Health Care,2010-01-06,2026-11-15,2330,True,True,Quest Diagnostics Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+DHI,D. R. Horton,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,D.R. Horton Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DHR,Danaher Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Danaher Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DIS,Walt Disney Company (The),Communication Services,2010-01-06,2026-11-15,2330,True,True,Walt Disney Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+DOV,Dover Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Dover Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+DRI,Darden Restaurants,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Darden Restaurants Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DTE,DTE Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,DTE Energy Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+DUK,Duke Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Duke Energy Corporation (Holding Company) Common Stock,NYSE,True,True,True,True,actual_e_historico
+DVA,DaVita,Health Care,2010-01-06,2026-11-15,2330,True,True,DaVita Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+DVN,Devon Energy,Energy,2010-01-06,2026-11-15,2330,True,True,Devon Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ECL,Ecolab,Materials,2010-01-06,2026-11-15,2330,True,True,Ecolab Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ED,Consolidated Edison,Utilities,2010-01-06,2026-11-15,2330,True,True,Consolidated Edison Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EFX,Equifax,Industrials,2010-01-06,2026-11-15,2330,True,True,Equifax Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+EIX,Edison International,Utilities,2010-01-06,2026-11-15,2330,True,True,Edison International Common Stock,NYSE,True,True,True,True,actual_e_historico
+EL,Estée Lauder Companies (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Estee Lauder Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+EMR,Emerson Electric,Industrials,2010-01-06,2026-11-15,2330,True,True,Emerson Electric Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+EOG,EOG Resources,Energy,2010-01-06,2026-11-15,2330,True,True,EOG Resources Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ES,Eversource Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,Eversource Energy (D/B/A) Common Stock,NYSE,True,True,True,True,actual_e_historico
+ETN,Eaton Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Eaton Corporation PLC Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+ETR,Entergy,Utilities,2010-01-06,2026-11-15,2330,True,True,Entergy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+EXPD,Expeditors International,Industrials,2010-01-06,2026-11-15,2330,True,True,Expeditors International of Washington Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+F,Ford Motor Company,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Ford Motor Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+FCX,Freeport-McMoRan,Materials,2010-01-06,2026-11-15,2330,True,True,Freeport-McMoRan Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FDX,FedEx,Industrials,2010-01-06,2026-11-15,2330,True,True,FedEx Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+FE,FirstEnergy,Utilities,2010-01-06,2026-11-15,2330,True,True,FirstEnergy Corp. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FIS,Fidelity National Information Services,Financials,2010-01-06,2026-11-15,2330,True,True,Fidelity National Information Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+FITB,Fifth Third Bancorp,Financials,2010-01-06,2026-11-15,2330,True,True,Fifth Third Bancorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+GD,General Dynamics,Industrials,2010-01-06,2026-11-15,2330,True,True,General Dynamics Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+GE,GE Aerospace,Industrials,2010-01-06,2026-11-15,2330,True,True,GE Aerospace Common Stock,NYSE,True,True,True,True,actual_e_historico
+GIS,General Mills,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,General Mills Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+GLW,Corning Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,Corning Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+GPC,Genuine Parts Company,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Genuine Parts Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+GS,Goldman Sachs,Financials,2010-01-06,2026-11-15,2330,True,True,Goldman Sachs Group Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+GWW,W. W. Grainger,Industrials,2010-01-06,2026-11-15,2330,True,True,W.W. Grainger Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HAL,Halliburton,Energy,2010-01-06,2026-11-15,2330,True,True,Halliburton Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+HD,Home Depot (The),Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Home Depot Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+HIG,Hartford (The),Financials,2010-01-06,2026-11-15,2330,True,True,The Hartford Insurance Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HPQ,HP Inc.,Information Technology,2010-01-06,2026-11-15,2330,True,True,HP Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+HRL,Hormel Foods,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Hormel Foods Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+HSY,Hershey Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,The Hershey Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+HUM,Humana,Health Care,2010-01-06,2026-11-15,2330,True,True,Humana Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IBM,IBM,Information Technology,2010-01-06,2026-11-15,2330,True,True,International Business Machines Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ICE,Intercontinental Exchange,Financials,2010-01-06,2026-11-15,2330,True,True,Intercontinental Exchange Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IFF,International Flavors & Fragrances,Materials,2010-01-06,2026-11-15,2330,True,True,International Flavors & Fragrances Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IP,International Paper,Materials,2010-01-06,2026-11-15,2330,True,True,International Paper Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+IRM,Iron Mountain,Real Estate,2010-01-06,2026-11-15,2330,True,True,Iron Mountain Incorporated (Delaware)Common Stock REIT,NYSE,True,True,True,True,actual_e_historico
+ITW,Illinois Tool Works,Industrials,2010-01-06,2026-11-15,2330,True,True,Illinois Tool Works Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+IVZ,Invesco,Financials,2010-01-06,2026-11-15,2330,True,True,Invesco Ltd Common Stock,NYSE,True,True,True,True,actual_e_historico
+JCI,Johnson Controls,Industrials,2010-01-06,2026-11-15,2330,True,True,Johnson Controls International plc Ordinary Share,NYSE,True,True,True,True,actual_e_historico
+JNJ,Johnson & Johnson,Health Care,2010-01-06,2026-11-15,2330,True,True,Johnson & Johnson Common Stock,NYSE,True,True,True,True,actual_e_historico
+JPM,JPMorgan Chase,Financials,2010-01-06,2026-11-15,2330,True,True,JP Morgan Chase & Co. Common Stock,NYSE,True,True,True,True,actual_e_historico
+KEY,KeyCorp,Financials,2010-01-06,2026-11-15,2330,True,True,KeyCorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+KIM,Kimco Realty,Real Estate,2010-01-06,2026-11-15,2330,True,True,Kimco Realty Corporation (HC) Common Stock,NYSE,True,True,True,True,actual_e_historico
+KO,Coca-Cola Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Coca-Cola Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+KR,Kroger,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Kroger Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+L,Loews Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Loews Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+LEN,Lennar,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Lennar Corporation Class A Common Stock,NYSE,True,True,True,True,actual_e_historico
+LH,Labcorp,Health Care,2010-01-06,2026-11-15,2330,True,True,Labcorp Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LLY,Lilly (Eli),Health Care,2010-01-06,2026-11-15,2330,True,True,Eli Lilly and Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+LMT,Lockheed Martin,Industrials,2010-01-06,2026-11-15,2330,True,True,Lockheed Martin Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+LOW,Lowe's,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Lowe's Companies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+LUV,Southwest Airlines,Industrials,2010-01-06,2026-11-15,2330,True,True,Southwest Airlines Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+MA,Mastercard,Financials,2010-01-06,2026-11-15,2330,True,True,Mastercard Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+MAS,Masco,Industrials,2010-01-06,2026-11-15,2330,True,True,Masco Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MCD,McDonald's,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,McDonald's Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MCK,McKesson,Health Care,2010-01-06,2026-11-15,2330,True,True,McKesson Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MCO,Moody's Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Moody's Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+MDT,Medtronic,Health Care,2010-01-06,2026-11-15,2330,True,True,Medtronic plc. Ordinary Shares,NYSE,True,True,True,True,actual_e_historico
+MET,MetLife,Financials,2010-01-06,2026-11-15,2330,True,True,MetLife Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MKC,McCormick & Company,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,McCormick & Company Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+MMM,3M,Industrials,2010-01-06,2026-11-15,2330,True,True,3M Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+MO,Altria,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Altria Group Inc.,NYSE,True,True,True,True,actual_e_historico
+MRK,Merck & Co.,Health Care,2010-01-06,2026-11-15,2330,True,True,Merck & Company Inc. Common Stock (new),NYSE,True,True,True,True,actual_e_historico
+MS,Morgan Stanley,Financials,2010-01-06,2026-11-15,2330,True,True,Morgan Stanley Common Stock,NYSE,True,True,True,True,actual_e_historico
+MSI,Motorola Solutions,Information Technology,2010-01-06,2026-11-15,2330,True,True,Motorola Solutions Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+MTB,M&T Bank,Financials,2010-01-06,2026-11-15,2330,True,True,M&T Bank Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NEE,NextEra Energy,Utilities,2010-01-06,2026-11-15,2330,True,True,NextEra Energy Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NEM,Newmont,Materials,2010-01-06,2026-11-15,2330,True,True,Newmont Corporation,NYSE,True,True,True,True,actual_e_historico
+NI,NiSource,Utilities,2010-01-06,2026-11-15,2330,True,True,NiSource Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+NKE,"Nike, Inc.",Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Nike Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+NOC,Northrop Grumman,Industrials,2010-01-06,2026-11-15,2330,True,True,Northrop Grumman Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NSC,Norfolk Southern,Industrials,2010-01-06,2026-11-15,2330,True,True,Norfolk Southern Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+NUE,Nucor,Materials,2010-01-06,2026-11-15,2330,True,True,Nucor Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+OMC,Omnicom Group,Communication Services,2010-01-06,2026-11-15,2330,True,True,Omnicom Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+ORCL,Oracle Corporation,Information Technology,2010-01-06,2026-11-15,2330,True,True,Oracle Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+OXY,Occidental Petroleum,Energy,2010-01-06,2026-11-15,2330,True,True,Occidental Petroleum Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PEG,Public Service Enterprise Group,Utilities,2010-01-06,2026-11-15,2330,True,True,Public Service Enterprise Group Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+PFE,Pfizer,Health Care,2010-01-06,2026-11-15,2330,True,True,Pfizer Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PG,Procter & Gamble,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Procter & Gamble Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PGR,Progressive Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Progressive Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PH,Parker Hannifin,Industrials,2010-01-06,2026-11-15,2330,True,True,Parker-Hannifin Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PHM,PulteGroup,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,PulteGroup Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PLD,Prologis,Real Estate,2010-01-06,2026-11-15,2330,True,True,Prologis Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PM,Philip Morris International,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Philip Morris International Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+PNC,PNC Financial Services,Financials,2010-01-06,2026-11-15,2330,True,True,PNC Financial Services Group Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+PNW,Pinnacle West Capital,Utilities,2010-01-06,2026-11-15,2330,True,True,Pinnacle West Capital Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PPG,PPG Industries,Materials,2010-01-06,2026-11-15,2330,True,True,PPG Industries Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PPL,PPL Corporation,Utilities,2010-01-06,2026-11-15,2330,True,True,PPL Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+PRU,Prudential Financial,Financials,2010-01-06,2026-11-15,2330,True,True,Prudential Financial Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+PSA,Public Storage,Real Estate,2010-01-06,2026-11-15,2330,True,True,Public Storage Common Stock,NYSE,True,True,True,True,actual_e_historico
+PWR,Quanta Services,Industrials,2010-01-06,2026-11-15,2330,True,True,Quanta Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RF,Regions Financial Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Regions Financial Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+RL,Ralph Lauren Corporation,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Ralph Lauren Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+ROK,Rockwell Automation,Industrials,2010-01-06,2026-11-15,2330,True,True,Rockwell Automation Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+RSG,Republic Services,Industrials,2010-01-06,2026-11-15,2330,True,True,Republic Services Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SCHW,Charles Schwab Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,Charles Schwab Corporation (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SHW,Sherwin-Williams,Materials,2010-01-06,2026-11-15,2330,True,True,Sherwin-Williams Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SJM,J.M. Smucker Company (The),Consumer Staples,2010-01-06,2026-11-15,2330,True,True,The J.M. Smucker Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+SLB,Schlumberger,Energy,2010-01-06,2026-11-15,2330,True,True,SLB Limited Common Shares,NYSE,True,True,True,True,actual_e_historico
+SNA,Snap-on,Industrials,2010-01-06,2026-11-15,2330,True,True,Snap-On Incorporated Common Stock,NYSE,True,True,True,True,actual_e_historico
+SO,Southern Company,Utilities,2010-01-06,2026-11-15,2330,True,True,Southern Company (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+SPG,Simon Property Group,Real Estate,2010-01-06,2026-11-15,2330,True,True,Simon Property Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SPGI,S&P Global,Financials,2010-01-06,2026-11-15,2330,True,True,S&P Global Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SRE,Sempra,Utilities,2010-01-06,2026-11-15,2330,True,True,DBA Sempra Common Stock,NYSE,True,True,True,True,actual_e_historico
+STT,State Street Corporation,Financials,2010-01-06,2026-11-15,2330,True,True,State Street Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+STZ,Constellation Brands,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Constellation Brands Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SWK,Stanley Black & Decker,Industrials,2010-01-06,2026-11-15,2330,True,True,Stanley Black & Decker Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+SYK,Stryker Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Stryker Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+SYY,Sysco,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Sysco Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+T,AT&T,Communication Services,2010-01-06,2026-11-15,2330,True,True,AT&T Inc.,NYSE,True,True,True,True,actual_e_historico
+TGT,Target Corporation,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Target Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+TJX,TJX Companies,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,TJX Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+TMO,Thermo Fisher Scientific,Health Care,2010-01-06,2026-11-15,2330,True,True,Thermo Fisher Scientific Inc Common Stock,NYSE,True,True,True,True,actual_e_historico
+TPR,"Tapestry, Inc.",Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Tapestry Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TRV,Travelers Companies (The),Financials,2010-01-06,2026-11-15,2330,True,True,The Travelers Companies Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TSN,Tyson Foods,Consumer Staples,2010-01-06,2026-11-15,2330,True,True,Tyson Foods Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+TXT,Textron,Industrials,2010-01-06,2026-11-15,2330,True,True,Textron Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+UNH,UnitedHealth Group,Health Care,2010-01-06,2026-11-15,2330,True,True,UnitedHealth Group Incorporated Common Stock (DE),NYSE,True,True,True,True,actual_e_historico
+UNP,Union Pacific Corporation,Industrials,2010-01-06,2026-11-15,2330,True,True,Union Pacific Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+UPS,United Parcel Service,Industrials,2010-01-06,2026-11-15,2330,True,True,United Parcel Service Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+USB,U.S. Bancorp,Financials,2010-01-06,2026-11-15,2330,True,True,U.S. Bancorp Common Stock,NYSE,True,True,True,True,actual_e_historico
+V,Visa Inc.,Financials,2010-01-06,2026-11-15,2330,True,True,Visa Inc.,NYSE,True,True,True,True,actual_e_historico
+VLO,Valero Energy,Energy,2010-01-06,2026-11-15,2330,True,True,Valero Energy Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+VMC,Vulcan Materials Company,Materials,2010-01-06,2026-11-15,2330,True,True,Vulcan Materials Company (Holding Company) Common Stock,NYSE,True,True,True,True,actual_e_historico
+VTR,Ventas,Real Estate,2010-01-06,2026-11-15,2330,True,True,Ventas Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+VZ,Verizon,Communication Services,2010-01-06,2026-11-15,2330,True,True,Verizon Communications Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WAT,Waters Corporation,Health Care,2010-01-06,2026-11-15,2330,True,True,Waters Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+WEC,WEC Energy Group,Utilities,2010-01-06,2026-11-15,2330,True,True,WEC Energy Group Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WELL,Welltower,Real Estate,2010-01-06,2026-11-15,2330,True,True,Welltower Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WFC,Wells Fargo,Financials,2010-01-06,2026-11-15,2330,True,True,Wells Fargo & Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+WM,Waste Management,Industrials,2010-01-06,2026-11-15,2330,True,True,Waste Management Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
+WMB,Williams Companies,Energy,2010-01-06,2026-11-15,2330,True,True,Williams Companies Inc. (The) Common Stock,NYSE,True,True,True,True,actual_e_historico
+WY,Weyerhaeuser,Real Estate,2010-01-06,2026-11-15,2330,True,True,Weyerhaeuser Company Common Stock,NYSE,True,True,True,True,actual_e_historico
+XOM,ExxonMobil,Energy,2010-01-06,2026-11-15,2330,True,True,ExxonMobil Holdings Corporation Common Stock,NYSE,True,True,True,True,actual_e_historico
+YUM,Yum! Brands,Consumer Discretionary,2010-01-06,2026-11-15,2330,True,True,Yum! Brands Inc.,NYSE,True,True,True,True,actual_e_historico
+ZBH,Zimmer Biomet,Health Care,2010-01-06,2026-11-15,2330,True,True,Zimmer Biomet Holdings Inc. Common Stock,NYSE,True,True,True,True,actual_e_historico
