@@ -138,13 +138,29 @@ select conjunto, count(*), count_if(elegible) from PORTAFOLIO.OBT.OBT_ACCION_MES
 `pruebas_locales/` carga en DuckDB una muestra real pequeña: la composición completa del S&P 500, ORCL, UBER y VST, y VTI y QQQ como sustitutos de los índices. Con eso corre el mismo proyecto dbt (target `local`) y el job de Spark en modo local. Sirve solo para verificar el código; no son los datos del proyecto.
 
 ```bash
-pip install dbt-duckdb duckdb pandas pyarrow "pyspark==3.5.3"   # requiere Java 17
-python pruebas_locales/cargar_muestra.py
-(cd dbt && DBT_PROFILES_DIR=. dbt build --target local --vars '{exigir_tasa_libre_riesgo: false, fecha_inicio: "2016-11-14"}')
-python pruebas_locales/probar_spark_local.py
+uv sync --group dev --group pruebas-locales   # .venv con Python 3.11 + pyspark (~317 MB); Spark requiere Java 17
+uv run python pruebas_locales/cargar_muestra.py
+(cd dbt && DBT_PROFILES_DIR=. uv run dbt build --target local --vars '{exigir_tasa_libre_riesgo: false, fecha_inicio: "2016-11-14"}')
+uv run python pruebas_locales/probar_spark_local.py
 ```
 
 Resultado histórico de la muestra del borrador, antes de añadir la dimensión Gold de membresía: `PASS=89 WARN=1 ERROR=0` (la advertencia es `assert_cobertura_sp500_por_dia`, porque la muestra solo tiene 3 acciones). Como la muestra empieza en 2016, hay que pasar `fecha_inicio: "2016-11-14"` en `--vars`. Spark imprime 11 controles `[OK]` y escribe la OBT con 330 filas.
+
+### Pruebas unitarias (pytest)
+
+Las pruebas arman sus datos a mano; no leen `data/` ni Snowflake.
+
+```bash
+uv sync --group dev
+uv run python -m pytest -q          # kestra/tests (símbolos); las de Spark se saltan sin pyspark
+uv sync --group dev --group pruebas-locales
+uv run python -m pytest -q          # incluye spark/tests (requiere Java 17)
+```
+
+`spark/tests/test_construir_obt.py` construye la OBT con 2 acciones y tres meses
+(nov-2023 a ene-2024) y verifica el grano acción × mes cerrado, las 43 columnas, el
+objetivo del mes siguiente, el corte de entrenamiento y que los controles fallan cuando
+se duplica una dimensión o un hecho, o falta un mes de mercado.
 
 ### Alcance de la migración
 
@@ -156,8 +172,11 @@ como referencia en `draft/psets/pset-02/analisis/equivalencias_tickers.py`.
 No es necesario ejecutarlo para usar los seeds transferidos.
 
 `scripts/` y `pruebas_locales/` complementan la estructura del PDF.
-Para instalar las dependencias locales, usa un entorno virtual y
-`pip install -r requirements.txt`. Las imágenes tienen dependencias propias.
+El entorno local es un proyecto uv de esta carpeta (`pyproject.toml` + `uv.lock`,
+Python 3.11): `uv sync --group dev` y luego `uv run ...`. pyspark solo se instala con
+`--group pruebas-locales` (para `pruebas_locales/`): la corrida real usa Spark dentro de su imagen. Los `requirements.txt` (local y
+`kestra/requirements.txt` de la imagen de ingesta) se generan desde el lock con
+`bash scripts/exportar_requirements.sh`; no se editan a mano.
 Consulta [el registro de migración](docs/migracion.md).
 La muestra local de DuckDB indicada arriba es evidencia histórica del borrador. Las ejecuciones reales posteriores de dbt y Spark contra Snowflake desde esta rama están documentadas en `docs/corrida/` y `docs/cumplimiento.md`.
 
