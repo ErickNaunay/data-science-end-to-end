@@ -24,7 +24,7 @@ graph LR
       style 5 fill:#438dd5,stroke:#2e6295,color:#ffffff
       6[("<div style='font-weight: bold'>Postgres</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL 18 · Docker]</div><div style='font-size: 80%; margin-top:10px'>Estado interno de Kestra<br />(flows, ejecuciones, colas).</div>")]
       style 6 fill:#2a6a4f,stroke:#1d4a37,color:#ffffff
-      7["<div style='font-weight: bold'>Tarea de ingesta</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python 3.12 · imagen pset2-ingesta]</div><div style='font-size: 80%; margin-top:10px'>extraer_cargar.py: descarga<br />precios, composición y<br />listados; traduce símbolos<br />con equivalencias_tickers y<br />carga a RAW (append-only, con<br />lote).</div>"]
+      7["<div style='font-weight: bold'>Tarea de ingesta</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python 3.11 · imagen pset2-ingesta]</div><div style='font-size: 80%; margin-top:10px'>extraer_cargar.py: descarga<br />precios, composición y<br />listados; traduce símbolos<br />con equivalencias_tickers y<br />carga a RAW (append-only, con<br />lote).</div>"]
       style 7 fill:#438dd5,stroke:#2e6295,color:#ffffff
       8["<div style='font-weight: bold'>Tarea dbt</div><div style='font-size: 70%; margin-top: 0px'>[Container: dbt Core + dbt-snowflake · imagen pset2-dbt]</div><div style='font-size: 80%; margin-top:10px'>dbt build: Bronze (staging:<br />tipos, deduplicación), Silver<br />(calendario NYSE, imputación<br />de huecos cortos, retornos,<br />membresía), Gold (dos hechos<br />y tres dimensiones, incluida<br />membresía histórica) y<br />CALIDAD; tests de integridad<br />y negocio.</div>"]
       style 8 fill:#438dd5,stroke:#2e6295,color:#ffffff

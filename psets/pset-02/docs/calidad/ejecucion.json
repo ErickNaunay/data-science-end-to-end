@@ -1,6 +1,6 @@
 {
-  "inicio_utc": "2026-11-16T01:37:14.937032+00:00",
-  "fin_utc": "2026-11-16T01:37:36.874194+00:00",
+  "inicio_utc": "2026-11-16T03:20:41.776141+00:00",
+  "fin_utc": "2026-11-16T03:21:14.159556+00:00",
   "base": "PORTAFOLIO",
   "zona_sesion": "UTC (INGESTA_TS se almacena como UTC sin zona)",
   "modo": "solo SELECT; no se escribe Snowflake",

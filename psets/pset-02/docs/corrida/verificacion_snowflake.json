@@ -1,14 +1,14 @@
 {
   "estado": "OK",
-  "verificado_utc": "2026-11-16T01:37:05.155782+00:00",
+  "verificado_utc": "2026-11-16T03:19:36.645228+00:00",
   "obt_filas": 87178,
   "obt_claves_distintas": 87178,
   "obt_elegibles": 58628,
   "obt_columnas": 43,
   "controles_ok": 13,
   "controles_fallidos": 0,
-  "controles_ejecutados_en": "2026-11-16 01:35:45.552029",
-  "raw_filas": 3708298,
-  "ultima_ingesta": "2026-11-16 00:32:44.103565",
+  "controles_ejecutados_en": "2026-11-16 03:14:40.477272",
+  "raw_filas": 3713348,
+  "ultima_ingesta": "2026-11-16 03:08:18.230701",
   "operacion": "SELECT; sin escrituras"
 }

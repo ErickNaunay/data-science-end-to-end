@@ -1,3 +1,10 @@
+"""Genera docs/PSet2_memo_Gomez_Ehmig.pdf (6 paginas tecnicas + anexos) y
+docs/PSet2_memo_fuente.txt (texto plano del mismo memo, solo salida).
+
+Las cifras se leen de la evidencia en docs/corrida/ y docs/calidad/; el texto se edita aqui.
+Uso, desde psets/pset-02:
+  uv run python scripts/generar_memo.py
+"""
 from pathlib import Path
 import csv,json
 from xml.sax.saxutils import escape
@@ -19,6 +26,7 @@ models_count=sum(r['unique_id'].startswith('model.') for r in build_results)
 valid=list(csv.DictReader((E/'validacion_obt.csv').open())); states=json.loads((E/'kestra_estados.json').read_text())
 style=getSampleStyleSheet(); style.add(ParagraphStyle(name='TitleX',fontName='Helvetica-Bold',fontSize=21,leading=25,textColor=colors.HexColor('#17384D'),spaceAfter=14)); style.add(ParagraphStyle(name='BodyX',fontName='Helvetica',fontSize=10,leading=14,spaceAfter=9)); style.add(ParagraphStyle(name='SmallX',fontName='Helvetica',fontSize=8,leading=10,spaceAfter=6)); style.add(ParagraphStyle(name='HeadX',fontName='Helvetica-Bold',fontSize=13,leading=17,textColor=colors.HexColor('#17384D'),spaceBefore=10,spaceAfter=8))
 story=[]; plain=[]
+def n(x):return f'{int(x):,}'.replace(',','.')
 def p(text,sty='BodyX'):
  story.append(Paragraph(text.replace("&", "&amp;"),style[sty])); plain.append(text)
 def title(text): p(text,'TitleX')
@@ -60,82 +68,85 @@ def flow():
 
 title('PSet 2 | Pipeline de datos end-to-end')
 p('Allan Paul Gómez Ehmig · 00351916<br/>MSDS 6003 · USFQ · Verificación: 15 de noviembre de 2026 (Ecuador)','SmallX')
-h('1. Arquitectura implementada')
+h('1. Arquitectura')
 p('El pipeline prepara datos para la decisión mensual de un asesor de inversiones: seleccionar acciones del S&P 500 vinculadas a la NYSE. La aprobación del inversionista y el entrenamiento de modelos quedan fuera de este PSet. El resultado es una OBT de acción por mes, junto con el star schema que permite auditar sus insumos.')
 story.append(flow())
 p('Figura 1. Infraestructura implementada y flujo de datos. Kestra orquesta ingesta, dbt y Spark. dbt ejecuta las tres transiciones RAW-Bronze-Silver-Gold. Los anexos A-C incorporan el flujo detallado y las vistas C4 de contexto y contenedores, generadas desde docs/structurizr/workspace.dsl.','SmallX')
 p('Docker Compose mantiene Kestra, Postgres y Spark maestro/trabajador. Kestra ejecuta tres imágenes de tarea: ingesta en Python, dbt Core y el driver Spark. Postgres conserva el estado del orquestador; los datos analíticos residen en Snowflake, base PORTAFOLIO, esquemas RAW, BRONZE, SILVER, GOLD, CALIDAD y OBT.')
 p('La autenticación de Snowflake usa un usuario de servicio y llave privada. Las credenciales llegan por variables de entorno o secretos de Kestra; no forman parte del repositorio. El checkout usa psets/pset-02/; el ZIP exporta pset_2/, como indica la guía.')
-page(); title('2. Ingesta y operación')
+page(); title('2. Ingesta')
 table(['Fuente','Grano / uso'],[['Yahoo Finance (yfinance)','OHLCV por símbolo y fecha; ^GSPC, ^NYA y ^IRX como referentes.'],['chinobing/historical_sp500_constituents','Foto fechada de la lista de miembros; incluye empresas que salieron del índice.'],['rreichel3/US-Stock-Symbols','Símbolo por snapshot del listado actual; no prueba la bolsa histórica.'],['Seeds versionados','Calendario NYSE y equivalencias de símbolos.']],[190,290])
 p('La extracción normaliza punto, barra y guion en los símbolos y traduce cambios de ticker mediante un seed. RAW conserva cargas append-only con LOTE_ID e INGESTA_TS (precio por símbolo-fecha-lote; fotos y listados por lote); una recarga aumenta las filas crudas, pero Bronze conserva la versión más reciente por clave. Esto permite repetir una ventana sin duplicar el hecho analítico.')
 h('Trigger y frecuencia de ejecución')
 p('El trigger cierre_nyse usa cron 30 18 * * 1-5 y zona America/New_York: lunes a viernes a las 18:30, después del cierre habitual. El cron no excluye feriados bursátiles. ingesta_diaria consulta desde fecha menos 11 días naturales hasta fecha, ambos inclusive; los lunes carga también composición y listados. recoverMissedSchedules=ALL configura la recuperación de horarios perdidos al reiniciar Kestra. El input fecha permite reprocesar un día. Se verificó por API, no mediante un disparo del reloj en su horario real.')
 h('Manejo de errores y retries')
-p('Python descarga grupos de 100 símbolos y realiza hasta tres intentos ante excepciones. Registra OK, SIN_DATOS o ERROR en RAW.INGESTA_LOG. Si más del 10% de los grupos agota sus intentos, la tarea falla; SIN_DATOS no dispara por sí solo ese fallo. Por eso una ejecución exitosa no garantiza cobertura completa.')
+p('Python descarga grupos de 100 símbolos y realiza hasta tres intentos ante excepciones. Registra OK, SIN_DATOS o ERROR en RAW.INGESTA_LOG. Si más del 10 % de los grupos agota sus intentos, la tarea falla; SIN_DATOS no dispara por sí solo ese fallo. Por eso una ejecución exitosa no garantiza cobertura completa.')
 p('Kestra reintenta la tarea diaria con espera exponencial desde 2 min, tope 30 min y maxAttempts=4. En transformar, dbt configura maxAttempts=2 con espera constante de 1 min; Spark, maxAttempts=2 y 2 min. Si persiste el error, el flow registra ERROR. El subflow se espera y propaga el fallo (wait y transmitFailed); si dbt falla, Spark no comienza. Se revisan logs de Kestra y la bitácora RAW para decidir la recuperación.')
 h('Backfill de datos históricos')
 p('backfill_historico se lanza por UI o API, sin trigger periódico, con anio_desde y anio_hasta (2010-2026 por defecto). Un bucle shell carga cada año y solo al finalizar ejecuta transformar una vez. Configura espera exponencial desde 5 min, tope 1 h y maxAttempts=3. El retry repite toda la tarea, no solo el año fallido. Para reanudar manualmente, se consulta el último año en los logs y se fija anio_desde a ese año. RAW conserva lo ya cargado; Bronze deduplica por clave, evitando duplicar el hecho analítico.')
 h('Evidencia operativa')
-p('Backfill histórico SUCCESS: 3Fp8GRgzmNcyj7Xnd5GJf5; retry histórico fallido: 7LTsUVocdrwvwyhQxiiC4H. Son previos a esta revisión. La corrida aislada de proyecto 1LHXSfcznOJ6wf9DocpwSJ terminó SUCCESS. Las tareas y estados se conservan en docs/corrida/.','SmallX')
-p(f'Última construcción dbt: {passed} resultados correctos, {warned} advertencia(s) y {failed} errores ({models_count} modelos, 2 seeds, {tests_count} tests). Evidencia: docs/corrida/{build_evidence.name}. La prueba previa de frescura aprobó cuatro fuentes; no garantiza cobertura.','SmallX')
-page(); title('3. Calidad y decisiones de limpieza')
-p('scripts/diagnosticar_calidad.py consulta RAW antes de la limpieza dbt y perfila por separado las capas posteriores: 22 tablas, 236 columnas. Guarda inventario, porcentajes por columna, decisiones, SQL y query IDs en docs/calidad/. RAW ya contiene el tipado de ingesta; el diagnóstico no escribe ni imputa datos.')
+p('Backfill histórico SUCCESS: 3Fp8GRgzmNcyj7Xnd5GJf5; retry histórico fallido: 7LTsUVocdrwvwyhQxiiC4H (previos a esta revisión). Última corrida de punta a punta, con la imagen de ingesta en Python 3.11 (15-nov-2026): ingesta_diaria 5mNgM5uCz2x5OjKgoFPdgs y transformar 70422bkWyfGCphbma0n244, ambas SUCCESS. Recargó once días ya cargados: RAW creció en 5.050 filas y Gold no cambió, lo que comprueba la deduplicación. Estados y logs en docs/corrida/.','SmallX')
+p(f'Última construcción dbt: {passed} resultados correctos, {warned} advertencia(s) y {failed} errores ({models_count} modelos, 2 seeds, {tests_count} tests). Evidencia: docs/corrida/kestra_transformar_70422bk.txt (log de esta corrida) y docs/corrida/{build_evidence.name} (detalle por test). La prueba previa de frescura aprobó cuatro fuentes; no garantiza cobertura.','SmallX')
+page(); title('3. Data Quality')
+p('scripts/diagnosticar_calidad.py consulta RAW antes de la limpieza dbt y perfila por separado las capas posteriores: 22 tablas, 236 columnas. Guarda inventario, porcentajes por columna, decisiones, SQL y query IDs en docs/calidad/. RAW ya contiene el tipado de ingesta; el diagnóstico no escribe ni imputa datos. La tabla cubre las cuatro dimensiones: completitud, precisión, consistencia y validez.')
 perfil={(r['tabla'],r['columna']):r for r in csv.DictReader((D/'calidad/perfil_columnas.csv').open())}
 problemas=list(csv.DictReader((D/'calidad/problemas_raw.csv').open()))
-def tasa(v):return f'{float(v):.6f}'.rstrip('0').rstrip('.')
+def tasa(v):
+ v=float(v); s=f'{v:.2f}' if v>=0.01 or v==0 else f'{v:.6f}'.rstrip('0')
+ return s.replace('.',',')
 def problema(inicio):return next(r for r in problemas if r['problema'].startswith(inicio))
-def evidencia(r):return f"{int(r['afectados']):,}/{int(r['denominador']):,} ({tasa(r['porcentaje'])}%)"
+def evidencia(r):return f"{n(r['afectados'])}/{n(r['denominador'])} ({tasa(r['porcentaje'])} %)"
 open_raw=perfil[('RAW.PRECIOS_DIARIOS','OPEN')]
 flags=[perfil[('RAW.LISTADOS_BOLSA',c)] for c in ['ES_ETF','ES_PRUEBA']]
 raw_tab=next(r for r in csv.DictReader((D/'calidad/perfil_tablas.csv').open()) if r['tabla']=='RAW.PRECIOS_DIARIOS')
 max_faltantes=max(float(perfil[('RAW.PRECIOS_DIARIOS',c)]['faltantes_pct']) for c in ['OPEN','HIGH','LOW','CLOSE','ADJ_CLOSE','VOLUME'])
 iqr=problema('Retornos fuera');huecos=problema('Sesiones sin fila');sin_datos=problema('Símbolos sin precios');fotos=problema('Fotos de composición')
-table(['Problema / evidencia RAW','Acción en dbt','Justificación'],[
- [f"ES_ETF / ES_PRUEBA: {tasa(flags[0]['faltantes_pct'])}% / {tasa(flags[1]['faltantes_pct'])}% faltantes en {int(flags[0]['filas']):,} filas.",'Bronze conserva NULL; convierte solo Y/N conocidos.','El JSON no aporta los flags. Se corrigió el reemplazo implícito por false.'],
- [f"OPEN inválido: {open_raw['invalidos']}/{open_raw['filas']} ({tasa(open_raw['invalidos_pct'])}%). Máximo de faltantes por columna OHLCV: {tasa(max_faltantes)}%.",'Silver excluye observaciones inválidas; conserva RAW.','Un precio no positivo impide log-precios. No confundir filas presentes con cobertura completa.'],
- [f"Reingestas: {tasa(raw_tab['redundantes_pct'])}% de filas de precios redundantes.",'Bronze elige última ingesta/lote por clave.','RAW append-only conserva auditoría; no duplicar hechos.'],
- ['Retornos atípicos (1,5 IQR por acción): '+evidencia(iqr)+'.','Revisar, sin borrado ni winsorización automática.','Colas financieras reales pueden ser atípicas; IQR no prueba error.'],
- ['Sesiones sin fila, entre primera y última cotización: '+evidencia(huecos)+'.','Silver: grilla NYSE; interpolar huecos cortos, excluir largos.','No inventar historias de empresas sin precios. Denominador: sesiones esperadas en vida observada.'],
- ['Solicitudes SIN_DATOS: '+evidencia(sin_datos)+'.','Conservar bitácora y limitación de cobertura.','0% nulos en precios recibidos no significa que Yahoo respondió a todo.'],
- ['Fotos con menos de 495 símbolos: '+evidencia(fotos)+'.','No completar miembros sin fuente verificable.','Métrica RAW; difiere de Bronze tras normalizar/deduplicar símbolos.']],[200,130,150])
-p('Staging/Bronze se genera con dbt: tipos, normalización, claves y deduplicación. Silver continúa la limpieza: interpola log-cierre y log-apertura ajustados en huecos internos de hasta cinco sesiones, con marca; no imputa OHLC original ni volumen. Huecos largos se excluyen y el retorno al reanudar queda nulo. ^IRX usa el último valor observado. El snapshot registra 0% de días interpolados.')
+DIM={'completitud':'Completitud','precision':'Precisión','consistencia':'Consistencia','validez':'Validez'}
+table(['Dimensión','Problema / evidencia RAW','Acción en dbt','Justificación'],[
+ ['Completitud',f"ES_ETF / ES_PRUEBA: {tasa(flags[0]['faltantes_pct'])} % / {tasa(flags[1]['faltantes_pct'])} % faltantes en {n(flags[0]['filas'])} filas.",'Bronze conserva NULL; convierte solo Y/N conocidos.','El JSON no aporta los flags. Se corrigió el reemplazo implícito por false.'],
+ ['Validez',f"OPEN inválido: {n(open_raw['invalidos'])}/{n(open_raw['filas'])} ({tasa(open_raw['invalidos_pct'])} %). Máximo de faltantes por columna OHLCV: {tasa(max_faltantes)} %.",'Silver excluye observaciones inválidas; conserva RAW.','Un precio no positivo impide log-precios. No confundir filas presentes con cobertura completa.'],
+ ['Consistencia (unicidad)',f"Reingestas: {tasa(raw_tab['redundantes_pct'])} % de filas de precios redundantes.",'Bronze elige última ingesta/lote por clave.','RAW append-only conserva auditoría; no duplicar hechos.'],
+ [DIM[iqr['dimension']],'Retornos atípicos (1,5 IQR por acción): '+evidencia(iqr)+'.','Revisar, sin borrado ni winsorización automática.','Colas financieras reales pueden ser atípicas; IQR no prueba error.'],
+ [DIM[huecos['dimension']],'Sesiones sin fila, entre primera y última cotización: '+evidencia(huecos)+'.','Silver: grilla NYSE; interpolar huecos cortos, excluir largos.','No inventar historias de empresas sin precios. Denominador: sesiones esperadas en vida observada.'],
+ [DIM[sin_datos['dimension']],'Solicitudes SIN_DATOS: '+evidencia(sin_datos)+'.','Conservar bitácora y limitación de cobertura.','0 % de nulos en precios recibidos no significa que Yahoo respondió a todo.'],
+ [DIM[fotos['dimension']],'Fotos con menos de 495 símbolos: '+evidencia(fotos)+'.','No completar miembros sin fuente verificable.','Métrica RAW; difiere de Bronze tras normalizar/deduplicar símbolos.']],[62,170,118,130])
+p('Staging/Bronze se genera con dbt: tipos, normalización, claves y deduplicación. Silver continúa la limpieza: interpola log-cierre y log-apertura ajustados en huecos internos de hasta cinco sesiones, con marca; no imputa OHLC original ni volumen. Huecos largos se excluyen y el retorno al reanudar queda nulo. ^IRX usa el último valor observado. El snapshot registra 0 % de días interpolados.')
 p('Precisión: coherencia OHLC y retornos son pruebas de plausibilidad, no contraste oficial. La interpolación usa un vecino posterior y requiere auditar fuga temporal. La construcción dbt actual conserva la advertencia de cobertura: 1.615 fechas con menos de 400 miembros con precio. Los flags desconocidos de listados permanecen NULL.','SmallX')
-page(); title('4. Transformaciones y modelo dimensional')
-p('Bronze es staging: tipos, normalización y deduplicación. Silver integra calendario, membresía, precios válidos y retornos. Gold publica dos hechos diarios y tres dimensiones. Precios se relaciona con acción, fecha y membresía; mercado comparte fecha. Todas las dimensiones de consumo están en Gold. Una única tabla de hechos también puede formar una estrella. source() y ref() ordenan el DAG sin dependencias inversas entre capas.')
+page(); title('4. Transformaciones y modelado')
+p('Bronze es staging: tipos, normalización y deduplicación. Silver integra calendario, membresía, precios válidos y retornos. Gold publica dos hechos diarios y tres dimensiones. Precios se relaciona con acción, fecha y membresía; mercado comparte fecha. Todas las dimensiones de consumo están en Gold. source() y ref() ordenan el DAG sin dependencias inversas entre capas.')
 img=Image(str(D/'modelo_dimensional.png')); ratio=img.imageHeight/img.imageWidth; img.drawWidth=480; img.drawHeight=480*ratio; story.append(img)
 p('Figura 2. Modelo dimensional Gold: dos estrellas comparten fecha. La membresía histórica también es una dimensión Gold; su clave es opcional fuera del índice. PK/FK lógicas, verificadas con dbt. Fuente: docs/modelo_dimensional.dot.','SmallX')
-table(['Objeto','Grano','Filas'],[['DIM_ACCION','Un símbolo normalizado (proxy de acción)',f"{counts['GOLD.DIM_ACCION']:,}"],['DIM_FECHA','Un día bursátil',f"{counts['GOLD.DIM_FECHA']:,}"],['DIM_MEMBRESIA_SP500','Un intervalo por símbolo',f"{counts['GOLD.DIM_MEMBRESIA_SP500']:,}"],['FCT_PRECIOS_DIARIOS','Una acción por día bursátil',f"{counts['GOLD.FCT_PRECIOS_DIARIOS']:,}"],['FCT_MERCADO_DIARIO','Un día bursátil',f"{counts['GOLD.FCT_MERCADO_DIARIO']:,}"]],[175,220,85])
+table(['Objeto','Grano','Filas'],[['DIM_ACCION','Un símbolo normalizado (proxy de acción)',n(counts['GOLD.DIM_ACCION'])],['DIM_FECHA','Un día bursátil',n(counts['GOLD.DIM_FECHA'])],['DIM_MEMBRESIA_SP500','Un intervalo por símbolo',n(counts['GOLD.DIM_MEMBRESIA_SP500'])],['FCT_PRECIOS_DIARIOS','Una acción por día bursátil',n(counts['GOLD.FCT_PRECIOS_DIARIOS'])],['FCT_MERCADO_DIARIO','Un día bursátil',n(counts['GOLD.FCT_MERCADO_DIARIO'])]],[175,220,85])
 p('Precios tiene grano acción-fecha en sesiones conservadas. Los tests not_null, unique y relationships verifican claves; los tests de negocio impiden intervalos solapados, fechas fuera de vigencia y membresías de otra acción. Los joins conservan filas. DIM_ACCION tiene bolsa actual, no historia SCD2. Silver une 11 huecos de membresía hasta siete días: hipótesis de omisión. No sumar precios ni retornos entre acciones.')
-page(); title('5. Spark y la One Big Table')
+page(); title('5. Spark y OBT')
 p('Spark lee cuatro de las cinco tablas Gold (los dos hechos, DIM_ACCION y DIM_FECHA) mediante el conector Snowflake, calcula ventanas históricas por acción y selecciona una fila por mes cerrado. Añade el resumen mensual, referentes de mercado y atributos de acción, y escribe OBT.OBT_ACCION_MES y OBT.VALIDACION_OBT en Snowflake.')
-table(['Resultado','Valor verificado'],[['Filas de la OBT',f"{counts['OBT.OBT_ACCION_MES']:,}"],['Columnas','43'],['Filas elegibles','58.628'],['Controles de joins y grano',f"{sum(r['ok'].lower() == 'true' for r in valid)} de {len(valid)} correctos"],['Clave de la OBT','accion_key + anio_mes'],['Objetivo','ret_log_mes_siguiente; nulo sin mes consecutivo']],[230,250])
+table(['Resultado','Valor verificado'],[['Filas de la OBT',n(counts['OBT.OBT_ACCION_MES'])],['Columnas','43'],['Filas elegibles','58.628'],['Controles de joins y grano',f"{sum(r['ok'].lower() == 'true' for r in valid)} de {len(valid)} correctos"],['Clave de la OBT','accion_key + anio_mes'],['Objetivo','ret_log_mes_siguiente; nulo sin mes consecutivo']],[230,250])
 p('Los controles verifican unicidad de dimensiones, hechos y mercado mensual; conservación de filas al unir hechos con fechas, cierres con resúmenes, mercado y atributos; cobertura de todos los meses en mercado y unicidad/conteo final de la OBT. Si un control falla, se guarda la validación y no se sobrescribe la OBT anterior; esto no garantiza atomicidad ante fallos durante la escritura.')
 p('Las features incluyen retorno del mes, momentum 12-1, volatilidades de 21 y 63 observaciones, drawdown, volumen y liquidez. La elegibilidad exige membresía, NYSE o bolsa desconocida marcada, cotización al cierre, 200 retornos no nulos en 252 filas y 15 filas diarias en el mes (incluyen imputadas si existen). Las volatilidades excluyen días imputados. Las ventanas basadas en filas requieren cautela después de huecos excluidos: no equivalen siempre a días consecutivos.')
-p('El objetivo es el retorno log del mes siguiente, acorde con el rebalanceo mensual. objetivo_cruza_corte marca el mes cuyo target invade prueba. PSet 3 debe dividir por fecha del objetivo y excluir columnas de futuro de X; que la OBT contenga target y referentes futuros no los convierte en predictores válidos.')
+p('El objetivo es el retorno log del mes siguiente, acorde con el rebalanceo mensual. El corte del PSet 1 es 2023-12-31: DIM_FECHA.conjunto marca entrenamiento hasta esa fecha y prueba desde enero de 2024 (variable fecha_corte de dbt; FECHA_CORTE_ENTRENAMIENTO lo cambia sin tocar código, porque el corte está sujeto a cambios). objetivo_cruza_corte marca el mes cuyo target invade prueba. PSet 3 debe dividir por fecha del objetivo y excluir columnas de futuro de X; que la OBT contenga target y referentes futuros no los convierte en predictores válidos.')
 h('Cuándo usar cada representación')
-p('El star schema sirve para auditoría, reportes de cobertura y consultas por acción/fecha sin repetir atributos. La OBT sirve para construir matrices de entrenamiento y evaluación con una unidad de decisión mensual. Las cinco tablas Gold bastan para este uso: la membresía ya está resuelta en el hecho. No añadir dimensiones sin uso y fuente histórica fiable. La OBT repite atributos para facilitar ML; Gold conserva el detalle diario. Medido: Gold 116,97 MiB; dimensiones 181 KiB; OBT 11,72 MiB. No es cuota libre ni coste total. Detalle: docs/revision_obt.md.')
-page(); title('6. Batch, temporalidad y entrega')
-p('PSet 1 revisado con feedback (14-nov-2026, secciones 3.1, 3.3 y 3.5) plantea apoyo al asesor, con revisión y aprobación del inversionista. No es trading de alta frecuencia ni ejecución automática de órdenes. El registro de cambios atribuye al autor alinear el horizonte con el rebalanceo.')
+p('El star schema sirve para auditoría, reportes de cobertura y consultas por acción/fecha sin repetir atributos. La OBT sirve para construir matrices de entrenamiento y evaluación con una unidad de decisión mensual. Las cinco tablas Gold bastan para este uso: la membresía ya está resuelta en el hecho. No añadir dimensiones sin uso y fuente histórica fiable. La OBT repite atributos para facilitar ML; Gold conserva el detalle diario. Detalle: docs/revision_obt.md.')
+page(); title('6. Batch vs. streaming')
+p('PSet 1 revisado con feedback (14-nov-2026, secciones 3.1, 3.3 y 3.5) plantea apoyo al asesor, con revisión y aprobación del inversionista. No es trading de alta frecuencia ni ejecución automática de órdenes. El horizonte de un mes se igualó al periodo de rebalanceo, según el feedback del PSet 1.')
 table(['Proceso','Frecuencia / alcance'],[['Datos y OBT','Batch L-V 18:30 Nueva York; el cron incluye feriados. Datos diarios, OBT de grano mensual.'],['Inferencia y propuesta de compra','Mensual: ranking, 10 acciones, pesos, riesgo y cambios; revisión del asesor y aprobación del cliente.'],['Reporte de desempeño','Mensual: Sharpe y drawdown frente a índices.'],['Reentrenamiento','Frecuencia no fijada en PSet 1; experimentos offline. No confundir con inferencia.']],[155,325])
 p('Se consumen cierres diarios y se decide mensualmente: procesar por lotes permite validar y reintentar antes de la revisión, con latencia de horas. PSet 1 no fija una hora límite. La inferencia y publicación mensual son el diseño de negocio; PSet 2 implementa datos, no un scheduler de scoring ni el reporte de compra.')
 p('El código reconoce mes cerrado al recibir datos de un mes posterior: no garantiza recomendar antes de la primera apertura del mes. Para ello habría que detectar el cierre con el calendario completo y validar disponibilidad. El target es el mes calendario siguiente (21 sesiones es aproximado); la compra debe usar un precio posterior a la disponibilidad del reporte. Detalle y fuentes: docs/temporalidad_batch.md.')
 p('Streaming se justificaría si el caso cambiara a alertas intradía de riesgo que exigieran actuar en segundos o minutos. Requeriría fuente intradía, procesamiento continuo con estado, eventos tardíos/duplicados, serving y control de latencia. No exige trading de alta frecuencia; sí una decisión que no pueda esperar al lote. Una recomendación diaria aún podría resolverse con batch diario.')
-h('7. Limitaciones y reproducibilidad')
+h('7. Limitaciones')
 p('Persisten cobertura incompleta, bolsa actual sin historia SCD2, equivalencias por verificar y revisiones de precios ajustados. La composición histórica reduce, pero no elimina, sesgos. La interpolación puede usar un vecino futuro; se debe verificar su disponibilidad en inferencia. La precisión se evalúa por plausibilidad, no con cotizaciones oficiales; ^IRX se aproxima como tasa diaria simple.')
 p('Las incidencias de memoria y sus soluciones están en docs/cumplimiento.md: ejecutor Spark 2 GB, driver 1 GB y un core; ejecutar PSet 2 y PSet 3 separadamente. README.md documenta configuración y ejecución; docs/corrida/ conserva evidencia. El ZIP excluye credenciales, datos completos y cachés. El versionado y la publicación se registran en docs/revision_entrega.md.')
-p('Fuentes: CD_PSet_2.pdf; PSet1_memo_Gomez_Ehmig_v2 (Drive, revisión 14-nov-2026; enlace en temporalidad_batch.md); código kestra/, dbt/, spark/; evidencia docs/corrida/; calidad docs/calidad/README.md. Datos: Yahoo/yfinance, github.com/chinobing/historical_sp500_constituents, github.com/rreichel3/US-Stock-Symbols; calendario: github.com/rsheftel/pandas_market_calendars. Equivalencias: seed local, no fuente externa independiente.','SmallX')
+p('Fuentes: CD_PSet_2.pdf; PSet1_memo_Gomez_Ehmig_v2 (psets/pset-01/feedback/, revisión 14-nov-2026); código kestra/, dbt/, spark/; evidencia docs/corrida/; calidad docs/calidad/README.md. Datos: Yahoo/yfinance, github.com/chinobing/historical_sp500_constituents, github.com/rreichel3/US-Stock-Symbols; calendario: github.com/rsheftel/pandas_market_calendars. Equivalencias: seed local, no fuente externa independiente.','SmallX')
 
 # Anexos de arquitectura: fuera del cuerpo tecnico de seis paginas.
 story.append(NextPageTemplate('anexo')); page()
 for i,(heading,path,caption,key) in enumerate([
- ('Anexo A. Flujo implementado',D/'arquitectura.png','Fuente → Kestra → RAW → dbt → BRONZE → dbt → SILVER → dbt → GOLD → Spark → OBT. Las flechas punteadas distinguen dependencias de control y calidad. Fuente editable: docs/arquitectura.dot.',None),
+ ('Anexo A. Flujo implementado',D/'arquitectura_vertical.png','Fuente → Kestra → RAW → dbt → BRONZE → dbt → SILVER → dbt → GOLD → Spark → OBT. Las flechas punteadas distinguen dependencias de control y calidad. Versión vertical de docs/arquitectura.dot (mismo contenido que docs/arquitectura.png), para que se lea impresa.',None),
  ('Anexo B. C4 - contexto',D/'structurizr/export/structurizr-contexto.png','Modelo de contexto exportado del workspace.dsl validado con Structurizr. El sistema agrupa el pipeline local y su almacenamiento analítico SaaS.',D/'structurizr/export/structurizr-contexto-key.png'),
  ('Anexo C. C4 - contenedores',D/'structurizr/export/structurizr-contenedores.png','Servicios persistentes: Kestra, Postgres, maestro y trabajador Spark. Tareas efímeras: ingesta, dbt y driver Spark. Snowflake es SaaS externo a Docker. El driver coordina el clúster; los ejecutores procesan las particiones.',D/'structurizr/export/structurizr-contenedores-key.png')
 ]):
  if i:page()
  title(heading)
- im=Image(str(path));scale=min(1100/im.imageWidth,560/im.imageHeight);im.drawWidth=im.imageWidth*scale;im.drawHeight=im.imageHeight*scale;story.append(im);story.append(Spacer(1,16));p(caption)
+ im=Image(str(path));scale=min(1100/im.imageWidth,610/im.imageHeight);im.drawWidth=im.imageWidth*scale;im.drawHeight=im.imageHeight*scale;story.append(im);story.append(Spacer(1,16));p(caption)
  if key:
   im=Image(str(key));scale=min(230/im.imageWidth,100/im.imageHeight);im.drawWidth=im.imageWidth*scale;im.drawHeight=im.imageHeight*scale;story.append(im)
 

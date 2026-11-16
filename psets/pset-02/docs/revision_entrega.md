@@ -60,3 +60,23 @@ No confundir la fecha de una revisión documental con la fecha de las pruebas. C
 ## Cierre de esta revisión
 
 Se verifican páginas y secciones, renderizado del memo, sintaxis de scripts modificados, configuración Compose, estructura del ZIP, hashes de su manifiesto y exclusión de credenciales locales. No se vuelve a levantar Docker ni se ejecutan cargas en Snowflake por cambios de documentación y empaquetado.
+
+## Revisión G0 del memo (2026-11-15, con Paul)
+
+Se revisó el memo contra la guía, la evidencia de `corrida/` y `calidad/` y el PSet 1
+con feedback. Las cifras coincidían. Cambios aplicados en `scripts/generar_memo.py`
+(el PDF y `PSet2_memo_fuente.txt` se regeneraron; siguen 6 páginas técnicas + 3 anexos):
+
+| # | Antes | Después |
+|---|---|---|
+| 1 | Anexo C: "Python 3.12 · imagen pset2-ingesta" | Python 3.11 (workspace.dsl, workspace.json y export de contenedores) |
+| 2 | Números mezclados: 87,178 / 58.628 / 0.000054% | Formato español: 87.178 / 0,000054 % / 50,27 % |
+| 3 | Tabla de calidad sin dimensión | Columna Dimensión: completitud, precisión, consistencia (unicidad) y validez |
+| 4 | Sin el corte temporal | Sección 5: corte 2023-12-31 (DIM_FECHA.conjunto, variable fecha_corte) |
+| 5 | Títulos propios ("Calidad y decisiones de limpieza", "Batch, temporalidad y entrega"…) | Títulos de la guía: Arquitectura, Ingesta, Data Quality, Transformaciones y modelado, Spark y OBT, Batch vs. streaming, Limitaciones |
+| 6 | "El registro de cambios atribuye al autor alinear el horizonte con el rebalanceo." | "El horizonte de un mes se igualó al periodo de rebalanceo, según el feedback del PSet 1." |
+| 7 | Memo v2 del PSet 1 citado en Drive | Citado en `psets/pset-01/feedback/` |
+| 8 | Frases de relleno (estrella de un solo hecho; tamaños en MiB) | Eliminadas |
+| 9 | Anexo A apaisado (4439×1511), texto ilegible impreso | `arquitectura_vertical.png` (rankdir=TB), ocupa la página |
+
+Además, el script tiene ahora el docstring con el comando para correrlo.

@@ -7,5 +7,5 @@ Sesiones sin fila durante la vida observada de cada acción,completitud,11331,18
 Precios de acciones fuera del calendario NYSE,validez,0,1831428,0.0,Excluir al unir con calendario en Silver.,Fin de semana/feriado no constituye una sesión faltante.
 Fotos de composición con menos de 495 símbolos,completitud,920,2348,39.182283,No inventar constituyentes; documentar cobertura.,Umbral diagnóstico: 500 empresas no significa siempre 500 símbolos.
 Símbolos del listado con múltiples bolsas en última carga,consistencia,0,7251,0.0,Bronze conserva una fila por símbolo con prioridad de archivo.,"La prioridad es técnica, no verificación de la bolsa correcta; revisar si hay conflictos."
-Símbolos sin precios devueltos en bitácora,completitud,2285,19150,11.932115,Conservar SIN_DATOS y medir cobertura; no imputar toda una historia.,"Denominador solicitudes registradas, no empresas únicas."
-Errores agotados en bitácora,consistencia,0,19150,0.0,Retry en Kestra y revisión del lote.,Una corrida exitosa puede tolerar hasta 10% de grupos fallidos; ver porcentaje real.
+Símbolos sin precios devueltos en bitácora,completitud,2286,19656,11.630037,Conservar SIN_DATOS y medir cobertura; no imputar toda una historia.,"Denominador solicitudes registradas, no empresas únicas."
+Errores agotados en bitácora,consistencia,0,19656,0.0,Retry en Kestra y revisión del lote.,Una corrida exitosa puede tolerar hasta 10% de grupos fallidos; ver porcentaje real.

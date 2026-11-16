@@ -1,6 +1,6 @@
 # Calidad y limpieza por tabla y columna — PSet 2
 
-Diagnóstico ejecutado: 2026-11-16T01:37:36.874194+00:00. Base: `PORTAFOLIO`. 22 tablas y 236 columnas. Las consultas exactas e identificadores Snowflake están en [consultas.sql](consultas.sql) y [consultas.json](consultas.json).
+Diagnóstico ejecutado: 2026-11-16T03:21:14.159556+00:00. Base: `PORTAFOLIO`. 22 tablas y 236 columnas. Las consultas exactas e identificadores Snowflake están en [consultas.sql](consultas.sql) y [consultas.json](consultas.json).
 
 ## Alcance y denominadores
 
@@ -18,11 +18,11 @@ La precisión se evalúa con coherencia OHLC, saltos de retorno e IQR; **no se h
 | --- | --- | --- | --- |
 | ES_ETF no disponible | 246534/246534 nulos (100%) | Mantener NULL en Bronze; corregido y ejecutado con dbt. | El JSON no aporta el indicador; desconocido no es false. |
 | ES_PRUEBA no disponible | 246534/246534 nulos (100%) | Mantener NULL en Bronze; corregido y ejecutado con dbt. | El JSON no aporta el indicador; desconocido no es false. |
-| OPEN: invalidos | 2/3708298 (0.000054%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
-| CLOSE: inconsistentes | 4/3708298 (0.000108%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
-| VOLUME: anomalos | 10356/3708298 (0.279266%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
+| OPEN: invalidos | 2/3713348 (0.000054%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
+| CLOSE: inconsistentes | 4/3713348 (0.000108%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
+| VOLUME: anomalos | 10366/3713348 (0.279155%) | Silver descarta OHLC inválido; marca cierre fuera de rango/volumen cero. No imputar volumen. | OHLC válido es necesario para log-precios; cierre fuera del rango puede requerir revisión del proveedor. Volumen cero puede ser legítimo en índices/tasa. |
 | Espacios en símbolos | 68/246534 (0.027582%) | TRIM/UPPER y normalización de separadores en dbt. | Evitar pérdidas de joins por formato. |
-| Reingestas de precios | 1864143/3708298 filas redundantes (50.269504%) | Conservar RAW; Bronze elige última ingesta/lote. | Append-only preserva auditoría; duplicado crudo no significa hecho duplicado. |
+| Reingestas de precios | 1869193/3713348 filas redundantes (50.337135%) | Conservar RAW; Bronze elige última ingesta/lote. | Append-only preserva auditoría; duplicado crudo no significa hecho duplicado. |
 | Claves precio con revisiones de cierre ajustado | 1195545/1844155 (64.828878%) | Conservar carga reciente en Bronze; conservar RAW. | Puede ser revisión retrospectiva de Yahoo; no confundir reingesta idéntica con conflicto. |
 | Revisiones de cierre ajustado mayores a 0.01% relativo | 0/1844148 (0%) | Conservar versión reciente y RAW para auditoría. | Descarta diferencias menores a 0.01%; no prueba error, puede reflejar ajustes retrospectivos. |
 | Saltos absolutos log-precio >0.40 en RAW último por clave | 63/1830819 (0.003441%) | Marcar y revisar; no winsorizar ni borrar automáticamente. | Proxy de plausibilidad; incluye saltos entre observaciones separadas por huecos, no solo retornos diarios. |
@@ -31,8 +31,8 @@ La precisión se evalúa con coherencia OHLC, saltos de retorno e IQR; **no se h
 | Precios de acciones fuera del calendario NYSE | 0/1831428 (0%) | Excluir al unir con calendario en Silver. | Fin de semana/feriado no constituye una sesión faltante. |
 | Fotos de composición con menos de 495 símbolos | 920/2348 (39.182283%) | No inventar constituyentes; documentar cobertura. | Umbral diagnóstico: 500 empresas no significa siempre 500 símbolos. |
 | Símbolos del listado con múltiples bolsas en última carga | 0/7251 (0%) | Bronze conserva una fila por símbolo con prioridad de archivo. | La prioridad es técnica, no verificación de la bolsa correcta; revisar si hay conflictos. |
-| Símbolos sin precios devueltos en bitácora | 2285/19150 (11.932115%) | Conservar SIN_DATOS y medir cobertura; no imputar toda una historia. | Denominador solicitudes registradas, no empresas únicas. |
-| Errores agotados en bitácora | 0/19150 (0%) | Retry en Kestra y revisión del lote. | Una corrida exitosa puede tolerar hasta 10% de grupos fallidos; ver porcentaje real. |
+| Símbolos sin precios devueltos en bitácora | 2286/19656 (11.630037%) | Conservar SIN_DATOS y medir cobertura; no imputar toda una historia. | Denominador solicitudes registradas, no empresas únicas. |
+| Errores agotados en bitácora | 0/19656 (0%) | Retry en Kestra y revisión del lote. | Una corrida exitosa puede tolerar hasta 10% de grupos fallidos; ver porcentaje real. |
 
 Las diferencias de cierre ajustado se midieron tanto por igualdad exacta como con tolerancia relativa de 0,01%. No se deben presentar diferencias pequeñas como revisiones económicas confirmadas. Los saltos RAW incluyen intervalos sobre huecos; no son directamente comparables con los retornos diarios extremos de Silver.
 
@@ -62,7 +62,7 @@ Porcentajes sobre todas las filas de cada tabla RAW. Las reglas exactas y conteo
 | FECHA_HASTA | 0 | No evaluado | 0 | No evaluado |
 | FILAS | 0 | 0 | No evaluado | No evaluado |
 | ESTADO | 0 | 0 | 0 | No evaluado |
-| DETALLE | 88.067885 | No evaluado | 0 | No evaluado |
+| DETALLE | 88.369963 | No evaluado | 0 | No evaluado |
 | INGESTA_TS | 0 | 0 | No evaluado | No evaluado |
 
 ### RAW.LISTADOS_BOLSA
@@ -85,12 +85,12 @@ Porcentajes sobre todas las filas de cada tabla RAW. Las reglas exactas y conteo
 | --- | --- | --- | --- | --- |
 | TICKER | 0 | No evaluado | 0 | No evaluado |
 | FECHA | 0 | 0 | No evaluado | No evaluado |
-| OPEN | 0 | 0.000054 | 0.000216 | No evaluado |
+| OPEN | 0 | 0.000054 | 0.000215 | No evaluado |
 | HIGH | 0 | 0 | 0 | No evaluado |
 | LOW | 0 | 0 | 0 | No evaluado |
 | CLOSE | 0 | 0 | 0.000108 | No evaluado |
 | ADJ_CLOSE | 0 | 0 | No evaluado | No evaluado |
-| VOLUME | 0 | 0 | 0 | 0.279266 |
+| VOLUME | 0 | 0 | 0 | 0.279155 |
 | FUENTE | 0 | No evaluado | 0 | No evaluado |
 | LOTE_ID | 0 | No evaluado | 0 | No evaluado |
 | INGESTA_TS | 0 | 0 | No evaluado | No evaluado |
@@ -198,9 +198,9 @@ Inventario completo: [inventario_columnas.csv](inventario_columnas.csv). `origen
 | OBT.OBT_ACCION_MES | 87178 | 43 | ACCION_KEY,ANIO_MES | 0 |
 | OBT.VALIDACION_OBT | 13 | 5 | CONTROL | 0 |
 | RAW.COMPOSICION_SP500 | 134130 | 5 | LOTE_ID,FECHA | 0.456274 |
-| RAW.INGESTA_LOG | 19150 | 8 | LOTE_ID,TICKER | 0 |
+| RAW.INGESTA_LOG | 19656 | 8 | LOTE_ID,TICKER | 0 |
 | RAW.LISTADOS_BOLSA | 246534 | 9 | LOTE_ID,SIMBOLO,CODIGO_BOLSA | 0 |
-| RAW.PRECIOS_DIARIOS | 3708298 | 11 | TICKER,FECHA | 50.269504 |
+| RAW.PRECIOS_DIARIOS | 3713348 | 11 | TICKER,FECHA | 50.337135 |
 | SILVER.SLV_ACCIONES | 1130 | 13 | TICKER | 0 |
 | SILVER.SLV_CALENDARIO_NYSE | 4243 | 3 | FECHA | 0 |
 | SILVER.SLV_MEMBRESIA_SP500 | 1179 | 6 | PERIODO_KEY | 0 |
@@ -444,7 +444,7 @@ Inventario completo: [inventario_columnas.csv](inventario_columnas.csv). `origen
 | FECHA_HASTA | DATE | creada_ingesta | 0 |
 | FILAS | NUMBER | creada_ingesta | 0 |
 | ESTADO | TEXT | creada_ingesta | 0 |
-| DETALLE | TEXT | creada_ingesta | 88.067885 |
+| DETALLE | TEXT | creada_ingesta | 88.369963 |
 | INGESTA_TS | TIMESTAMP_NTZ | creada_ingesta | 0 |
 
 ### RAW.LISTADOS_BOLSA
@@ -563,11 +563,11 @@ La precisión real sigue sin verificarse externamente. El rango, IQR y coherenci
 
 ## Reproducir
 
-Desde psets/pset-02, con credenciales locales y dependencias de requirements.txt:
+Desde psets/pset-02, con credenciales locales y el entorno uv (`uv sync`):
 
 ```bash
-python scripts/diagnosticar_calidad.py
-python scripts/generar_informe_calidad.py
+uv run python scripts/diagnosticar_calidad.py
+uv run python scripts/generar_informe_calidad.py
 ```
 
 Para el diagnóstico de entrada únicamente: `python scripts/diagnosticar_calidad.py --solo-raw` (necesita el seed de calendario si se ejecutan controles de sesiones). Las otras capas se excluyen del perfil, sin ejecutar transformaciones. Ejecutar el diagnóstico sobre RAW después de la ingesta y antes del siguiente dbt build; luego dbt produce staging/Bronze y Silver. Los snapshots guardados permiten comparar antes/después sin confundir sus denominadores.

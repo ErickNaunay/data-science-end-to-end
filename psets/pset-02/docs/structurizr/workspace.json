@@ -127,7 +127,7 @@
           "tags" : "Relationship"
         } ],
         "tags" : "Element,Container",
-        "technology" : "Python 3.12 · imagen pset2-ingesta"
+        "technology" : "Python 3.11 · imagen pset2-ingesta"
       }, {
         "description" : "dbt build: Bronze (staging: tipos, deduplicación), Silver (calendario NYSE, imputación de huecos cortos, retornos, membresía), Gold (dos hechos y tres dimensiones, incluida membresía histórica) y CALIDAD; tests de integridad y negocio.",
         "documentation" : { },

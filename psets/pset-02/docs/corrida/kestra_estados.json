@@ -1,5 +1,57 @@
 [
   {
+    "id": "70422bkWyfGCphbma0n244",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T03:09:19.942971Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T03:09:20.052467Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T03:14:48.518164Z"
+        }
+      ],
+      "duration": "PT5M28.575193S",
+      "startDate": "2026-11-16T03:09:19.942971Z",
+      "endDate": "2026-11-16T03:14:48.518164Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "5mNgM5uCz2x5OjKgoFPdgs",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T03:08:17.255954Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T03:08:17.284708Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T03:14:49.181560Z"
+        }
+      ],
+      "duration": "PT6M31.925606S",
+      "startDate": "2026-11-16T03:08:17.255954Z",
+      "endDate": "2026-11-16T03:14:49.181560Z"
+    },
+    "tasks": []
+  },
+  {
     "id": "1tqie4tbsFGz6w8rvEsNEf",
     "namespace": "usfq.portafolio",
     "flowId": "transformar",
@@ -23,61 +75,292 @@
       "startDate": "2026-11-16T00:33:38.474157Z",
       "endDate": "2026-11-16T00:39:32.911373Z"
     },
-    "tasks": [
-      {
-        "taskId": "dbt_build",
-        "state": {
-          "current": "SUCCESS",
-          "histories": [
-            {
-              "state": "CREATED",
-              "date": "2026-11-16T00:33:38.726993Z"
-            },
-            {
-              "state": "SUBMITTED",
-              "date": "2026-11-16T00:33:38.729416Z"
-            },
-            {
-              "state": "RUNNING",
-              "date": "2026-11-16T00:33:38.983006Z"
-            },
-            {
-              "state": "SUCCESS",
-              "date": "2026-11-16T00:34:08.039424Z"
-            }
-          ],
-          "duration": "PT29.312431S",
-          "startDate": "2026-11-16T00:33:38.726993Z",
-          "endDate": "2026-11-16T00:34:08.039424Z"
+    "tasks": []
+  },
+  {
+    "id": "1LHXSfcznOJ6wf9DocpwSJ",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:32:43.615117Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:32:43.617792Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T00:39:33.204644Z"
         }
-      },
-      {
-        "taskId": "obt_spark",
-        "state": {
-          "current": "SUCCESS",
-          "histories": [
-            {
-              "state": "CREATED",
-              "date": "2026-11-16T00:34:08.214777Z"
-            },
-            {
-              "state": "SUBMITTED",
-              "date": "2026-11-16T00:34:08.215769Z"
-            },
-            {
-              "state": "RUNNING",
-              "date": "2026-11-16T00:34:08.277817Z"
-            },
-            {
-              "state": "SUCCESS",
-              "date": "2026-11-16T00:39:32.420890Z"
-            }
-          ],
-          "duration": "PT5M24.206113S",
-          "startDate": "2026-11-16T00:34:08.214777Z",
-          "endDate": "2026-11-16T00:39:32.420890Z"
+      ],
+      "duration": "PT6M49.589527S",
+      "startDate": "2026-11-16T00:32:43.615117Z",
+      "endDate": "2026-11-16T00:39:33.204644Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "3Zp1UiRJ7mvlWfYImNupe7",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "KILLED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:32:12.964803Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:32:13.018511Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:32:42.698098Z"
+        },
+        {
+          "state": "KILLED",
+          "date": "2026-11-16T00:32:43.052790Z"
         }
-      }
-    ]
+      ],
+      "duration": "PT30.087987S",
+      "startDate": "2026-11-16T00:32:12.964803Z",
+      "endDate": "2026-11-16T00:32:43.052790Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "2RiEkt811fJjwVZPIrgOWu",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "KILLED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:31:13.675534Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:31:13.692935Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:32:42.692420Z"
+        },
+        {
+          "state": "KILLED",
+          "date": "2026-11-16T00:32:43.178346Z"
+        }
+      ],
+      "duration": "PT1M29.502812S",
+      "startDate": "2026-11-16T00:31:13.675534Z",
+      "endDate": "2026-11-16T00:32:43.178346Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "1L8YCsebN3QLPTEGBl2QNP",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "KILLED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:20:46.378059Z"
+        },
+        {
+          "state": "QUEUED",
+          "date": "2026-11-16T00:20:46.873598Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:21:14.290390Z"
+        },
+        {
+          "state": "FAILED",
+          "date": "2026-11-16T00:25:39.461069Z"
+        },
+        {
+          "state": "RETRYING",
+          "date": "2026-11-16T00:25:39.462152Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:27:39.875638Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:28:59.205335Z"
+        },
+        {
+          "state": "KILLED",
+          "date": "2026-11-16T00:28:59.599915Z"
+        }
+      ],
+      "duration": "PT8M13.221856S",
+      "startDate": "2026-11-16T00:20:46.378059Z",
+      "endDate": "2026-11-16T00:28:59.599915Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "AI4MasNsvewHdZx50NTmp",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "KILLED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:17:55.813670Z"
+        },
+        {
+          "state": "QUEUED",
+          "date": "2026-11-16T00:17:55.823955Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:19:47.422311Z"
+        },
+        {
+          "state": "KILLING",
+          "date": "2026-11-16T00:28:59.199047Z"
+        },
+        {
+          "state": "KILLED",
+          "date": "2026-11-16T00:29:00.215874Z"
+        }
+      ],
+      "duration": "PT11M4.402204S",
+      "startDate": "2026-11-16T00:17:55.813670Z",
+      "endDate": "2026-11-16T00:29:00.215874Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "2067SpW43MXTGuzDQpd8Rm",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-15T20:38:49.584902Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-15T20:38:49.938660Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-15T20:45:04.239622Z"
+        }
+      ],
+      "duration": "PT6M14.65472S",
+      "startDate": "2026-11-15T20:38:49.584902Z",
+      "endDate": "2026-11-15T20:45:04.239622Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "7LTsUVocdrwvwyhQxiiC4H",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "FAILED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-15T20:16:55.542485Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-15T20:16:55.583004Z"
+        },
+        {
+          "state": "FAILED",
+          "date": "2026-11-15T20:16:59.644168Z"
+        },
+        {
+          "state": "RETRYING",
+          "date": "2026-11-15T20:16:59.645465Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-15T20:17:59.778840Z"
+        },
+        {
+          "state": "FAILED",
+          "date": "2026-11-15T20:18:02.575898Z"
+        }
+      ],
+      "duration": "PT1M7.033413S",
+      "startDate": "2026-11-15T20:16:55.542485Z",
+      "endDate": "2026-11-15T20:18:02.575898Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "3Fp8GRgzmNcyj7Xnd5GJf5",
+    "namespace": "usfq.portafolio",
+    "flowId": "backfill_historico",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-15T19:58:10.079267Z"
+        },
+        {
+          "state": "QUEUED",
+          "date": "2026-11-15T19:58:10.088326Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-15T20:18:03.362011Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-15T20:45:04.522546Z"
+        }
+      ],
+      "duration": "PT46M54.443279S",
+      "startDate": "2026-11-15T19:58:10.079267Z",
+      "endDate": "2026-11-15T20:45:04.522546Z"
+    },
+    "tasks": []
+  },
+  {
+    "id": "2xsi7bighgjwiEkmW2I1Xi",
+    "namespace": "usfq.portafolio",
+    "flowId": "backfill_historico",
+    "state": {
+      "current": "FAILED",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-15T19:55:52.154455Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-15T19:55:52.196597Z"
+        },
+        {
+          "state": "FAILED",
+          "date": "2026-11-15T20:18:03.352963Z"
+        }
+      ],
+      "duration": "PT22M11.198508S",
+      "startDate": "2026-11-15T19:55:52.154455Z",
+      "endDate": "2026-11-15T20:18:03.352963Z"
+    },
+    "tasks": []
   }
 ]

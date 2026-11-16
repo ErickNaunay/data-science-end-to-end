@@ -8,14 +8,15 @@ las capas, inventario, políticas de limpieza y fuentes. SQL y query IDs adjunto
 | Elemento | Qué es | Cómo se generó |
 |---|---|---|
 | `arquitectura.png` / `.svg` / `.dot` | Flujo del pipeline y arquitectura medallón (Raw→Bronze→Silver→Gold→OBT) | A mano en DOT, renderizado con Graphviz |
+| `arquitectura_vertical.png` | El mismo diagrama en vertical, para el Anexo A del memo (se lee impreso) | Mismo `.dot` con `rankdir=TB` |
 | `modelo_dimensional.png` / `.svg` / `.dot` | Star schema de Gold (modelo de datos) | A mano en DOT, renderizado con Graphviz |
 | `structurizr/workspace.dsl` | Modelo C4 del pipeline: vistas de contexto y de contenedores | Structurizr DSL |
 | `structurizr/export/` | Exportes del modelo C4: Mermaid, PlantUML y PNG claro con leyenda | `structurizr/exportar_diagramas.sh` |
 | `corrida/*.csv` | Evidencias consultadas en Snowflake durante la verificación de proyecto (métricas de calidad, validación de la OBT, conteos) | `scripts/exportar_metricas.py` |
-| `PSet2_memo_Gomez_Ehmig.pdf` | Documento técnico de seis páginas + tres anexos | — |
+| `PSet2_memo_Gomez_Ehmig.pdf` / `PSet2_memo_fuente.txt` | Documento técnico de seis páginas + tres anexos, y su texto plano | `uv run python scripts/generar_memo.py` (el texto se edita en el script; las cifras salen de `corrida/` y `calidad/`) |
 
 El cuerpo del memo incluye el resumen de infraestructura y el modelo dimensional.
-Los anexos A-C incluyen los diagramas completos: `arquitectura.png` explica el
+Los anexos A-C incluyen los diagramas completos: `arquitectura_vertical.png` explica el
 flujo y la arquitectura medallón, y los de Structurizr documentan la arquitectura con
 el modelo C4 (contexto y contenedores). El modelo dimensional no es un diagrama C4
 (es un modelo de datos), así que no tiene versión Structurizr.
@@ -51,6 +52,7 @@ Editar el `.dot` correspondiente y regenerar (requiere Graphviz):
 ```bash
 cd docs
 dot -Tpng -Gdpi=170 arquitectura.dot -o arquitectura.png && dot -Tsvg arquitectura.dot -o arquitectura.svg
+sed 's/rankdir=LR;/rankdir=TB;/' arquitectura.dot | dot -Tpng -Gdpi=150 -o arquitectura_vertical.png   # Anexo A
 dot -Tpng -Gdpi=170 modelo_dimensional.dot -o modelo_dimensional.png && dot -Tsvg modelo_dimensional.dot -o modelo_dimensional.svg
 ```
 

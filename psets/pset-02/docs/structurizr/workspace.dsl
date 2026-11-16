@@ -12,7 +12,7 @@ workspace "Pipeline de datos del portafolio de inversiones" "PSet 2 · MSDS 6003
         pipeline = softwareSystem "Pipeline de datos del portafolio" "ELT reproducible: Fuente → Kestra → Raw → dbt → Bronze → dbt → Silver → dbt → Gold → Spark → OBT." {
             kestra = container "Kestra" "Orquestación: flows ingesta_diaria (L–V 18:30 NY, retries, recuperación), backfill_historico (por año) y transformar." "Kestra 2.0 · Docker · UI :8090"
             postgres = container "Postgres" "Estado interno de Kestra (flows, ejecuciones, colas)." "PostgreSQL 18 · Docker" "BaseDatos"
-            ingesta = container "Tarea de ingesta" "extraer_cargar.py: descarga precios, composición y listados; traduce símbolos con equivalencias_tickers y carga a RAW (append-only, con lote)." "Python 3.12 · imagen pset2-ingesta"
+            ingesta = container "Tarea de ingesta" "extraer_cargar.py: descarga precios, composición y listados; traduce símbolos con equivalencias_tickers y carga a RAW (append-only, con lote)." "Python 3.11 · imagen pset2-ingesta"
             dbt = container "Tarea dbt" "dbt build: Bronze (staging: tipos, deduplicación), Silver (calendario NYSE, imputación de huecos cortos, retornos, membresía), Gold (dos hechos y tres dimensiones, incluida membresía histórica) y CALIDAD; tests de integridad y negocio." "dbt Core + dbt-snowflake · imagen pset2-dbt"
             spark = container "Driver Spark / tarea OBT" "construir_obt.py: lee Gold, construye acción por mes, verifica 13 controles y escribe OBT. Ejecutor 2 GB; driver 1 GB; un core total." "Spark 3.5.3 · pset2-spark · tarea efímera"
             master = container "spark-master" "Coordina los recursos del clúster; servicio persistente de Compose." "Spark 3.5.3 · RPC :7077 · UI :8081"
