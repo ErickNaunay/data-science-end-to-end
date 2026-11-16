@@ -1,0 +1,83 @@
+[
+  {
+    "id": "1tqie4tbsFGz6w8rvEsNEf",
+    "namespace": "usfq.portafolio",
+    "flowId": "transformar",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:33:38.474157Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:33:38.729349Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T00:39:32.911373Z"
+        }
+      ],
+      "duration": "PT5M54.437216S",
+      "startDate": "2026-11-16T00:33:38.474157Z",
+      "endDate": "2026-11-16T00:39:32.911373Z"
+    },
+    "tasks": [
+      {
+        "taskId": "dbt_build",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:33:38.726993Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:33:38.729416Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:33:38.983006Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:34:08.039424Z"
+            }
+          ],
+          "duration": "PT29.312431S",
+          "startDate": "2026-11-16T00:33:38.726993Z",
+          "endDate": "2026-11-16T00:34:08.039424Z"
+        }
+      },
+      {
+        "taskId": "obt_spark",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:34:08.214777Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:34:08.215769Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:34:08.277817Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:39:32.420890Z"
+            }
+          ],
+          "duration": "PT5M24.206113S",
+          "startDate": "2026-11-16T00:34:08.214777Z",
+          "endDate": "2026-11-16T00:39:32.420890Z"
+        }
+      }
+    ]
+  }
+]

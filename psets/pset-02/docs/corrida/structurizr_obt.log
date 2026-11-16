@@ -1,0 +1,27 @@
+01:32:15.105 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from workspace.dsl
+01:32:15.157 [main] INFO com.structurizr.command.ExportCommand -- Exporting with JsonWorkspaceExporter
+01:32:15.331 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/workspace.json
+01:32:15.332 [main] INFO com.structurizr.command.ExportCommand -- Finished
+01:32:15.767 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from workspace.dsl
+01:32:15.818 [main] INFO com.structurizr.command.ExportCommand -- Exporting with MermaidDiagramExporter
+01:32:15.836 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contexto.mmd
+01:32:15.839 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contenedores.mmd
+01:32:15.839 [main] INFO com.structurizr.command.ExportCommand -- Finished
+01:32:16.275 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from workspace.dsl
+01:32:16.323 [main] INFO com.structurizr.command.ExportCommand -- Exporting with StructurizrPlantUMLExporter
+01:32:16.352 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contexto.puml
+01:32:16.354 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contexto-key.puml
+01:32:16.355 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contenedores.puml
+01:32:16.356 [main] INFO com.structurizr.command.ExportCommand -- Writing /usr/local/structurizr/export/structurizr-contenedores-key.puml
+01:32:16.356 [main] INFO com.structurizr.command.ExportCommand -- Finished
+Listo:
+structurizr-contenedores-key.png
+structurizr-contenedores-key.puml
+structurizr-contenedores.mmd
+structurizr-contenedores.png
+structurizr-contenedores.puml
+structurizr-contexto-key.png
+structurizr-contexto-key.puml
+structurizr-contexto.mmd
+structurizr-contexto.png
+structurizr-contexto.puml

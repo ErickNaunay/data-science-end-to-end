@@ -1,0 +1,7 @@
+# Dependencias locales; las imágenes tienen sus propios requisitos.
+-r kestra/requirements.txt
+dbt-duckdb>=1.8,<2
+duckdb>=1,<2
+pandas-market-calendars>=4.4,<6
+pyspark==3.5.3
+reportlab>=4,<6

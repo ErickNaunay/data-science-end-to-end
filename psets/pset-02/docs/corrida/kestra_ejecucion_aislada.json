@@ -1,0 +1,79 @@
+[
+  {
+    "id": "1LHXSfcznOJ6wf9DocpwSJ",
+    "namespace": "usfq.portafolio",
+    "flowId": "ingesta_diaria",
+    "state": {
+      "current": "SUCCESS",
+      "histories": [
+        {
+          "state": "CREATED",
+          "date": "2026-11-16T00:32:43.615117Z"
+        },
+        {
+          "state": "RUNNING",
+          "date": "2026-11-16T00:32:43.617792Z"
+        },
+        {
+          "state": "SUCCESS",
+          "date": "2026-11-16T00:39:33.204644Z"
+        }
+      ],
+      "duration": "PT6M49.589527S",
+      "startDate": "2026-11-16T00:32:43.615117Z",
+      "endDate": "2026-11-16T00:39:33.204644Z"
+    },
+    "tasks": [
+      {
+        "taskId": "extraer_cargar_raw",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:32:43.617234Z"
+            },
+            {
+              "state": "SUBMITTED",
+              "date": "2026-11-16T00:32:43.617813Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:32:43.785238Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:33:38.340795Z"
+            }
+          ],
+          "duration": "PT54.723561S",
+          "startDate": "2026-11-16T00:32:43.617234Z",
+          "endDate": "2026-11-16T00:33:38.340795Z"
+        }
+      },
+      {
+        "taskId": "transformar",
+        "state": {
+          "current": "SUCCESS",
+          "histories": [
+            {
+              "state": "CREATED",
+              "date": "2026-11-16T00:33:38.471848Z"
+            },
+            {
+              "state": "RUNNING",
+              "date": "2026-11-16T00:33:38.472964Z"
+            },
+            {
+              "state": "SUCCESS",
+              "date": "2026-11-16T00:39:33.160177Z"
+            }
+          ],
+          "duration": "PT5M54.688329S",
+          "startDate": "2026-11-16T00:33:38.471848Z",
+          "endDate": "2026-11-16T00:39:33.160177Z"
+        }
+      }
+    ]
+  }
+]

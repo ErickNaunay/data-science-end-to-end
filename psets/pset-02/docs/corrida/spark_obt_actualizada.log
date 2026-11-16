@@ -1,0 +1,149 @@
+ Container pset2-spark-master-1 Running 
+ Container pset2-spark-worker-1 Running 
+ Container pset2-spark-job-run-ceb0f472fdf4 Creating 
+ Container pset2-spark-job-run-ceb0f472fdf4 Created 
+26/11/16 01:30:13 INFO SparkContext: Running Spark version 3.5.3
+26/11/16 01:30:13 INFO SparkContext: OS info Linux, 7.0.14-linuxkit, aarch64
+26/11/16 01:30:13 INFO SparkContext: Java version 11.0.24
+26/11/16 01:30:13 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/16 01:30:13 INFO ResourceUtils: ==============================================================
+26/11/16 01:30:13 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/16 01:30:13 INFO ResourceUtils: ==============================================================
+26/11/16 01:30:13 INFO SparkContext: Submitted application: pset2-obt-accion-mes
+26/11/16 01:30:13 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 2048, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/16 01:30:13 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+26/11/16 01:30:13 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/16 01:30:13 INFO SecurityManager: Changing view acls to: spark
+26/11/16 01:30:13 INFO SecurityManager: Changing modify acls to: spark
+26/11/16 01:30:13 INFO SecurityManager: Changing view acls groups to: 
+26/11/16 01:30:13 INFO SecurityManager: Changing modify acls groups to: 
+26/11/16 01:30:13 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/16 01:30:13 INFO Utils: Successfully started service 'sparkDriver' on port 35545.
+26/11/16 01:30:13 INFO SparkEnv: Registering MapOutputTracker
+26/11/16 01:30:13 INFO SparkEnv: Registering BlockManagerMaster
+26/11/16 01:30:13 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/16 01:30:13 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/16 01:30:13 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/16 01:30:13 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-4620b640-b155-4806-8987-c59f63c6d00b
+26/11/16 01:30:13 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/16 01:30:13 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/16 01:30:13 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/16 01:30:14 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/16 01:30:14 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/16 01:30:14 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.2:7077 after 11 ms (0 ms spent in bootstraps)
+26/11/16 01:30:14 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261116013014-0000
+26/11/16 01:30:14 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 43333.
+26/11/16 01:30:14 INFO NettyBlockTransferService: Server created on 3a4e215ee0c5:43333
+26/11/16 01:30:14 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/16 01:30:14 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 3a4e215ee0c5, 43333, None)
+26/11/16 01:30:14 INFO BlockManagerMasterEndpoint: Registering block manager 3a4e215ee0c5:43333 with 434.4 MiB RAM, BlockManagerId(driver, 3a4e215ee0c5, 43333, None)
+26/11/16 01:30:14 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 3a4e215ee0c5, 43333, None)
+26/11/16 01:30:14 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 3a4e215ee0c5, 43333, None)
+26/11/16 01:30:14 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261116013014-0000/0 on worker-20261116013013-172.18.0.3-32811 (172.18.0.3:32811) with 1 core(s)
+26/11/16 01:30:14 INFO StandaloneSchedulerBackend: Granted executor ID app-20261116013014-0000/0 on hostPort 172.18.0.3:32811 with 1 core(s), 2.0 GiB RAM
+26/11/16 01:30:14 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261116013014-0000/0 is now RUNNING
+26/11/16 01:30:14 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+26/11/16 01:30:15 WARN VersionInfoUtils: The AWS SDK for Java 1.x entered maintenance mode starting July 31, 2024 and will reach end of support on December 31, 2025. For more information, see https://aws.amazon.com/blogs/developer/the-aws-sdk-for-java-1-x-is-in-maintenance-mode-effective-july-31-2024/
+You can print where on the file system the AWS SDK for Java 1.x core runtime is located by setting the AWS_JAVA_V1_PRINT_LOCATION environment variable or aws.java.v1.printLocation system property to true.
+This message can be disabled by setting the AWS_JAVA_V1_DISABLE_DEPRECATION_ANNOUNCEMENT environment variable or aws.java.v1.disableDeprecationAnnouncement system property to true.
+The AWS SDK for Java 1.x is being used here:
+at java.base/java.lang.Thread.getStackTrace(Unknown Source)
+at net.snowflake.client.jdbc.internal.amazonaws.util.VersionInfoUtils.printDeprecationAnnouncement(VersionInfoUtils.java:81)
+at net.snowflake.client.jdbc.internal.amazonaws.util.VersionInfoUtils.<clinit>(VersionInfoUtils.java:59)
+at net.snowflake.client.jdbc.internal.amazonaws.internal.EC2ResourceFetcher.<clinit>(EC2ResourceFetcher.java:44)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.InstanceMetadataServiceCredentialsFetcher.<init>(InstanceMetadataServiceCredentialsFetcher.java:38)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.InstanceProfileCredentialsProvider.<init>(InstanceProfileCredentialsProvider.java:111)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.InstanceProfileCredentialsProvider.<init>(InstanceProfileCredentialsProvider.java:91)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.InstanceProfileCredentialsProvider.<init>(InstanceProfileCredentialsProvider.java:75)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.InstanceProfileCredentialsProvider.<clinit>(InstanceProfileCredentialsProvider.java:58)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.EC2ContainerCredentialsProviderWrapper.initializeProvider(EC2ContainerCredentialsProviderWrapper.java:66)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.EC2ContainerCredentialsProviderWrapper.<init>(EC2ContainerCredentialsProviderWrapper.java:55)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.DefaultAWSCredentialsProviderChain.<init>(DefaultAWSCredentialsProviderChain.java:60)
+at net.snowflake.client.jdbc.internal.amazonaws.auth.DefaultAWSCredentialsProviderChain.<clinit>(DefaultAWSCredentialsProviderChain.java:54)
+at net.snowflake.client.core.auth.wif.AwsAttestationService.getAWSCredentials(AwsAttestationService.java:47)
+at net.snowflake.client.core.auth.wif.PlatformDetectionUtil.hasValidAwsIdentityForWif(PlatformDetectionUtil.java:49)
+at net.snowflake.client.util.PlatformDetector.hasAwsIdentity(PlatformDetector.java:346)
+at net.snowflake.client.util.PlatformDetector.lambda$detectPlatforms$1(PlatformDetector.java:182)
+at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+at java.base/java.lang.Thread.run(Unknown Source)
+26/11/16 01:30:16 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,024 ms, timeout: 1,000 ms
+26/11/16 01:30:16 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,024 ms, timeout: 1,000 ms
+26/11/16 01:30:16 ERROR RestRequest: Returning null response. Cause: java.net.UnknownHostException: metadata.google.internal, request: GET http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email HTTP/1.1
+26/11/16 01:30:16 ERROR RestRequest: Returning null response. Cause: java.net.UnknownHostException: metadata.google.internal, request: GET http://metadata.google.internal HTTP/1.1
+26/11/16 01:30:16 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,232 ms, timeout: 1,000 ms
+26/11/16 01:30:16 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,231 ms, timeout: 1,000 ms
+26/11/16 01:30:16 ERROR RestRequest: Returning null response. Cause: java.net.ConnectException: Connection refused (Connection refused), request: PUT http://169.254.169.254/latest/api/token HTTP/1.1
+26/11/16 01:30:16 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,232 ms, timeout: 1,000 ms
+26/11/16 01:30:16 ERROR RestRequest: Returning null response. Cause: java.net.ConnectException: Connection refused (Connection refused), request: GET http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com HTTP/1.1
+26/11/16 01:30:16 ERROR RestRequest: Returning null response. Cause: java.net.ConnectException: Connection refused (Connection refused), request: GET http://169.254.169.254/metadata/instance?api-version=2021-02-01 HTTP/1.1
+26/11/16 01:30:17 ERROR RestRequest: Stop retrying since elapsed time due to network issues has reached timeout. Elapsed: 1,015 ms, timeout: 1,000 ms
+26/11/16 01:30:17 ERROR RestRequest: Returning null response. Cause: java.net.ConnectException: Connection refused (Connection refused), request: GET http://169.254.169.254/latest/dynamic/instance-identity/document HTTP/1.1
+26/11/16 01:30:24 ERROR Inbox: Ignoring error
+java.io.NotSerializableException: org.apache.spark.storage.StorageStatus
+Serialization stack:
+	- object not serializable (class: org.apache.spark.storage.StorageStatus, value: org.apache.spark.storage.StorageStatus@5c17289b)
+	- element of array (index: 0)
+	- array (class [Lorg.apache.spark.storage.StorageStatus;, size 2)
+	at org.apache.spark.serializer.SerializationDebugger$.improveException(SerializationDebugger.scala:41)
+	at org.apache.spark.serializer.JavaSerializationStream.writeObject(JavaSerializer.scala:49)
+	at org.apache.spark.serializer.JavaSerializerInstance.serialize(JavaSerializer.scala:115)
+	at org.apache.spark.rpc.netty.NettyRpcEnv.serialize(NettyRpcEnv.scala:286)
+	at org.apache.spark.rpc.netty.RemoteNettyRpcCallContext.send(NettyRpcCallContext.scala:64)
+	at org.apache.spark.rpc.netty.NettyRpcCallContext.reply(NettyRpcCallContext.scala:32)
+	at org.apache.spark.storage.BlockManagerMasterEndpoint$$anonfun$receiveAndReply$1.applyOrElse(BlockManagerMasterEndpoint.scala:172)
+	at org.apache.spark.rpc.netty.Inbox.$anonfun$process$1(Inbox.scala:103)
+	at org.apache.spark.rpc.netty.Inbox.safelyCall(Inbox.scala:213)
+	at org.apache.spark.rpc.netty.Inbox.process(Inbox.scala:100)
+	at org.apache.spark.rpc.netty.MessageLoop.org$apache$spark$rpc$netty$MessageLoop$$receiveLoop(MessageLoop.scala:75)
+	at org.apache.spark.rpc.netty.MessageLoop$$anon$1.run(MessageLoop.scala:41)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+[OK] dim_accion: filas = combinaciones distintas de ['accion_key']: esperado=1130 obtenido=1130
+[OK] dim_fecha: filas = combinaciones distintas de ['fecha_key']: esperado=4243 obtenido=4243
+[OK] fct_mercado_diario: filas = combinaciones distintas de ['fecha_key']: esperado=4243 obtenido=4243
+[OK] fct_precios_diarios: filas = combinaciones distintas de ['accion_key', 'fecha_key']: esperado=1831427 obtenido=1831427
+[OK] join fct_precios_diarios x dim_fecha conserva filas: esperado=1831427 obtenido=1831427
+[OK] join cierre x resumen del mes (uno a uno) conserva filas: esperado=87178 obtenido=87178
+[OK] join fct_mercado_diario x dim_fecha conserva filas: esperado=4243 obtenido=4243
+[OK] mercado mensual: filas = combinaciones distintas de ['anio_mes']: esperado=203 obtenido=203
+[OK] OBT sin meses huerfanos de mercado: esperado=0 obtenido=0
+[OK] join OBT x mercado mensual conserva filas: esperado=87178 obtenido=87178
+[OK] join OBT x dim_accion conserva filas: esperado=87178 obtenido=87178
+[OK] OBT (grano accion x mes): filas = combinaciones distintas de ['accion_key', 'anio_mes']: esperado=87178 obtenido=87178
+[OK] OBT tiene una fila por accion y mes cerrado: esperado=87178 obtenido=87178
+26/11/16 01:33:53 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:33:53 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:33:53 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+26/11/16 01:34:08 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:08 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:08 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:08 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:15 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:17 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:40 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:40 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:40 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+26/11/16 01:34:40 WARN WindowExec: No Partition Defined for Window operation! Moving all data to a single partition, this can cause serious performance degradation.
+OBT_ACCION_MES escrita: 87178 filas, 58628 elegibles, 43 columnas
+26/11/16 01:35:54 WARN SparkConnectorContext$: Finish cancelling all queries for app-20261116013014-0000

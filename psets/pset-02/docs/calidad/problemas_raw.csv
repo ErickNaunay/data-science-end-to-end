@@ -1,0 +1,11 @@
+problema,dimension,afectados,denominador,porcentaje,accion,justificacion
+Claves precio con revisiones de cierre ajustado,consistencia,1195545,1844155,64.828878,Conservar carga reciente en Bronze; conservar RAW.,Puede ser revisión retrospectiva de Yahoo; no confundir reingesta idéntica con conflicto.
+Revisiones de cierre ajustado mayores a 0.01% relativo,consistencia,0,1844148,0.0,Conservar versión reciente y RAW para auditoría.,"Descarta diferencias menores a 0.01%; no prueba error, puede reflejar ajustes retrospectivos."
+Saltos absolutos log-precio >0.40 en RAW último por clave,precision,63,1830819,0.003441,Marcar y revisar; no winsorizar ni borrar automáticamente.,"Proxy de plausibilidad; incluye saltos entre observaciones separadas por huecos, no solo retornos diarios."
+Retornos fuera de 1.5 IQR por acción (mínimo 20 retornos),precision,91037,1830819,4.972474,"Señal diagnóstica; conservar y revisar, no recortar automáticamente.",IQR por acción evita mezclar escalas de precios; colas financieras reales pueden ser atípicas. Incluye saltos sobre huecos.
+Sesiones sin fila durante la vida observada de cada acción,completitud,11331,1842759,0.614893,Silver construye grilla; interpola hasta cinco sesiones internas; excluye huecos mayores.,No supone precios antes de primera o después de última cotización; no cubre acciones sin ningún precio.
+Precios de acciones fuera del calendario NYSE,validez,0,1831428,0.0,Excluir al unir con calendario en Silver.,Fin de semana/feriado no constituye una sesión faltante.
+Fotos de composición con menos de 495 símbolos,completitud,920,2348,39.182283,No inventar constituyentes; documentar cobertura.,Umbral diagnóstico: 500 empresas no significa siempre 500 símbolos.
+Símbolos del listado con múltiples bolsas en última carga,consistencia,0,7251,0.0,Bronze conserva una fila por símbolo con prioridad de archivo.,"La prioridad es técnica, no verificación de la bolsa correcta; revisar si hay conflictos."
+Símbolos sin precios devueltos en bitácora,completitud,2285,19150,11.932115,Conservar SIN_DATOS y medir cobertura; no imputar toda una historia.,"Denominador solicitudes registradas, no empresas únicas."
+Errores agotados en bitácora,consistencia,0,19150,0.0,Retry en Kestra y revisión del lote.,Una corrida exitosa puede tolerar hasta 10% de grupos fallidos; ver porcentaje real.

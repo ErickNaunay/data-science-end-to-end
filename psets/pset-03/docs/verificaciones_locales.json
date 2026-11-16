@@ -1,0 +1,10 @@
+{
+  "pset3_temporal_unitarias": {
+    "tests": 3,
+    "resultado": "OK"
+  },
+  "notebooks_ejecutados": [
+    "01_eda.ipynb",
+    "02_features.ipynb"
+  ]
+}

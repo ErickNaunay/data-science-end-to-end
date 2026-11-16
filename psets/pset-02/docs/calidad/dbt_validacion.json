@@ -1,0 +1,15 @@
+{
+  "comando": "docker compose --profile herramientas run --rm --no-deps dbt dbt build --target snowflake",
+  "fin_utc": "2026-11-16T01:10:18Z",
+  "exit_code": 0,
+  "PASS": 89,
+  "WARN": 1,
+  "ERROR": 0,
+  "TOTAL": 90,
+  "modelos": 13,
+  "seeds": 2,
+  "tests": 75,
+  "advertencia": "assert_cobertura_sp500_por_dia: 1615 fechas",
+  "cambio": "Bronze conserva ES_ETF/ES_PRUEBA desconocidos como NULL; Silver admite flags desconocidos sin afirmar false",
+  "procedencia": "Resumen de salida real de dbt; run_results.json de docs/corrida corresponde a la ejecución previa, no se sobrescribe como si fuera este run"
+}
