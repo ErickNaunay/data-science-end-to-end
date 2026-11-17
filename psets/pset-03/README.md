@@ -1,7 +1,12 @@
 # PSet 3 — Experimentación desde la OBT
 
 La guía vigente es `CD_PSet_3.pdf`. Esta carpeta desarrolla incrementalmente el
-PSet 2; el README original del curso queda en `README_curso.md`. La integración
+PSet 2; el README original del curso queda en `README_curso.md`.
+
+El pipeline del PSet 2 está copiado en [`pipeline/`](pipeline/README.md) para volver a
+correrlo sin modificar `psets/pset-02/`, que ya se entregó. Escribe en la base
+`PORTAFOLIO_P3`; `src/datos.py` lee de ahí (`SNOWFLAKE_DATABASE`). La base
+`PORTAFOLIO` queda tal como se entregó en el PSet 2. La integración
 final en `psets/proyecto/` se hará al empaquetar el proyecto, sin duplicar datasets.
 
 ## Preparación
@@ -52,7 +57,9 @@ Antes de entrenar, revisar ajustes retrospectivos de precios, bolsa actual,
 interpolación y cobertura del universo documentados en el memo del PSet 2.
 
 El trabajo previo de análisis (antes en la rama `draft`, `psets/pset-02/analisis/`)
-está en `analisis/`, con su grupo de dependencias (`uv sync --group analisis`).
+está en `analisis/`, separado en `analisis/datos/` (etapa de datos, la que cubre el
+PSet 2) y `analisis/modelos/` (etapa de modelado), con su grupo de dependencias
+(`uv sync --group analisis`). Ver [`analisis/README.md`](analisis/README.md).
 Es exploratorio: parte de Yahoo con cachés DuckDB locales (no versionadas) y no
 satisface el protocolo experimental de la OBT que exige el PDF; sirve como
 referencia para elegir familias y técnicas. El plan de trabajo está en `plan.txt`.
@@ -72,9 +79,10 @@ verificación la coexistencia de ambos provocó un OOM de Kestra.
 
 ## Verificación funcional aislada
 
-Primero ejecuta `docker compose down` desde `../pset-02/`, sin `-v`; Snowflake
-conserva las tablas. No se necesita Kestra ni Spark para ejecutar PSet 3:
-la única dependencia compartida es la OBT ya materializada en Snowflake.
+Primero ejecuta `docker compose down` desde `pipeline/`, sin `-v`; Snowflake
+conserva las tablas. Los notebooks no necesitan Kestra ni Spark: solo leen la OBT
+ya materializada en `PORTAFOLIO_P3` (snapshot de `src/datos.py`). `pipeline/` solo
+hace falta para reconstruirla.
 
 ```bash
 docker compose down

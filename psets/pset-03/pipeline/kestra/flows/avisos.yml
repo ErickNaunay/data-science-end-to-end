@@ -1,0 +1,40 @@
+# Avisos por correo cuando termina una ejecucion del pipeline (exito o falla).
+# Subir a Kestra:  bash kestra/subir_flows.sh
+# Secretos (en .env -> scripts/preparar_env.sh -> .env_encoded, nunca en git):
+#   AVISO_CORREO      cuenta de Gmail que envia y recibe el aviso
+#   AVISO_CLAVE_APP   contrasena de aplicacion de Google (no la clave normal)
+id: avisos
+# Namespace propio: si estuviera en usfq.portafolio, sus propias ejecuciones lo
+# volverian a disparar.
+namespace: usfq.avisos
+description: |
+  Envia un correo con el resumen de cada ejecucion terminada de ingesta_diaria y
+  backfill_historico (enlace, duracion, estado y, si fallo, la tarea que fallo).
+  transformar no avisa por separado: corre como subflow de esos dos y, si falla,
+  su flow padre tambien termina en FAILED. El asunto empieza con "Success" o "Fail".
+
+labels:
+  proyecto: portafolio-inversiones
+  pset: "3"
+
+tasks:
+  - id: correo
+    type: io.kestra.plugin.email.MailExecution
+    host: smtp.gmail.com
+    port: 465
+    transportStrategy: SMTPS
+    username: "{{ secret('AVISO_CORREO') }}"
+    password: "{{ secret('AVISO_CLAVE_APP') }}"
+    from: "{{ secret('AVISO_CORREO') }}"
+    to: "{{ secret('AVISO_CORREO') }}"
+    subject: "{{ trigger.state == 'SUCCESS' ? 'Success' : 'Fail' }}: {{ trigger.namespace }}.{{ trigger.flowId }} ({{ trigger.state }})"
+    customMessage: "{{ trigger.state == 'SUCCESS' ? 'Success' : 'Fail' }}: la ejecucion {{ trigger.executionId }} de {{ trigger.flowId }} termino en {{ trigger.state }}."
+    executionId: "{{ trigger.executionId }}"
+
+triggers:
+  - id: al_terminar
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - namespace: usfq.portafolio
+        states: [SUCCESS, WARNING, FAILED, KILLED]
+        when: "{{ flow.id != 'transformar' }}"

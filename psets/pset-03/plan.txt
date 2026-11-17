@@ -1,5 +1,6 @@
 # Traido desde la rama draft (psets/pset-02/plan.txt, version del 2026-11-15 con J10 e I4
-# cerrados). Las rutas psets/pset-02/analisis/ ahora estan en psets/pset-03/analisis/; las demas
+# cerrados). Las rutas psets/pset-02/analisis/ ahora estan en psets/pset-03/analisis/datos/ y
+# psets/pset-03/analisis/modelos/ (ver analisis/README.md); las demas
 # rutas de pset-02 siguen vigentes. Las secciones K1-K10 son las del PSet 3.
 
 PLAN DEL PSET 2 (Allan Paul Gomez Ehmig, 00351916)

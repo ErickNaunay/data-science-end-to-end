@@ -1,8 +1,8 @@
 """Fechas de inicio y fin de cada accion, deteccion de valores faltantes contra el
 calendario de la NYSE e imputacion de huecos cortos con tres metodos, sobre el cache de Yahoo.
 
-Lee:     analisis/yahoo.duckdb (cache de traer_yahoo.py) y analisis/universo.duckdb
-Escribe en analisis/yahoo.duckdb (tablas nuevas):
+Lee:     analisis/datos/yahoo.duckdb (cache de traer_yahoo.py) y analisis/datos/universo.duckdb
+Escribe en analisis/datos/yahoo.duckdb (tablas nuevas):
   fechas_accion                   una fila por simbolo de Yahoo: primera y ultima fecha con
                                   precio, dias esperados segun el calendario NYSE, faltantes,
                                   hueco mas largo, fechas en el S&P 500 (fotos desde 2010) y
@@ -30,7 +30,7 @@ Los tres usan el valor posterior al hueco: sirven para limpiar el historico, no 
 decidir en tiempo real.
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/fechas_y_faltantes.py [--base RUTA] [--muestra-eval 30]
+  uv run python analisis/datos/fechas_y_faltantes.py [--base RUTA] [--muestra-eval 30]
 """
 
 import argparse
@@ -157,7 +157,7 @@ def main():
                              from cache_yahoo_precios where ticker_yahoo not like '^%'
                              order by 1, 2""").df()
     if precios.empty:
-        raise SystemExit("El cache esta vacio: corre primero analisis/traer_yahoo.py")
+        raise SystemExit("El cache esta vacio: corre primero analisis/datos/traer_yahoo.py")
     precios["fecha"] = pd.to_datetime(precios["fecha"])
     precios["open_aj"] = precios["open"] * precios["adj_close"] / precios["close"]
 

@@ -10,12 +10,12 @@ Fuentes (publicas, en GitHub):
     tomadas del screener de Nasdaq, actualizadas cada noche).
 
 Salida:
-  - analisis/universo.duckdb con las tablas sp500_actual, sp500_historico,
+  - analisis/datos/universo.duckdb con las tablas sp500_actual, sp500_historico,
     listados_actuales, universo_comparado y subconjunto_nucleo.
-  - analisis/listas/*.csv con las mismas listas, para revisarlas sin DuckDB.
+  - analisis/datos/listas/*.csv con las mismas listas, para revisarlas sin DuckDB.
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/construir_listas.py
+  uv run python analisis/datos/construir_listas.py
 """
 
 import io

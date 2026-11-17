@@ -4,12 +4,15 @@ from pathlib import Path
 from datetime import datetime, timezone
 import pandas as pd
 RAIZ=Path(__file__).resolve().parents[1]
-TABLA='PORTAFOLIO.OBT.OBT_ACCION_MES'
+# La OBT la construye el pipeline copiado en pipeline/ (base PORTAFOLIO_P3); la base
+# PORTAFOLIO queda como la entregada en el PSet 2. Se elige con SNOWFLAKE_DATABASE.
+def tabla(): return f"{os.environ.get('SNOWFLAKE_DATABASE','PORTAFOLIO_P3')}.OBT.OBT_ACCION_MES"
 def exportar(destino=None):
     import snowflake.connector
     if (RAIZ/'.env').exists():
         from dotenv import load_dotenv
         load_dotenv(RAIZ/'.env')
+    TABLA=tabla()
     destino=Path(destino or RAIZ/'data/obt.parquet'); destino.parent.mkdir(parents=True,exist_ok=True)
     with snowflake.connector.connect(account=os.environ['SNOWFLAKE_ACCOUNT'],user=os.environ['SNOWFLAKE_USER'],private_key=base64.b64decode(os.environ['SNOWFLAKE_PRIVATE_KEY']),role=os.environ.get('SNOWFLAKE_ROLE','PSET2_ROL'),warehouse=os.environ.get('SNOWFLAKE_WAREHOUSE','PSET2_WH')) as con:
         with con.cursor() as cur:

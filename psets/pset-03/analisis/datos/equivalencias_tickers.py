@@ -22,11 +22,11 @@ MDLZ aparece desde 2007 aunque hasta 2012 era KFT); en esos casos no hay cambio 
 no hace falta equivalencia para bajar de Yahoo. Tampoco se detectan cambios de empresas
 que ya no estan en el indice.
 
-Salida: tabla equivalencias_tickers en analisis/universo.duckdb y
-        analisis/listas/equivalencias_tickers.csv
+Salida: tabla equivalencias_tickers en analisis/datos/universo.duckdb y
+        analisis/datos/listas/equivalencias_tickers.csv
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/equivalencias_tickers.py
+  uv run python analisis/datos/equivalencias_tickers.py
 """
 
 import io
@@ -204,8 +204,9 @@ def main():
         semilla["fecha_cambio_composicion"].fillna(semilla["fecha_cambio_oficial"])).dt.date
     semilla["estado"] = semilla["estado"].str.split(" ").str[0].str.rstrip(":")
     semilla = semilla[["ticker_antiguo", "ticker_yahoo", "valido_hasta", "estado"]]
-    # La semilla la consume el pipeline del PSet 2 (dbt y Kestra viven en psets/pset-02/).
-    raiz = AQUI.parent.parent / "pset-02"
+    # La semilla la consume el pipeline copiado en psets/pset-03/pipeline/ (pset-02 ya se
+    # entrego y no se modifica).
+    raiz = AQUI.parent.parent / "pipeline"
     for destino in [raiz / "dbt" / "seeds" / "equivalencias_tickers.csv",
                     raiz / "kestra" / "scripts" / "equivalencias_tickers.csv"]:
         destino.parent.mkdir(parents=True, exist_ok=True)

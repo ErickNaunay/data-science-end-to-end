@@ -2,11 +2,11 @@
 cache, y los guarda en una base DuckDB aparte para analizarlos antes de Snowflake.
 
 Requiere haber corrido antes:
-  uv run python analisis/construir_listas.py        (universo)
-  uv run python analisis/equivalencias_tickers.py   (simbolos viejos -> simbolo actual de Yahoo)
+  uv run python analisis/datos/construir_listas.py        (universo)
+  uv run python analisis/datos/equivalencias_tickers.py   (simbolos viejos -> simbolo actual de Yahoo)
 Debe correr en una maquina con acceso a Yahoo (tu computador o el contenedor de ingesta).
 
-Base: analisis/yahoo.duckdb
+Base: analisis/datos/yahoo.duckdb
   cache_yahoo_precios    una fila por (ticker_yahoo, fecha): lo ultimo que devolvio Yahoo
   cache_yahoo_consultas  bitacora de cada consulta: rango pedido, filas, estado, version
   ticker_a_yahoo         simbolo de la composicion -> simbolo a pedir a Yahoo
@@ -21,9 +21,9 @@ Como funciona el cache:
   - --forzar ignora el cache y vuelve a pedir todo.
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/traer_yahoo.py --universo nucleo    # 193 acciones con historia completa
-  uv run python analisis/traer_yahoo.py                      # universo completo (~800 simbolos)
-  uv run python analisis/traer_yahoo.py --info               # ademas, bolsa segun Yahoo (lento)
+  uv run python analisis/datos/traer_yahoo.py --universo nucleo    # 193 acciones con historia completa
+  uv run python analisis/datos/traer_yahoo.py                      # universo completo (~800 simbolos)
+  uv run python analisis/datos/traer_yahoo.py --info               # ademas, bolsa segun Yahoo (lento)
 """
 
 import argparse

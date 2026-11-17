@@ -25,7 +25,7 @@ Metricas (PSet 1): RMSE, MAE, acierto direccional, R2 fuera de muestra frente a 
 prueba Diebold-Mariano (con correccion de Harvey-Leybourne-Newbold) contra rw_cero sobre la
 perdida cuadratica promedio de cada mes (asi se respeta la correlacion entre acciones).
 
-Lee analisis/yahoo.duckdb (series_diarias y arima_modelos, de series_y_arima.py).
+Lee analisis/datos/yahoo.duckdb (series_diarias y arima_modelos, de series_y_arima.py).
 Escribe:
   panel_mensual            una fila por accion y cierre de mes: variables y objetivo
   pronosticos_mensuales    pronostico de cada modelo por accion, mes y periodo
@@ -33,7 +33,7 @@ Escribe:
   comparacion_por_accion   metricas por modelo, periodo y accion
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/comparar_modelos.py [--procesos 4]
+  uv run python analisis/modelos/comparar_modelos.py [--procesos 4]
 """
 
 import argparse
@@ -223,7 +223,7 @@ def metricas(df: pd.DataFrame) -> dict:
 
 def main():
     pa = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    pa.add_argument("--base", default=str(AQUI / "yahoo.duckdb"))
+    pa.add_argument("--base", default=str(AQUI.parent / "datos" / "yahoo.duckdb"))
     pa.add_argument("--procesos", type=int, default=4)
     a = pa.parse_args()
 

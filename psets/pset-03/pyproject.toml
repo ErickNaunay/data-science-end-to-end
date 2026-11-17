@@ -33,7 +33,7 @@ dependencies = [
 dev = [
     "pytest>=8",
 ]
-# Scripts de analisis/ (traidos de draft:psets/pset-02/analisis): Yahoo con cache DuckDB,
+# Scripts de analisis/datos y analisis/modelos (traidos de draft:psets/pset-02/analisis): Yahoo con cache DuckDB,
 # imputacion, ARIMA por accion y comparacion de los modelos del PSet 1.
 #   uv sync --group analisis        (xgboost en macOS requiere: brew install libomp)
 # Opcionales, no incluidos: torch, chronos-forecasting, timesfm, uni2ts (Moirai).
@@ -47,3 +47,7 @@ analisis = [
 
 [tool.uv]
 package = false
+
+[tool.pytest.ini_options]
+# Solo las pruebas de pset-03; las de pipeline/ se corren desde esa carpeta con su entorno.
+testpaths = ["tests"]

@@ -20,7 +20,7 @@ castiga mas los parametros: suele elegir modelos mas simples que el AIC.
 Solo con datos de entrenamiento (hasta --corte). Tramos con huecos largos quedan como NaN
 y el ARIMA en espacio de estados los trata como faltantes.
 
-Lee analisis/yahoo.duckdb (precios_imputados, de fechas_y_faltantes.py) y escribe:
+Lee analisis/datos/yahoo.duckdb (precios_imputados, de fechas_y_faltantes.py) y escribe:
   series_diarias         ticker, fecha y las 7 series (con la imputacion elegida)
   estacionariedad        ticker, serie, p-valor ADF, p-valor KPSS, d elegido
   arima_candidatos       todos los ordenes probados con AIC y BIC
@@ -28,7 +28,7 @@ Lee analisis/yahoo.duckdb (precios_imputados, de fechas_y_faltantes.py) y escrib
   arima_coeficientes     coeficientes de esos modelos: valor, error estandar, z, p-valor
 
 Uso, desde psets/pset-03/ (uv sync --group analisis):
-  uv run python analisis/series_y_arima.py [--imputacion lineal|lineal_ruido|kalman] [--procesos 4]
+  uv run python analisis/modelos/series_y_arima.py [--imputacion lineal|lineal_ruido|kalman] [--procesos 4]
 """
 
 import argparse
@@ -110,7 +110,7 @@ def ajustar(args):
 
 def main():
     pa = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    pa.add_argument("--base", default=str(AQUI / "yahoo.duckdb"))
+    pa.add_argument("--base", default=str(AQUI.parent / "datos" / "yahoo.duckdb"))
     pa.add_argument("--imputacion", choices=["lineal", "lineal_ruido", "kalman"], default="lineal")
     pa.add_argument("--corte", default="2023-12-31")
     pa.add_argument("--series", nargs="*", default=SERIES)
