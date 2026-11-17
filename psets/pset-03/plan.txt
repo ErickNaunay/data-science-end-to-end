@@ -80,7 +80,7 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
  Promesas del PSet 1 para la   % de huecos por ticker y universo de cada fecha frente a   [~] H10
  etapa Datos                   la composicion historica: verificar donde quedan en P3.
                                Diccionario de datos: solo pset-02/docs/diccionario_datos.md.
- Ingesta sin intervencion      La primera carga (backfill_historico) se lanza a mano.     [~] H12
+ Ingesta sin intervencion      Primera carga automatica si RAW esta vacia (H12).          [x] H12
 
 1.2 Hallazgos (H) y correccion propuesta
 [x] H1 (C) Spark (17-nov: codigo, prueba y OBT reconstruida; transformar 3iFjuQmq, 14/14 controles): ret_log_sp500_mes_siguiente, ret_log_nyse_composite_mes_siguiente y
@@ -92,7 +92,7 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
 [~] H2 (C) Diagramas: decidir si pset-03 enlaza los de pset-02/docs o se regeneran con los
        nombres de la copia (PORTAFOLIO_P3, pset3-*). Propuesta: enlazar y anotar diferencias
        (no cambian la arquitectura).
-[~] H3 (P+C) Calidad en P3: correr scripts/diagnosticar_calidad.py y
+[x] H3 (P+C) (17-nov, ver V3.4) Calidad en P3: correr scripts/diagnosticar_calidad.py y
        scripts/generar_informe_calidad.py contra PORTAFOLIO_P3 y comparar con pset-02/docs/calidad
        (RAW de P3 tiene una sola carga: deben cambiar los conteos de RAW, no Bronze en adelante).
 [~] H4 (C) Equivalencias de tickers: 14 cambios "manual: verificar" sin fuente (A1c del plan
@@ -105,22 +105,27 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
        OBT no es bit a bit reproducible y que el snapshot con sha256 es la referencia del PSet 3.
 [~] H7 (C) Imagen de Spark con Python 3.8 (apache/spark:3.5.3-python3), no 3.11 como el resto.
        Documentar; no cambiar la version de Spark.
-[~] H8 (P) Evidencia de dbt en P3: guardar run_results.json y sources.json (freshness) de la
+[x] H8 (P) (17-nov, ver V2.1) Evidencia de dbt en P3: guardar run_results.json y sources.json (freshness) de la
        corrida en pipeline/docs/corrida/, como en pset-02.
 [x] H9 Fecha del trigger de ingesta_diaria corregida solo en la copia (disclaimer.txt, item 3).
-[~] H10 (C) Promesas del PSet 1 (etapa Datos): ubicar o construir el % de huecos por ticker y la
+[x] H10 (C) (17-nov: dq_huecos_por_ticker y dq_universo_por_fecha en P3, transformar
+       60BmPag3; docs/corrida/huecos_por_ticker.csv y universo_por_mes.csv; cuadran con
+       dq_metricas: 12,757% de dias como miembro sin precio) Promesas del PSet 1 (etapa Datos): ubicar o construir el % de huecos por ticker y la
        comparacion del universo por fecha con la composicion historica (tabla o consulta en
        CALIDAD); si ya existen en dq_metricas, citarlas. En analisis/datos/fechas_y_faltantes.py
        existe la logica (tabla fechas_accion) como referencia (D2 del plan anterior).
-[~] H11 (C) Sesgo de supervivencia: la ingesta de P3 dejo 166 simbolos con SIN_DATOS (Yahoo no
+[~] H11 (C) (17-nov, cuantificado: 160 de 768 simbolos de la composicion (20,8%) sin ningun
+       precio en Yahoo, repartidos en todos los anios de salida; cobertura del universo con
+       precio 75,6% en 2010 -> 99,2% en 2026. Falta la prueba de auditoria A9 en el EDA, 3.1) Sesgo de supervivencia: la ingesta de P3 dejo 166 simbolos con SIN_DATOS (Yahoo no
        tiene muchas acciones que dejaron de cotizar; ingesta_resumen.csv). Medir que parte del
        universo historico falta por ano y llevarlo al EDA y a limitaciones. Prueba de auditoria
        (A9 del plan anterior): retorno igual ponderado del universo de hoy aplicado al pasado
        frente al universo point-in-time.
-[~] H12 (C) "La ingesta debe poder realizarse sin intervencion manual" (CD_PSet_2): hoy la
+[x] H12 (C) (17-nov, opcion 1 elegida por Paul: ingesta_diaria hace el historico si RAW esta
+       vacia; 4 pruebas en kestra/tests) "La ingesta debe poder realizarse sin intervencion manual" (CD_PSet_2): hoy la
        primera carga se lanza a mano. Opcion (C3 del plan anterior): que ingesta_diaria lance
        backfill_historico si RAW esta vacio, o documentarlo como paso unico de instalacion.
-[~] H13 (C) Prueba de no fuga en la OBT (F4 del plan anterior): ninguna columna de features usa
+[x] H13 (C) (17-nov: spark/tests, 8 pruebas; detecta una ventana que mira un dia adelante) Prueba de no fuga en la OBT (F4 del plan anterior): ninguna columna de features usa
        datos posteriores al cierre de mes; hoy se cubre con la lista de columnas excluidas en
        src/pipeline.py, sin un test explicito sobre la OBT.
 [~] H15 (C) Barra del dia en curso (codigo y pruebas hechos 17-nov; aplica a la proxima ingesta): las ingestas manuales del 17-nov (7SXMpaCi a las 11:33 y

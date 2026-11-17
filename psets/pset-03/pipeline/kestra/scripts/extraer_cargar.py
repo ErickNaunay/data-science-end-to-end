@@ -19,6 +19,9 @@ Modos:
              Trae una ventana de DIAS_REVISION dias habiles hacia atras (Yahoo corrige
              cierres y ajustes despues del dia), para las acciones de la ultima foto de
              la composicion. Los lunes recarga tambien composicion y listados.
+             Primera carga sin intervencion: si RAW.PRECIOS_DIARIOS esta vacia, hace el
+             historico completo (ANIO_INICIO hasta la fecha, un anio por vez, igual que el
+             flow backfill_historico) en lugar de la ventana diaria.
   historico  python extraer_cargar.py historico --desde 2010-01-01 --hasta 2010-12-31
              Backfill: todas las acciones que estuvieron en el indice en ese rango.
 
@@ -62,6 +65,7 @@ DIAS_REVISION = 7
 TAMANO_LOTE = 100
 INTENTOS_POR_LOTE = 3
 MAX_PROPORCION_LOTES_FALLIDOS = 0.10
+ANIO_INICIO = 2010         # mismo inicio que el flow backfill_historico y la var fecha_inicio de dbt
 ZONA_NY = ZoneInfo("America/New_York")
 CIERRE_NY = hora(16, 30)   # cierre de la NYSE (16:00) + margen para que Yahoo publique el cierre
 
@@ -288,6 +292,34 @@ def correr(modo: str, desde: date, hasta: date, incluir_referencias: bool) -> No
         conn.close()
 
 
+def tramos_historico(hasta: date, anio_inicio: int = ANIO_INICIO) -> list[tuple[date, date]]:
+    """Un tramo por anio desde anio_inicio hasta la fecha 'hasta' (el ultimo anio, recortado)."""
+    return [(date(a, 1, 1), min(date(a, 12, 31), hasta)) for a in range(anio_inicio, hasta.year + 1)]
+
+
+def raw_precios_vacia() -> bool:
+    conn = conectar()
+    try:
+        cur = conn.cursor()
+        cur.execute("select 1 from PRECIOS_DIARIOS limit 1")
+        return cur.fetchone() is None
+    finally:
+        conn.close()
+
+
+def correr_diario(hasta: date, incluir_referencias: bool) -> None:
+    if raw_precios_vacia():
+        tramos = tramos_historico(hasta)
+        log.info("RAW.PRECIOS_DIARIOS vacia: primera carga historica en %s tramos (%s a %s)",
+                 len(tramos), tramos[0][0], hasta)
+        for desde, hasta_tramo in tramos:
+            correr("historico", desde, hasta_tramo, incluir_referencias=True)
+        return
+    desde = hasta - timedelta(days=DIAS_REVISION + 4)  # ~7 dias habiles
+    refs = incluir_referencias or hasta.isoweekday() == 1
+    correr("diario", desde, hasta, refs)
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="modo", required=True)
@@ -300,10 +332,7 @@ def main() -> None:
     a = p.parse_args()
 
     if a.modo == "diario":
-        hasta = a.fecha
-        desde = hasta - timedelta(days=DIAS_REVISION + 4)  # ~7 dias habiles
-        refs = a.incluir_referencias or hasta.isoweekday() == 1
-        correr("diario", desde, hasta, refs)
+        correr_diario(a.fecha, a.incluir_referencias)
     else:
         if a.desde > a.hasta:
             sys.exit("--desde debe ser anterior a --hasta")

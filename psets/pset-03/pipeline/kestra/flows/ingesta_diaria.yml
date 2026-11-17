@@ -7,7 +7,8 @@ description: |
   Carga en RAW los precios de los ultimos ~7 dias habiles (Yahoo corrige cierres y
   ajustes despues del dia) y, los lunes, la composicion del S&P 500 y los listados de
   bolsa. Termina corriendo el flow "transformar". La fecha sale del trigger; para
-  re-procesar un dia a mano se ejecuta con el input "fecha".
+  re-procesar un dia a mano se ejecuta con el input "fecha". Si RAW esta vacia (primera
+  vez), carga el historico completo desde 2010 sin intervencion manual (~20 minutos).
 
 labels:
   proyecto: portafolio-inversiones

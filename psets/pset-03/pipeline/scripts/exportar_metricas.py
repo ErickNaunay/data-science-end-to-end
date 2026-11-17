@@ -55,6 +55,16 @@ CONSULTAS = {
         select conjunto, count(*) filas, sum(iff(elegible, 1, 0)) elegibles,
                count(distinct ticker) acciones, min(anio_mes) desde, max(anio_mes) hasta
         from OBT.OBT_ACCION_MES group by conjunto order by conjunto""",
+    # Promesas del PSet 1 (etapa Datos): huecos por ticker y universo por fecha.
+    "huecos_por_ticker": "select * from CALIDAD.DQ_HUECOS_POR_TICKER order by sin_precios, pct_huecos_miembro desc, ticker",
+    "universo_por_mes": """
+        select to_char(fecha, 'YYYYMM') anio_mes, count(*) dias,
+               round(avg(miembros_composicion), 1) miembros_composicion,
+               round(avg(miembros_con_precio), 1) miembros_con_precio,
+               round(avg(miembros_nyse), 1) miembros_nyse,
+               round(avg(miembros_bolsa_desconocida), 1) miembros_bolsa_desconocida,
+               round(avg(pct_cobertura), 2) pct_cobertura
+        from CALIDAD.DQ_UNIVERSO_POR_FECHA group by 1 order by 1""",
 }
 
 for nombre, sql in CONSULTAS.items():

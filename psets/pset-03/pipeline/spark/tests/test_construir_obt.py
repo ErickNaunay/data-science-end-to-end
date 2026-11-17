@@ -48,14 +48,17 @@ def spark():
     s.stop()
 
 
-def tablas(spark, dim_accion_extra=(), fct_extra=(), quitar_mercado_mes=None):
+def tablas(spark, dim_accion_extra=(), fct_extra=(), quitar_mercado_mes=None, ret_futuro=None):
     fechas = [(int(f.strftime("%Y%m%d")), f, f.year, f.month, f.year * 100 + f.month, cerrado, cierre,
                "entrenamiento" if f <= dt.date(2023, 12, 31) else "prueba")
               for f, cerrado, cierre in SESIONES]
     dim_f = spark.createDataFrame(fechas, "fecha_key int, fecha date, anio int, mes int, anio_mes int, "
                                           "mes_cerrado boolean, es_cierre_de_mes boolean, conjunto string")
-    fct_filas = [(a, fk, RET[a], False, 0.0, RET[a], 0.0, 100.0, 1000.0, 100.0, False, False, True)
-                 for a in RET for fk, *_ in fechas]
+    # ret_futuro: retorno distinto para las sesiones posteriores a esa fecha (prueba de no fuga).
+    def ret(a, f):
+        return ret_futuro[1] if ret_futuro and f > ret_futuro[0] else RET[a]
+    fct_filas = [(a, fk, ret(a, f), False, 0.0, ret(a, f), 0.0, 100.0, 1000.0, 100.0, False, False, True)
+                 for a in RET for fk, f, *_ in fechas]
     fct = spark.createDataFrame(fct_filas + list(fct_extra),
                                 "accion_key int, fecha_key int, ret_log_diario double, imputado boolean, "
                                 "ret_log_apertura double, ret_log_intradia double, ret_log_nocturno double, "
@@ -114,6 +117,24 @@ def test_mercado_del_mes_siguiente_solo_con_meses_cerrados(spark):
     assert dic.ret_log_nyse_composite_mes_siguiente is None
     assert dic.rf_mes_siguiente is None
     assert dic.exceso_ret_mes_siguiente is None
+
+
+def test_variables_de_noviembre_no_usan_datos_posteriores(spark):
+    # Sin fuga: si cambian los retornos posteriores al cierre de noviembre, las variables de
+    # la fila de noviembre no cambian; solo su objetivo (el mes siguiente).
+    columnas_futuras = {"ret_log_mes_siguiente", "exceso_ret_mes_siguiente", "ret_log_sp500_mes_siguiente",
+                        "ret_log_nyse_composite_mes_siguiente", "rf_mes_siguiente"}
+    base, _ = construir(spark)
+    otro, c = construir(spark, ret_futuro=(dt.date(2023, 11, 30), 0.25))
+    assert c.todos_ok(), fallidos(c)
+    b = {r.accion_key: r.asDict() for r in base.collect() if r.anio_mes == 202311}
+    o = {r.accion_key: r.asDict() for r in otro.collect() if r.anio_mes == 202311}
+    for accion in b:
+        for col, valor in b[accion].items():
+            if col in columnas_futuras:
+                continue
+            assert o[accion][col] == pytest.approx(valor) if isinstance(valor, float) else o[accion][col] == valor, col
+        assert o[accion]["ret_log_mes_siguiente"] != pytest.approx(b[accion]["ret_log_mes_siguiente"])
 
 
 def test_corte_marca_entrenamiento_y_mes_que_cruza(spark):

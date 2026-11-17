@@ -48,8 +48,10 @@ Todos los comandos, desde `psets/pset-03/pipeline/`.
    bash kestra/subir_flows.sh
    ```
    Kestra: http://localhost:8090 · Spark: http://localhost:8081
-5. **Carga completa:** en Kestra, *Execute* `usfq.portafolio.backfill_historico`
-   (por defecto 2010–2026). Al final llama a `transformar` (dbt build + Spark → OBT).
+5. **Carga completa:** no requiere paso manual. Si `RAW.PRECIOS_DIARIOS` esta vacia, la primera
+   `ingesta_diaria` (programada o lanzada a mano) carga el historico desde 2010 anio por anio
+   (~20 minutos) y luego llama a `transformar` (dbt build + Spark → OBT). Para recargar un rango
+   de anios sigue disponible `usfq.portafolio.backfill_historico`.
 6. **Evidencias (opcional):** `uv sync --group dev` y luego
    `uv run python scripts/exportar_metricas.py` y `uv run python scripts/verificar_snowflake.py`.
 7. **Apagar antes de MLflow:** `docker compose down` (sin `-v` para conservar el estado de Kestra).

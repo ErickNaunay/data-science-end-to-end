@@ -119,6 +119,34 @@ ingestado durante la sesion quedaria en la OBT con un precio parcial.
 | `scripts/reconstruir_obt.sh` | sin avisos; `transformar` sin etiquetas | `trap` al salir: `Fail` con el paso en curso y el id de `transformar`; `Success` al final con el snapshot; `transformar` se lanza con `?labels=origen:manual`; termina con error si el control de H1 falla |
 | `kestra/flows/avisos.yml` | un trigger; `transformar` excluido siempre | segundo trigger `transformar_manual`: `transformar` con la etiqueta `origen: manual` (las ejecuciones como subflow no la llevan) |
 
+## H10, H11 y H13: huecos por ticker, universo por fecha y prueba de no fuga (2026-11-17)
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `dbt/models/calidad/dq_huecos_por_ticker.sql` | no existia (solo el agregado `dias_miembro_sin_precio_pct`) | una fila por simbolo de la composicion: dias como miembro, con precio, `pct_huecos_miembro`, dias de vida, imputados, excluidos y `sin_precios` (sesgo de supervivencia) |
+| `dbt/models/calidad/dq_universo_por_fecha.sql` | no existia | una fila por dia bursatil: miembros segun la composicion, con precio, en la NYSE hoy, con bolsa desconocida y `pct_cobertura` |
+| `dbt/models/calidad/_calidad.yml` | solo `dq_metricas` | `unique`/`not_null` en ambas y `relationships` fecha -> `dim_fecha` |
+| `dbt/tests/assert_huecos_coherentes_con_dq_metricas.sql` | no existia | las dos tablas suman lo mismo y coinciden con `dias_miembro_sin_precio_pct` (tolerancia 0,01 pp) |
+| `scripts/exportar_metricas.py` | 5 CSV | + `huecos_por_ticker.csv` y `universo_por_mes.csv` (promedio mensual del universo por fecha) |
+| `spark/tests/test_construir_obt.py` | sin prueba de fuga | `test_variables_de_noviembre_no_usan_datos_posteriores`: cambiar los retornos posteriores al cierre de noviembre no cambia ninguna variable de esa fila, solo el objetivo. Falla si una ventana mira un dia adelante (probado con `rowsBetween(-20, 1)`) |
+
+Probado en DuckDB con la muestra de `pruebas_locales` (3 acciones): modelos y pruebas nuevas en
+PASS; la prueba de coherencia pasa. El ERROR de `not_null_slv_mercado_diario_cierre_sp500` en
+esa muestra ya existia (usa VTI/QQQ como sustitutos de los indices). Pruebas de Spark: 8 pasan.
+
+## H12: primera carga sin intervencion manual (2026-11-17)
+
+CD_PSet_2 pide que la ingesta pueda realizarse sin intervencion manual; la primera carga se
+lanzaba a mano con `backfill_historico`. Decision de Paul: que la ingesta diaria la haga sola.
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `kestra/scripts/extraer_cargar.py`, modo `diario` | siempre la ventana de ~7 dias habiles | `correr_diario()`: si `RAW.PRECIOS_DIARIOS` esta vacia, historico desde `ANIO_INICIO` (2010) hasta la fecha, un anio por vez (`tramos_historico()`), igual que `backfill_historico`; si no, la ventana diaria de siempre |
+| `kestra/tests/test_primera_carga.py` | no existia | 4 pruebas: tramos por anio, RAW vacia -> historico, RAW con datos -> ventana diaria, lunes -> referencias |
+| `kestra/flows/ingesta_diaria.yml` (descripcion) y `README.md` paso 5 | backfill manual | primera carga automatica; `backfill_historico` queda para recargar rangos |
+
+La tarea de ingesta tiene `timeout: PT2H`; el backfill completo del 16-nov tardo ~18 minutos.
+
 ## Cambios fuera de `pipeline/`
 
 | Archivo | Antes | Después |
