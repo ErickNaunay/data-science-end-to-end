@@ -26,6 +26,6 @@ with snowflake.connector.connect(account=env['SNOWFLAKE_ACCOUNT'],user=env['SNOW
 g = result['resultados']['grano'][0]
 assert g['filas'] == g['claves'] == result['resultados']['base_gold'][0]['filas'] and g['claves_nulas'] == 0
 assert result['resultados']['claves_faltantes_o_extra'][0]['diferencias'] == 0
-assert len(result['resultados']['controles']) == 13 and all(r['ok'] for r in result['resultados']['controles'])
+assert len(result['resultados']['controles']) == 14 and all(r['ok'] for r in result['resultados']['controles'])
 (R/'docs/corrida/auditoria_obt.json').write_text(json.dumps(result,indent=2,default=str))
 print(json.dumps(result['resultados'],indent=2,default=str))

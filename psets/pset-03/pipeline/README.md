@@ -55,10 +55,29 @@ Todos los comandos, desde `psets/pset-03/pipeline/`.
 7. **Apagar antes de MLflow:** `docker compose down` (sin `-v` para conservar el estado de Kestra).
 8. **Snapshot para los notebooks**, desde `psets/pset-03/`: `uv run python -m src.datos`.
 
+## Reconstruir la OBT despues de un cambio
+
+```bash
+bash scripts/reconstruir_obt.sh
+```
+
+Corre las pruebas (ingesta con uv; Spark en su imagen), reconstruye las imagenes, levanta
+Compose, sube los flows, ejecuta `transformar` (dbt build + Spark) hasta que termine,
+exporta las evidencias a `docs/corrida/`, baja Compose (sin `-v`) y genera el snapshot de
+`../data/obt.parquet`. No lanza la ingesta de Yahoo.
+
+Avisos: al terminar manda `Success: reconstruir_obt` o `Fail: reconstruir_obt` con el paso que
+fallo (`scripts/notificar.py`, mismas credenciales `AVISO_*` de `.env`). Ademas lanza
+`transformar` con la etiqueta `origen=manual`, y el flow de avisos manda su propio correo.
+
+La ingesta no guarda la sesion del dia si corre con la bolsa abierta (antes de las 16:30 de
+Nueva York): ese precio es intradia, no el cierre. La trae la siguiente corrida.
+
 ## Avisos por correo
 
 El flow `usfq.avisos.avisos` (`kestra/flows/avisos.yml`) envía un correo al terminar cada
-ejecución de `ingesta_diaria` o `backfill_historico`. El asunto empieza con `Success` o `Fail`.
+ejecución de `ingesta_diaria` o `backfill_historico`, y de `transformar` cuando se lanza a mano
+con la etiqueta `origen=manual`. El asunto empieza con `Success` o `Fail`.
 
 1. En `.env`, completa `AVISO_CORREO` (cuenta de Gmail) y `AVISO_CLAVE_APP` (contraseña de
    aplicación de Google: Cuenta de Google → Seguridad → Verificación en dos pasos →

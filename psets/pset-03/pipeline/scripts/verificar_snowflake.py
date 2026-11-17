@@ -16,6 +16,6 @@ with snowflake.connector.connect(account=env['SNOWFLAKE_ACCOUNT'],user=env['SNOW
   checks,bad,ts=one("select count(*),sum(iff(ok,0,1)),max(ejecutado_en) from OBT.VALIDACION_OBT")
   columns=one("select count(*) from information_schema.columns where table_schema='OBT' and table_name='OBT_ACCION_MES'")[0]
   raw,last=one('select count(*),max(ingesta_ts) from RAW.PRECIOS_DIARIOS')
-  assert n>0 and n==unique and checks==13 and bad==0 and columns==43
+  assert n>0 and n==unique and checks==14 and bad==0 and columns==43
   result={'estado':'OK','verificado_utc':datetime.now(timezone.utc).isoformat(),'obt_filas':int(n),'obt_claves_distintas':int(unique),'obt_elegibles':int(eligible),'obt_columnas':int(columns),'controles_ok':int(checks),'controles_fallidos':int(bad),'controles_ejecutados_en':str(ts),'raw_filas':int(raw),'ultima_ingesta':str(last),'operacion':'SELECT; sin escrituras'}
 (root/'docs/corrida/verificacion_snowflake.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))

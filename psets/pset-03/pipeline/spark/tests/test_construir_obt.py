@@ -84,7 +84,7 @@ def fallidos(c):
 def test_datos_validos_pasan_todos_los_controles(spark):
     obt, c = construir(spark)
     assert c.todos_ok(), fallidos(c)
-    assert len(c.filas) == 13
+    assert len(c.filas) == 14
     # 2 acciones x 2 meses cerrados; enero (abierto) no entra.
     assert obt.count() == 4
     assert obt.select("accion_key", "anio_mes").distinct().count() == 4
@@ -99,6 +99,21 @@ def test_objetivo_es_el_retorno_del_mes_siguiente(spark):
     assert nov.ret_log_mes_siguiente == pytest.approx(dic.ret_log_mes)
     # El mes siguiente a diciembre (enero) no esta cerrado: sin objetivo.
     assert dic.ret_log_mes_siguiente is None
+
+
+def test_mercado_del_mes_siguiente_solo_con_meses_cerrados(spark):
+    obt, _ = construir(spark)
+    filas = {(r.accion_key, r.anio_mes): r for r in obt.collect()}
+    nov, dic = filas[(1, 202311)], filas[(1, 202312)]
+    # Noviembre: el mes siguiente (diciembre) esta cerrado.
+    assert nov.ret_log_sp500_mes_siguiente == pytest.approx(dic.ret_log_sp500_mes)
+    assert nov.rf_mes_siguiente == pytest.approx(dic.rf_mes)
+    # Diciembre: enero esta abierto, asi que el mercado del mes siguiente queda nulo
+    # (antes salia el retorno parcial de enero).
+    assert dic.ret_log_sp500_mes_siguiente is None
+    assert dic.ret_log_nyse_composite_mes_siguiente is None
+    assert dic.rf_mes_siguiente is None
+    assert dic.exceso_ret_mes_siguiente is None
 
 
 def test_corte_marca_entrenamiento_y_mes_que_cruza(spark):

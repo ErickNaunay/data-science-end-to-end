@@ -177,18 +177,29 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
            .drop("_im", "_im_sig"))
 
     # 6. Mercado del mes (muchos a uno por anio_mes).
-    mercado_diario = mkt.join(dim_f.select("fecha_key", "anio_mes"), "fecha_key", "inner")
+    #    Los valores "del mes siguiente" solo existen si ese mes ya cerro: con el mes en curso
+    #    serian un retorno parcial que cambia con cada ingesta (igual que el objetivo de la accion).
+    mercado_diario = mkt.join(dim_f.select("fecha_key", "anio_mes", "mes_cerrado"), "fecha_key", "inner")
     c.igual("join fct_mercado_diario x dim_fecha conserva filas", mkt.count(), mercado_diario.count())
     mercado_mes = (mercado_diario.groupBy("anio_mes").agg(
                        F.sum("ret_log_sp500").alias("ret_log_sp500_mes"),
                        F.sum("ret_log_nyse_composite").alias("ret_log_nyse_composite_mes"),
                        F.sum("rf_diaria").alias("rf_mes"),
-                       F.avg("tasa_irx_anual_pct").alias("tasa_irx_prom_mes_pct")))
+                       F.avg("tasa_irx_anual_pct").alias("tasa_irx_prom_mes_pct"),
+                       F.min(F.col("mes_cerrado").cast("int")).cast("boolean").alias("_mes_cerrado")))
     wmk = Window.orderBy("anio_mes")
+    sig_cerrado = F.coalesce(F.lead("_mes_cerrado").over(wmk), F.lit(False))
     mercado_mes = (mercado_mes
-                   .withColumn("ret_log_sp500_mes_siguiente", F.lead("ret_log_sp500_mes").over(wmk))
-                   .withColumn("ret_log_nyse_composite_mes_siguiente", F.lead("ret_log_nyse_composite_mes").over(wmk))
-                   .withColumn("rf_mes_siguiente", F.lead("rf_mes").over(wmk)))
+                   .withColumn("_sig_cerrado", sig_cerrado)
+                   .withColumn("ret_log_sp500_mes_siguiente",
+                               F.when(F.col("_sig_cerrado"), F.lead("ret_log_sp500_mes").over(wmk)))
+                   .withColumn("ret_log_nyse_composite_mes_siguiente",
+                               F.when(F.col("_sig_cerrado"), F.lead("ret_log_nyse_composite_mes").over(wmk)))
+                   .withColumn("rf_mes_siguiente", F.when(F.col("_sig_cerrado"), F.lead("rf_mes").over(wmk))))
+    c.igual("mercado del mes siguiente solo con meses cerrados", 0,
+            mercado_mes.filter(~F.col("_sig_cerrado") & (F.col("ret_log_sp500_mes_siguiente").isNotNull()
+                                                          | F.col("rf_mes_siguiente").isNotNull())).count())
+    mercado_mes = mercado_mes.drop("_mes_cerrado", "_sig_cerrado")
     c.llave_unica("mercado mensual", mercado_mes, ["anio_mes"])
     n_antes = obt.count()
     c.igual("OBT sin meses huerfanos de mercado", 0,

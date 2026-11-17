@@ -1,14 +1,15 @@
 control,esperado,obtenido,ok,ejecutado_en
-"OBT (grano accion x mes): filas = combinaciones distintas de ['accion_key', 'anio_mes']",87178,87178,True,2026-11-17 17:46:15.335041
-OBT sin meses huerfanos de mercado,0,0,True,2026-11-17 17:46:15.335041
-OBT tiene una fila por accion y mes cerrado,87178,87178,True,2026-11-17 17:46:15.335041
-dim_accion: filas = combinaciones distintas de ['accion_key'],1130,1130,True,2026-11-17 17:46:15.335041
-dim_fecha: filas = combinaciones distintas de ['fecha_key'],4245,4245,True,2026-11-17 17:46:15.335041
-fct_mercado_diario: filas = combinaciones distintas de ['fecha_key'],4245,4245,True,2026-11-17 17:46:15.335041
-"fct_precios_diarios: filas = combinaciones distintas de ['accion_key', 'fecha_key']",1832433,1832433,True,2026-11-17 17:46:15.335041
-join OBT x dim_accion conserva filas,87178,87178,True,2026-11-17 17:46:15.335041
-join OBT x mercado mensual conserva filas,87178,87178,True,2026-11-17 17:46:15.335041
-join cierre x resumen del mes (uno a uno) conserva filas,87178,87178,True,2026-11-17 17:46:15.335041
-join fct_mercado_diario x dim_fecha conserva filas,4245,4245,True,2026-11-17 17:46:15.335041
-join fct_precios_diarios x dim_fecha conserva filas,1832433,1832433,True,2026-11-17 17:46:15.335041
-mercado mensual: filas = combinaciones distintas de ['anio_mes'],203,203,True,2026-11-17 17:46:15.335041
+"OBT (grano accion x mes): filas = combinaciones distintas de ['accion_key', 'anio_mes']",87178,87178,True,2026-11-17 18:58:10.363909
+OBT sin meses huerfanos de mercado,0,0,True,2026-11-17 18:58:10.363909
+OBT tiene una fila por accion y mes cerrado,87178,87178,True,2026-11-17 18:58:10.363909
+dim_accion: filas = combinaciones distintas de ['accion_key'],1130,1130,True,2026-11-17 18:58:10.363909
+dim_fecha: filas = combinaciones distintas de ['fecha_key'],4245,4245,True,2026-11-17 18:58:10.363909
+fct_mercado_diario: filas = combinaciones distintas de ['fecha_key'],4245,4245,True,2026-11-17 18:58:10.363909
+"fct_precios_diarios: filas = combinaciones distintas de ['accion_key', 'fecha_key']",1832433,1832433,True,2026-11-17 18:58:10.363909
+join OBT x dim_accion conserva filas,87178,87178,True,2026-11-17 18:58:10.363909
+join OBT x mercado mensual conserva filas,87178,87178,True,2026-11-17 18:58:10.363909
+join cierre x resumen del mes (uno a uno) conserva filas,87178,87178,True,2026-11-17 18:58:10.363909
+join fct_mercado_diario x dim_fecha conserva filas,4245,4245,True,2026-11-17 18:58:10.363909
+join fct_precios_diarios x dim_fecha conserva filas,1832433,1832433,True,2026-11-17 18:58:10.363909
+mercado del mes siguiente solo con meses cerrados,0,0,True,2026-11-17 18:58:10.363909
+mercado mensual: filas = combinaciones distintas de ['anio_mes'],203,203,True,2026-11-17 18:58:10.363909

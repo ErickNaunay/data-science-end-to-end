@@ -1,13 +1,13 @@
 {
   "estado": "OK",
-  "verificado_utc": "2026-11-17T17:52:01.916124+00:00",
+  "verificado_utc": "2026-11-17T18:58:41.240092+00:00",
   "obt_filas": 87178,
   "obt_claves_distintas": 87178,
   "obt_elegibles": 58628,
   "obt_columnas": 43,
-  "controles_ok": 13,
+  "controles_ok": 14,
   "controles_fallidos": 0,
-  "controles_ejecutados_en": "2026-11-17 17:46:15.335041",
+  "controles_ejecutados_en": "2026-11-17 18:58:10.363909",
   "raw_filas": 1856299,
   "ultima_ingesta": "2026-11-17 17:39:22.298222",
   "operacion": "SELECT; sin escrituras"

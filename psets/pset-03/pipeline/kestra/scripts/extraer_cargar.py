@@ -25,6 +25,10 @@ Modos:
 Raw es append-only: cada corrida agrega filas con LOTE_ID e INGESTA_TS. Si una fecha
 se carga dos veces, Bronze conserva la carga mas reciente.
 
+Sesion en curso: si el script corre con la bolsa abierta (antes de CIERRE_NY en Nueva
+York), Yahoo devuelve para hoy el precio del momento, no el cierre. Esa fila no se guarda;
+la trae la siguiente corrida (la programada es a las 18:30 de Nueva York).
+
 Credenciales: variables de entorno SNOWFLAKE_* (ver .env.example). En Kestra llegan
 desde secretos; nunca se escriben en el codigo ni en el repositorio.
 """
@@ -40,7 +44,8 @@ import os
 import sys
 import time
 import uuid
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time as hora, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import requests
@@ -57,6 +62,8 @@ DIAS_REVISION = 7
 TAMANO_LOTE = 100
 INTENTOS_POR_LOTE = 3
 MAX_PROPORCION_LOTES_FALLIDOS = 0.10
+ZONA_NY = ZoneInfo("America/New_York")
+CIERRE_NY = hora(16, 30)   # cierre de la NYSE (16:00) + margen para que Yahoo publique el cierre
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("ingesta")
@@ -175,6 +182,26 @@ def universo(composicion: pd.DataFrame, desde: date, hasta: date, modo: str) -> 
     return sorted(tickers) + INDICES
 
 
+def ultima_sesion_cerrada(ahora_utc: datetime) -> date:
+    """Ultima fecha cuyo cierre ya existe: hoy si en Nueva York ya paso CIERRE_NY, si no ayer.
+
+    No revisa feriados: un dia sin sesion simplemente no trae filas de Yahoo.
+    """
+    if ahora_utc.tzinfo is None:
+        ahora_utc = ahora_utc.replace(tzinfo=timezone.utc)
+    ny = ahora_utc.astimezone(ZONA_NY)
+    return ny.date() if ny.time() >= CIERRE_NY else ny.date() - timedelta(days=1)
+
+
+def quitar_sesion_en_curso(precios: pd.DataFrame, ahora_utc: datetime) -> tuple[pd.DataFrame, int]:
+    """Quita las filas posteriores a la ultima sesion cerrada (precio intradia, no cierre)."""
+    if precios.empty:
+        return precios, 0
+    tope = ultima_sesion_cerrada(ahora_utc)
+    abiertas = precios["FECHA"] > tope
+    return precios[~abiertas].reset_index(drop=True), int(abiertas.sum())
+
+
 def descargar_precios(tickers: list[str], desde: date, hasta: date):
     import yfinance as yf
 
@@ -241,6 +268,10 @@ def correr(modo: str, desde: date, hasta: date, incluir_referencias: bool) -> No
                 precios = pd.DataFrame()
                 bitacora = [(t, 0, "ERROR", "fallaron los reintentos del grupo") for t in grupo]
 
+            precios, en_curso = quitar_sesion_en_curso(precios, datetime.now(timezone.utc))
+            if en_curso:
+                log.info("Grupo %s/%s: %s filas de la sesion en curso no se guardan (sin cierre)",
+                         n, len(lotes), en_curso)
             cargar(conn, precios.assign(FUENTE="yahoo_finance/yfinance", **sello), "PRECIOS_DIARIOS")
             cargar(conn, pd.DataFrame(
                 [dict(LOTE_ID=lote, TICKER=t, FECHA_DESDE=desde, FECHA_HASTA=hasta, FILAS=f,

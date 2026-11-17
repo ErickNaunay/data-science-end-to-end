@@ -87,6 +87,38 @@ Segunda corrida: las 6 pruebas dieron `JAVA_GATEWAY_EXITED` por
 El contenedor de pruebas verifica que `pyspark` y `java` existen antes de pytest y muestra
 los motivos de cualquier skip (`-rs`), para que un resultado verde signifique que se probó.
 
+## H1 y H15: mercado del mes siguiente y sesion en curso (2026-11-17)
+
+**H1.** Las columnas de mercado del mes siguiente del ultimo mes cerrado se calculaban con el
+mes en curso (202610 usaba noviembre incompleto; cambiaban con cada ingesta).
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `spark/jobs/construir_obt.py`, paso 6 | `lead()` sobre todos los meses de `fct_mercado_diario`, abiertos incluidos | `ret_log_sp500_mes_siguiente`, `ret_log_nyse_composite_mes_siguiente` y `rf_mes_siguiente` solo si el mes siguiente esta cerrado (`mes_cerrado` de `dim_fecha`); si no, nulos (igual que el objetivo de la accion) |
+| Controles de la OBT (`VALIDACION_OBT`) | 13 | 14: nuevo "mercado del mes siguiente solo con meses cerrados" |
+| `spark/tests/test_construir_obt.py` | 6 pruebas; 13 controles | 7 pruebas; 14 controles; `test_mercado_del_mes_siguiente_solo_con_meses_cerrados` (falla con el codigo anterior: 0.002 en vez de nulo) |
+
+**H15.** Las ingestas manuales del 17-nov a las 11:33 y 12:34 de Nueva York guardaron la fila
+del 2026-11-17 con el precio del momento (~470 simbolos, cambio de hasta 0,8%, factor de
+ajuste sin cambio). Se corregia sola con la corrida de las 18:30, pero un cierre de mes
+ingestado durante la sesion quedaria en la OBT con un precio parcial.
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `kestra/scripts/extraer_cargar.py` | guardaba todas las filas que devolvia Yahoo | `ultima_sesion_cerrada()` y `quitar_sesion_en_curso()`: no guarda fechas posteriores a la ultima sesion cerrada (hoy solo despues de las 16:30 de Nueva York); lo registra en el log |
+| `kestra/tests/test_sesion_en_curso.py` | no existia | 4 pruebas (antes y despues del cierre, cambio de dia en UTC, hora sin zona, tabla vacia) |
+| `scripts/auditar_obt.py`, `scripts/verificar_snowflake.py` | exigen 13 controles | exigen 14 |
+| `scripts/reconstruir_obt.sh` | no existia | pruebas, imagenes, `transformar`, evidencias, Compose abajo y snapshot, en un paso |
+| `README.md` (pipeline) | sin estos temas | secciones "Reconstruir la OBT" y la regla de la sesion en curso |
+
+## Avisos de reconstruir_obt.sh (2026-11-17)
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `scripts/notificar.py` | no existia | envia `Success`/`Fail: <tarea>` por Gmail con `AVISO_*` de `.env`; sin credenciales o sin red avisa por pantalla y no falla (probado con un servidor SMTP falso) |
+| `scripts/reconstruir_obt.sh` | sin avisos; `transformar` sin etiquetas | `trap` al salir: `Fail` con el paso en curso y el id de `transformar`; `Success` al final con el snapshot; `transformar` se lanza con `?labels=origen:manual`; termina con error si el control de H1 falla |
+| `kestra/flows/avisos.yml` | un trigger; `transformar` excluido siempre | segundo trigger `transformar_manual`: `transformar` con la etiqueta `origen: manual` (las ejecuciones como subflow no la llevan) |
+
 ## Cambios fuera de `pipeline/`
 
 | Archivo | Antes | Después |

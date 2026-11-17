@@ -10,8 +10,9 @@ namespace: usfq.avisos
 description: |
   Envia un correo con el resumen de cada ejecucion terminada de ingesta_diaria y
   backfill_historico (enlace, duracion, estado y, si fallo, la tarea que fallo).
-  transformar no avisa por separado: corre como subflow de esos dos y, si falla,
-  su flow padre tambien termina en FAILED. El asunto empieza con "Success" o "Fail".
+  transformar no avisa cuando corre como subflow de esos dos (si falla, su flow padre
+  tambien termina en FAILED); si avisa cuando se lanza a mano con la etiqueta
+  origen=manual (scripts/reconstruir_obt.sh). El asunto empieza con "Success" o "Fail".
 
 labels:
   proyecto: portafolio-inversiones
@@ -38,3 +39,14 @@ triggers:
       - namespace: usfq.portafolio
         states: [SUCCESS, WARNING, FAILED, KILLED]
         when: "{{ flow.id != 'transformar' }}"
+  # Segundo trigger (no un segundo dependsOn: con varias entradas, por defecto Kestra exige
+  # que se cumplan todas). Solo transformar lanzado a mano con la etiqueta origen=manual;
+  # sus ejecuciones como subflow no llevan esa etiqueta.
+  - id: transformar_manual
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - namespace: usfq.portafolio
+        flowId: transformar
+        states: [SUCCESS, WARNING, FAILED, KILLED]
+        labels:
+          origen: manual
