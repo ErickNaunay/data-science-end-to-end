@@ -46,7 +46,11 @@ MLflow queda en http://localhost:5001, con SQLite como backend y artefactos en
    (`src/seleccion.py`).
 7. `06_champion.ipynb`: recarga limpia de `@champion` que reproduce su MAE del hold-out.
 
-Documento técnico: `docs/PSet3_memo_Gomez_Ehmig.pdf` (fuente en `docs/memo/`).
+Documento técnico: `docs/PSet3_memo_Gomez_Ehmig.pdf`, con glosario en el anexo A
+(`uv run --with reportlab python scripts/generar_memo.py`). Presentación ejecutiva:
+`docs/PSet3_presentacion_Gomez_Ehmig.pptx` y su PDF (`node scripts/generar_presentacion.js`, requiere pptxgenjs,
+react, react-dom, react-icons y sharp). Reproducibilidad verificada en otra máquina: `docs/reproducibilidad.md`
+(`uv run --group modelos python -m src.verificar_reproducibilidad`).
 
 El target es el retorno log del mes siguiente. El corte usa el mes del objetivo:
 objetivos hasta diciembre de 2023 en entrenamiento; posteriores en hold-out.
