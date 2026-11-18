@@ -19,6 +19,12 @@ inputs:
     type: DATE
     required: false
     description: Dia a procesar. Vacio = fecha programada del trigger (o hoy).
+  - id: simular_falla
+    type: BOOL
+    defaults: false
+    description: >
+      Solo para probar reintentos y avisos (V2.5): la tarea falla antes de bajar datos, Kestra
+      la reintenta (4 intentos, ~14 minutos), corre registrar_falla y el flow avisos manda "Fail".
 
 # Nunca dos cargas a la vez sobre las mismas tablas: la segunda espera en cola.
 concurrency:
@@ -53,6 +59,7 @@ tasks:
     # El filtro date se aplica a todo el parentesis: sin el, trigger.date llegaba como
     # '2026-11-16T18:30:00.000000-05:00' y argparse lo rechazaba (ejecucion 1LkyGFQko1nP8uqG4rXaLn).
     commands:
+      - '{% if inputs.simular_falla %}echo "Falla simulada (input simular_falla) para probar reintentos y avisos" >&2; exit 1{% endif %}'
       - >
         python /app/extraer_cargar.py diario
         --fecha {{ inputs.fecha ?? ((trigger.date ?? execution.startDate) | date('yyyy-MM-dd', timeZone='America/New_York')) }}

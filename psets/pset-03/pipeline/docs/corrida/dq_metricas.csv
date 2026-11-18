@@ -12,7 +12,7 @@ consistencia,BRONZE,empresas_con_cambio_de_simbolo,28.0,empresas,Empresas del hi
 consistencia,BRONZE,filas_composicion_con_simbolo_traducido_pct,2.3847,%,Filas de la composicion cuyo simbolo antiguo se tradujo al actual de Yahoo con el seed equivalencias_tickers.
 consistencia,BRONZE,tickers_con_dos_formatos,2.0,tickers,Acciones que la fuente de composicion escribe con punto y con guion (BRK.B y BRK-B).
 consistencia,GOLD,acciones_sin_bolsa_pct,38.8496,%,Acciones del universo sin bolsa conocida (ya no estan en los listados actuales).
-consistencia,RAW->BRONZE,filas_raw_duplicadas_pct,0.5997,%,"Filas de RAW que repiten (ticker, fecha) por re-ingestas y backfill; Bronze conserva la carga mas reciente."
+consistencia,RAW->BRONZE,filas_raw_duplicadas_pct,1.0313,%,"Filas de RAW que repiten (ticker, fecha) por re-ingestas y backfill; Bronze conserva la carga mas reciente."
 consistencia,SILVER,huecos_de_membresia_unidos,11.0,huecos,Veces que una empresa falta en una o dos fotos sueltas de la composicion y reaparece (se unen los periodos).
 precision,SILVER,cierre_fuera_de_rango_pct,0.0,%,"Filas con cierre fuera de [minimo, maximo] del dia (tolerancia 0,1%)."
 precision,SILVER,retornos_extremos_filas,56.0,filas,Cantidad de retornos diarios extremos.

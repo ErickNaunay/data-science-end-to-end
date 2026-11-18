@@ -59,8 +59,8 @@ id=$(curl -sf --user "$AUTH" -X POST "$API/executions/usfq.portafolio/transforma
 DETALLE="transformar: $id"
 echo "transformar: $id"
 while :; do
-    estado=$(curl -sf --user "$AUTH" "$API/executions/$id" \
-             | python3 -c "import sys,json; print(json.load(sys.stdin)['state']['current'])")
+    # Estado en stdout; en stderr, hora de inicio, transcurrido, tareas y fin esperado.
+    estado=$(python3 scripts/progreso_kestra.py "$API" "$AUTH" "$id")
     case "$estado" in
         SUCCESS) echo "transformar $id: SUCCESS"; break ;;
         FAILED|KILLED|WARNING|CANCELLED)
@@ -69,7 +69,7 @@ while :; do
               | python3 -c "import sys,json; [print(l['taskId'], l['level'], l['message'][:300]) for l in json.load(sys.stdin)]" \
               | tail -30 >&2
             exit 1 ;;
-        *) printf '%s ' "$estado"; sleep 20 ;;
+        *) sleep 20 ;;
     esac
 done
 

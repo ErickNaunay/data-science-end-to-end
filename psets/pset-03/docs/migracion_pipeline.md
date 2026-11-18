@@ -147,6 +147,96 @@ lanzaba a mano con `backfill_historico`. Decision de Paul: que la ingesta diaria
 
 La tarea de ingesta tiene `timeout: PT2H`; el backfill completo del 16-nov tardo ~18 minutos.
 
+## Documentacion, diagramas y pruebas de orquestacion (2026-11-17)
+
+| Archivo | Antes | Despues |
+|---|---|---|
+| `docs/arquitectura.dot/.png/.svg`, `arquitectura_vertical.png` | solo en `pset-02/docs` (PORTAFOLIO, pset2-*, sin avisos) | copia actualizada: PORTAFOLIO_P3, imagenes pset3-*, flow `avisos` y Gmail, `reconstruir_obt.sh`, primera carga automatica, sesion en curso, CALIDAD ampliada, 14 controles, `spark-pruebas` y consumo del PSet 3 |
+| `docs/modelo_dimensional.*` | solo en `pset-02/docs` | copia; Gold sin cambios (nota PORTAFOLIO_P3) |
+| `docs/structurizr/workspace.dsl` y `export/` | solo en `pset-02/docs` | C4 actualizado: sistema externo Gmail, sistema "Modelado del PSet 3", contenedor `reconstruir_obt.sh`, relaciones de avisos; validado y exportado con el CLI de Structurizr (Mermaid, PlantUML, PNG) |
+| `docs/diccionario_datos.md`, `docs/README.md` | solo en `pset-02/docs` | diccionario con CALIDAD nueva y el cambio de H1; indice de la carpeta |
+| `kestra/flows/ingesta_diaria.yml` | sin forma de probar los reintentos | input `simular_falla` (BOOL, por defecto false): la tarea falla antes de bajar datos |
+| `scripts/probar_ingesta_y_reintentos.sh` | no existia | V2.4 (ingesta manual y la del cron) y V2.5 (falla simulada con reintentos) con evidencia en `docs/corrida/kestra_pruebas.json` |
+
+## F1: OHLCV, diferencias diarias y variables nuevas para los modelos (2026-11-17)
+
+Pedido de Paul: todas las columnas propuestas, en porcentaje y en logaritmo, con OHLCV completo y
+las diferencias diarias aritmeticas, porcentuales y logaritmicas. Explicacion de cada forma en
+`pipeline/docs/series_de_tiempo.md`; columnas en `pipeline/docs/diccionario_datos.md`.
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `dbt/models/silver/slv_precios_acciones.sql` | OHLC sin ajustar, cierre y apertura ajustados; solo retornos log (diario, apertura, intradia, nocturno) | + `precio_maximo_ajustado`, `precio_minimo_ajustado` (nulos en dias imputados); `dif_cierre_ajustado`, `dif_apertura_ajustada` (aritmeticas, USD); `ret_pct_diario`, `ret_pct_apertura`, `ret_pct_intradia`, `ret_pct_nocturno` (= exp(log) − 1); `rango_pct_hl`, `rango_log_hl` |
+| `dbt/models/gold/fct_precios_diarios.sql` | 21 columnas | + las 12 columnas nuevas de Silver (33) |
+| `dbt/models/silver/_silver.yml` | sin pruebas de rango ni de retorno simple | `rango_log_hl` ≥ 0, `rango_pct_hl` ≥ 0, `ret_pct_diario` ≥ −1 |
+| `dbt/tests/assert_diferencias_diarias_coherentes.sql` | no existia | pct = exp(log) − 1, log diario = nocturno + intradia, dif = P(t−1)·pct, rango ≥ |intradia|, sin rango en dias imputados |
+| `spark/jobs/construir_obt.py` | OBT_ACCION_MES con 43 columnas; 14 controles | 75 columnas (32 nuevas: `ret_pct_mes`, rezagos 1–3 en log y %, intradia y nocturno del mes, rango maximo-minimo del mes y de 21/63 dias, su cambio, Parkinson, Garman-Klass, `vol_intradia_21d`, `beta_252d`, exceso sobre el S&P 500, volumen relativo, `ret_pct_mes_siguiente`); nueva `OBT_ACCION_DIA` (accion x dia, 33 columnas: OHLCV y diferencias) para los modelos de series; 17 controles (join diario x mercado, filas y grano de la OBT diaria) |
+| `spark/tests/test_construir_obt.py` | 8 pruebas | 13: % = exp(log) − 1, intradia_mes + nocturno_mes = ret_log_mes, rezagos solo con meses consecutivos, Parkinson/Garman-Klass/exceso/volumen relativo con valores conocidos, OBT diaria con las filas de Gold |
+| `scripts/verificar_snowflake.py` | 14 controles, 43 columnas | 17 controles, 75 columnas, OBT diaria con las filas de `FCT_PRECIOS_DIARIOS` y 33 columnas |
+| `scripts/auditar_obt.py` | 14 controles | 17 |
+| `scripts/exportar_metricas.py`, `scripts/diagnosticar_calidad.py` | sin OBT diaria | conteo y llave (`ACCION_KEY`, `FECHA`) de `OBT.OBT_ACCION_DIA` |
+| `kestra/flows/transformar.yml` | descripcion: escribe OBT_ACCION_MES | escribe OBT_ACCION_MES y OBT_ACCION_DIA |
+| Diagramas (`arquitectura`, `modelo_dimensional`, C4) | OBT mensual, 14 controles | OBT diaria, 17 controles, diferencias en Silver/Gold; renders regenerados |
+
+Decision: en la suma mensual, intradia y nocturno solo cuentan los dias con retorno de cierre
+(el primer dia de la serie no tiene cierre anterior); asi intradia_log_mes + nocturno_log_mes =
+ret_log_mes exacto. La primera version dejaba ese dia y en la muestra local el error llegaba a 0,02.
+
+Verificacion aqui: dbt en DuckDB (muestra de `pruebas_locales`): las 4 pruebas nuevas pasan; el
+unico error es `not_null_slv_mercado_diario_cierre_sp500`, propio de la muestra (sin ^GSPC real).
+Spark local sobre esa muestra: 17/17 controles, 330 filas y 75 columnas en la OBT mensual, 6.918
+filas y 33 columnas en la diaria, identidad del mes con error 0. pytest de Spark: 13 passed.
+Falta en la Mac: `bash scripts/reconstruir_obt.sh` (imagenes, dbt, Spark y snapshot en PORTAFOLIO_P3).
+
+## Progreso de las ejecuciones de Kestra en los scripts (2026-11-17)
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `scripts/progreso_kestra.py` | no existia | estado en stdout y, en stderr, una linea por consulta: hora, inicio, transcurrido, tareas terminadas/total con la tarea en curso y su intento, duracion esperada (mediana de las ultimas 5 ejecuciones SUCCESS del flow), fin estimado y lo que falta |
+| `scripts/reconstruir_obt.sh` (espera de `transformar`) | `curl` + `printf '%s '` del estado: `RUNNING RUNNING ...` | `python3 scripts/progreso_kestra.py`, una linea de progreso cada 20 s |
+| `scripts/probar_ingesta_y_reintentos.sh` (`esperar`) | igual, cada 30 s | igual que arriba, cada 30 s |
+
+## Memoria de Spark tras F1 (2026-11-17)
+
+`transformar` 5qK1iyr0GzaHsbKepN8qZd: `obt_spark` fallo en sus 2 intentos (~10 min cada uno) al
+calcular un shuffle; la OBT anterior quedo intacta. El ejecutor tiene 2 GB y un nucleo.
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `kestra/flows/transformar.yml` y `docker-compose.yml` (`spark-job`) | `--executor-memory 2g --driver-memory 1g` | `--executor-memory 5g --driver-memory 2g`: la poda sola no alcanzo; la segunda corrida (6RmZOc1H6gG5yuD6xzblhr) fallo igual con `SparkOutOfMemoryError: [UNABLE_TO_ACQUIRE_MEMORY]`. Docker Desktop tiene 15,6 GB |
+| `docker-compose.yml` (`spark-worker`), `.env.example` y el `.env` local | `SPARK_WORKER_MEMORY` 2g | 6g (el worker tiene que poder dar los 5 GB del ejecutor) |
+| `scripts/progreso_kestra.py` | mediana de las 5 ultimas SUCCESS que devolvia la busqueda | filtra tambien flow, namespace y estado del lado del cliente (durante un RETRYING la mediana salto de 3 min a 4 s) |
+| `spark/jobs/construir_obt.py` | las ventanas arrastraban las 33 columnas del hecho diario | `select` de las 25 que usan las ventanas y el resumen del mes, justo despues del join con el mercado; la OBT diaria se arma aparte. Mismas 75 columnas y 17 controles (13 pruebas OK; muestra local: identidad del mes con error 0) |
+
+### Worker de 2 GB y uso de nucleos
+
+`transformar` 4mLKrXy4A61Cpqu63pZ0ii, ya con el worker de 6 GB, paso 14 controles (incluida OBT_ACCION_DIA con 1.832.433 filas) en 6 min y se detuvo a mano desde la interfaz de Kestra antes de escribir.
+
+`transformar` 5pxO2lQcvsKRSKX1CXmoyS quedo 50 min en `Initial job has not accepted any resources`
+y se detuvo a mano (KILLED). La interfaz de Spark mostro el worker con 2048 MB aunque `.env` y
+`docker compose config` resolvian 6g: el contenedor no se habia recreado con el valor nuevo. Tras
+`docker compose up -d --force-recreate spark-worker` registro 6144 MB y el ejemplo Pi con un
+ejecutor de 5 GB termino en 2 s.
+
+Docker Desktop tiene 16 CPU y 15,6 GB, y el job usaba un solo nucleo. Presupuesto de memoria:
+Kestra ~2 GB, Postgres ~0,3 GB, demonios master y worker ~1 GB cada uno, driver 2 GB, ejecutor
+7 GB + ~10 % de overhead, en total unos 14 GB.
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `kestra/flows/transformar.yml` y `docker-compose.yml` (`spark-job`) | `--executor-memory 5g`, `spark.executor.cores=1`, `spark.cores.max=1` | `--executor-memory 7g`, 4 nucleos, `spark.sql.shuffle.partitions=32` (particiones mas chicas, menos memoria por tarea) y AQE explicito |
+| `docker-compose.yml` (`spark-worker`), `.env.example` y el `.env` local | `SPARK_WORKER_CORES` 2, `SPARK_WORKER_MEMORY` 6g | 4 y 8g |
+| `spark/jobs/construir_obt.py` (mercado mensual) | `Window.orderBy("anio_mes")`: Spark repetia el WARN `No Partition Defined for Window operation` en cada accion que recalcula el mercado | `Window.partitionBy(F.lit(1)).orderBy("anio_mes")`: mismo resultado (unas 200 filas, una particion); 13 pruebas OK |
+
+Riesgo: con 4 tareas a la vez, cada una dispone de ~1,75 GB del ejecutor frente a 5 GB con un
+nucleo. Si vuelve `UNABLE_TO_ACQUIRE_MEMORY`, el siguiente paso es 2 nucleos con el mismo ejecutor.
+
+Resultado: `transformar` 3bCTRKESZAhdNt1G86o1Co termino en SUCCESS (6 min 44 s en total; `obt_spark`
+5 min 56 s, de los cuales ~1 min 46 s es la escritura en Snowflake). El ejecutor recibio 4 nucleos y 7 GB,
+sin errores de memoria y sin el WARN `No Partition Defined`. Hasta el ultimo control de OBT_ACCION_DIA tardo
+4 min 08 s, frente a 5 min 32 s con 1 nucleo (corrida 4mLKrXy4A61Cpqu63pZ0ii). Verificacion: 17 controles OK,
+OBT_ACCION_MES 87.178 filas y 75 columnas (58.628 elegibles), OBT_ACCION_DIA 1.832.433 filas y 33 columnas.
+
 ## Cambios fuera de `pipeline/`
 
 | Archivo | Antes | Después |

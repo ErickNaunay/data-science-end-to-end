@@ -1,5 +1,5 @@
 {
-  "verificado_utc": "2026-11-17T19:17:43.272734+00:00",
+  "verificado_utc": "2026-11-18T04:10:43.167995+00:00",
   "operacion": "SELECT",
   "resultados": {
     "almacenamiento": [
@@ -7,19 +7,19 @@
         "table_schema": "GOLD",
         "table_name": "DIM_ACCION",
         "row_count": 1130,
-        "bytes": 79872
+        "bytes": 74752
       },
       {
         "table_schema": "GOLD",
         "table_name": "DIM_FECHA",
         "row_count": 4245,
-        "bytes": 56320
+        "bytes": 56832
       },
       {
         "table_schema": "GOLD",
         "table_name": "DIM_MEMBRESIA_SP500",
         "row_count": 1179,
-        "bytes": 51712
+        "bytes": 48640
       },
       {
         "table_schema": "GOLD",
@@ -31,18 +31,24 @@
         "table_schema": "GOLD",
         "table_name": "FCT_PRECIOS_DIARIOS",
         "row_count": 1832433,
-        "bytes": 118607872
+        "bytes": 261512192
+      },
+      {
+        "table_schema": "OBT",
+        "table_name": "OBT_ACCION_DIA",
+        "row_count": 1832433,
+        "bytes": 280114176
       },
       {
         "table_schema": "OBT",
         "table_name": "OBT_ACCION_MES",
         "row_count": 87178,
-        "bytes": 12322816
+        "bytes": 34732032
       },
       {
         "table_schema": "OBT",
         "table_name": "VALIDACION_OBT",
-        "row_count": 14,
+        "row_count": 17,
         "bytes": 1536
       }
     ],
@@ -77,98 +83,119 @@
         "esperado": 87178,
         "obtenido": 87178,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "OBT sin meses huerfanos de mercado",
         "esperado": 0,
         "obtenido": 0,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "OBT tiene una fila por accion y mes cerrado",
         "esperado": 87178,
         "obtenido": 87178,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
+      },
+      {
+        "control": "OBT_ACCION_DIA (grano accion x dia): filas = combinaciones distintas de ['accion_key', 'fecha']",
+        "esperado": 1832433,
+        "obtenido": 1832433,
+        "ok": true,
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
+      },
+      {
+        "control": "OBT_ACCION_DIA conserva las filas de fct_precios_diarios",
+        "esperado": 1832433,
+        "obtenido": 1832433,
+        "ok": true,
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "dim_accion: filas = combinaciones distintas de ['accion_key']",
         "esperado": 1130,
         "obtenido": 1130,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "dim_fecha: filas = combinaciones distintas de ['fecha_key']",
         "esperado": 4245,
         "obtenido": 4245,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "fct_mercado_diario: filas = combinaciones distintas de ['fecha_key']",
         "esperado": 4245,
         "obtenido": 4245,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "fct_precios_diarios: filas = combinaciones distintas de ['accion_key', 'fecha_key']",
         "esperado": 1832433,
         "obtenido": 1832433,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "join OBT x dim_accion conserva filas",
         "esperado": 87178,
         "obtenido": 87178,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "join OBT x mercado mensual conserva filas",
         "esperado": 87178,
         "obtenido": 87178,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "join cierre x resumen del mes (uno a uno) conserva filas",
         "esperado": 87178,
         "obtenido": 87178,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
+      },
+      {
+        "control": "join diario x fct_mercado_diario conserva filas",
+        "esperado": 1832433,
+        "obtenido": 1832433,
+        "ok": true,
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "join fct_mercado_diario x dim_fecha conserva filas",
         "esperado": 4245,
         "obtenido": 4245,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "join fct_precios_diarios x dim_fecha conserva filas",
         "esperado": 1832433,
         "obtenido": 1832433,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "mercado del mes siguiente solo con meses cerrados",
         "esperado": 0,
         "obtenido": 0,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       },
       {
         "control": "mercado mensual: filas = combinaciones distintas de ['anio_mes']",
         "esperado": 203,
         "obtenido": 203,
         "ok": true,
-        "ejecutado_en": "2026-11-17 19:17:14.784949"
+        "ejecutado_en": "2026-11-18 04:10:07.119033"
       }
     ]
   },
@@ -176,32 +203,32 @@
     {
       "nombre": "almacenamiento",
       "sql": "SELECT table_schema, table_name, row_count, bytes FROM information_schema.tables WHERE table_schema IN ('GOLD','OBT') AND table_type='BASE TABLE' ORDER BY 1,2",
-      "query_id": "01c87a45-0004-ea32-0000-7b7d001c276a"
+      "query_id": "01c87c5a-0004-ea32-0000-7b7d001d125e"
     },
     {
       "nombre": "grano",
       "sql": "SELECT COUNT(*) filas, COUNT(DISTINCT accion_key,anio_mes) claves, COUNT_IF(accion_key IS NULL OR anio_mes IS NULL) claves_nulas, COUNT_IF(elegible) elegibles FROM OBT.OBT_ACCION_MES",
-      "query_id": "01c87a45-0004-ea3e-0000-7b7d001bf7e2"
+      "query_id": "01c87c5a-0004-ea84-0000-7b7d001cd3e6"
     },
     {
       "nombre": "meses",
       "sql": "SELECT MIN(anio_mes) desde, MAX(anio_mes) hasta, COUNT_IF(ret_log_mes_siguiente IS NULL) objetivos_nulos FROM OBT.OBT_ACCION_MES",
-      "query_id": "01c87a45-0004-ea25-0000-7b7d001c0892"
+      "query_id": "01c87c5a-0004-ea84-0000-7b7d001cd3ea"
     },
     {
       "nombre": "base_gold",
       "sql": "SELECT COUNT(*) filas FROM (SELECT p.accion_key,d.anio_mes FROM GOLD.FCT_PRECIOS_DIARIOS p JOIN GOLD.DIM_FECHA d ON p.fecha_key=d.fecha_key WHERE d.mes_cerrado GROUP BY 1,2)",
-      "query_id": "01c87a45-0004-ea32-0000-7b7d001c276e"
+      "query_id": "01c87c5a-0004-ea87-0000-7b7d001ce3fa"
     },
     {
       "nombre": "claves_faltantes_o_extra",
       "sql": "WITH base AS (SELECT DISTINCT p.accion_key,d.anio_mes FROM GOLD.FCT_PRECIOS_DIARIOS p JOIN GOLD.DIM_FECHA d ON p.fecha_key=d.fecha_key WHERE d.mes_cerrado) SELECT COUNT(*) diferencias FROM base b FULL OUTER JOIN OBT.OBT_ACCION_MES o ON b.accion_key=o.accion_key AND b.anio_mes=o.anio_mes WHERE b.accion_key IS NULL OR o.accion_key IS NULL",
-      "query_id": "01c87a45-0004-ea40-0000-7b7d001c187a"
+      "query_id": "01c87c5a-0004-ea83-0000-7b7d001cc3f2"
     },
     {
       "nombre": "controles",
       "sql": "SELECT * FROM OBT.VALIDACION_OBT ORDER BY control",
-      "query_id": "01c87a45-0004-ea10-0000-7b7d001c60ee"
+      "query_id": "01c87c5a-0004-ea83-0000-7b7d001cc3f6"
     }
   ]
 }

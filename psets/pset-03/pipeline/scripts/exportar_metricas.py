@@ -46,7 +46,8 @@ CONSULTAS = {
         select 'GOLD.DIM_MEMBRESIA_SP500', count(*) from GOLD.DIM_MEMBRESIA_SP500 union all
         select 'GOLD.FCT_PRECIOS_DIARIOS', count(*) from GOLD.FCT_PRECIOS_DIARIOS union all
         select 'GOLD.FCT_MERCADO_DIARIO', count(*) from GOLD.FCT_MERCADO_DIARIO union all
-        select 'OBT.OBT_ACCION_MES', count(*) from OBT.OBT_ACCION_MES
+        select 'OBT.OBT_ACCION_MES', count(*) from OBT.OBT_ACCION_MES union all
+        select 'OBT.OBT_ACCION_DIA', count(*) from OBT.OBT_ACCION_DIA
         order by 1""",
     "ingesta_resumen": """
         select estado, count(distinct ticker) tickers, sum(filas) filas

@@ -32,6 +32,24 @@ models:
     - rango_valores:
         arguments:
           minimo: 1.0e-07
+  - name: rango_log_hl
+    description: ln(maximo / minimo) del dia; nulo en dias imputados. No negativo.
+    data_tests:
+    - rango_valores:
+        arguments:
+          minimo: 0
+  - name: rango_pct_hl
+    description: maximo / minimo - 1 del dia; nulo en dias imputados.
+    data_tests:
+    - rango_valores:
+        arguments:
+          minimo: 0
+  - name: ret_pct_diario
+    description: Retorno simple (geometrico) = exp(ret_log_diario) - 1; mayor que -1.
+    data_tests:
+    - rango_valores:
+        arguments:
+          minimo: -1
 - name: slv_mercado_diario
   description: Indices de referencia y tasa libre de riesgo por dia bursatil.
   columns:

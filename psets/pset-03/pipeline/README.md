@@ -75,6 +75,17 @@ fallo (`scripts/notificar.py`, mismas credenciales `AVISO_*` de `.env`). Ademas 
 La ingesta no guarda la sesion del dia si corre con la bolsa abierta (antes de las 16:30 de
 Nueva York): ese precio es intradia, no el cierre. La trae la siguiente corrida.
 
+## Probar la orquestacion (reintentos, avisos y cron)
+
+```bash
+bash scripts/probar_ingesta_y_reintentos.sh
+```
+
+Lanza una `ingesta_diaria` manual (debe terminar en SUCCESS), otra con `simular_falla=true`
+(4 intentos con espera exponencial, `registrar_falla` y aviso "Fail"; ~15 minutos) y, si aun no
+son las 18:45 de Nueva York, espera la ingesta del trigger de las 18:30 (`ESPERAR_CRON=0` la
+omite). Guarda `docs/corrida/kestra_pruebas.json` y `kestra_estados.json`.
+
 ## Avisos por correo
 
 El flow `usfq.avisos.avisos` (`kestra/flows/avisos.yml`) envía un correo al terminar cada

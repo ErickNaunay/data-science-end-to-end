@@ -15,7 +15,13 @@
 -- 4. Banderas: imputado, retorno extremo (se marca, no se borra: puede ser real), cierre
 --    fuera del rango del dia, volumen cero.
 -- La apertura ajustada = apertura * cierre ajustado / cierre: Yahoo no ajusta la apertura
--- por splits ni dividendos.
+-- por splits ni dividendos. El maximo y el minimo se ajustan con el mismo factor (solo en
+-- dias observados: un dia imputado no tiene rango).
+-- 5. Diferencias diarias en tres formas (docs/series_de_tiempo.md):
+--    aritmetica   dif_* = P(t) - P(t-1) en dolares ajustados (depende del nivel de precio)
+--    porcentual   ret_pct_* = P(t) / P(t-1) - 1 = exp(ret_log_*) - 1 (geometrica, simple)
+--    logaritmica  ret_log_* = ln P(t) - ln P(t-1) (aditiva en el tiempo)
+--    y dentro del dia: intradia = cierre vs apertura, rango = maximo vs minimo.
 with validos as (
     select
         p.ticker,
@@ -62,6 +68,8 @@ con_obs as (
         o.precio_minimo,
         o.precio_cierre,
         o.precio_cierre_ajustado,
+        o.precio_maximo * o.precio_cierre_ajustado / o.precio_cierre as precio_maximo_ajustado,
+        o.precio_minimo * o.precio_cierre_ajustado / o.precio_cierre as precio_minimo_ajustado,
         o.volumen,
         o.lote_id,
         o.ingesta_ts,
@@ -122,7 +130,9 @@ con_retornos as (
         lp_apertura_final - lag(lp_apertura_final) over (partition by ticker order by orden_bursatil) as ret_log_apertura,
         lp_apertura_final - lag(lp_cierre_final) over (partition by ticker order by orden_bursatil)   as ret_log_nocturno,
         lag(lp_cierre_final) over (partition by ticker order by orden_bursatil) is null
-            and orden_bursatil > min(orden_bursatil) over (partition by ticker)                       as despues_de_tramo_excluido
+            and orden_bursatil > min(orden_bursatil) over (partition by ticker)                       as despues_de_tramo_excluido,
+        exp(lp_cierre_final) - exp(lag(lp_cierre_final) over (partition by ticker order by orden_bursatil))     as dif_cierre_ajustado,
+        exp(lp_apertura_final) - exp(lag(lp_apertura_final) over (partition by ticker order by orden_bursatil)) as dif_apertura_ajustada
     from imputada
 )
 
@@ -135,11 +145,21 @@ select
     precio_cierre,
     exp(lp_cierre_final)                                              as precio_cierre_ajustado,
     exp(lp_apertura_final)                                            as precio_apertura_ajustado,
+    precio_maximo_ajustado,
+    precio_minimo_ajustado,
     volumen,
+    dif_cierre_ajustado,
+    exp(ret_log_diario) - 1                                           as ret_pct_diario,
     ret_log_diario,
+    dif_apertura_ajustada,
+    exp(ret_log_apertura) - 1                                         as ret_pct_apertura,
     ret_log_apertura,
+    exp(lp_cierre_final - lp_apertura_final) - 1                      as ret_pct_intradia,
     lp_cierre_final - lp_apertura_final                               as ret_log_intradia,
+    exp(ret_log_nocturno) - 1                                         as ret_pct_nocturno,
     ret_log_nocturno,
+    precio_maximo / precio_minimo - 1                                 as rango_pct_hl,
+    ln(precio_maximo / precio_minimo)                                 as rango_log_hl,
     imputado,
     case when imputado then largo_hueco end                           as largo_hueco_imputado,
     despues_de_tramo_excluido,

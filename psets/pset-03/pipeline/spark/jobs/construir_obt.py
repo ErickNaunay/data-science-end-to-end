@@ -6,7 +6,11 @@ Cada fila trae las variables que el modelo puede usar ese dia (solo informacion 
 el objetivo (retorno log del mes siguiente) y los referentes de mercado.
 
 Entradas (Gold): FCT_PRECIOS_DIARIOS, DIM_ACCION, DIM_FECHA, FCT_MERCADO_DIARIO.
-Salidas (esquema OBT): OBT_ACCION_MES y VALIDACION_OBT (resultado de cada control).
+Salidas (esquema OBT): OBT_ACCION_MES, OBT_ACCION_DIA (serie diaria OHLCV con sus diferencias,
+para los modelos de series: ARIMA, hibridos y fundacionales) y VALIDACION_OBT.
+
+Cada variable de precio va en logaritmo (ln, aditiva en el tiempo) y en porcentaje
+(simple: exp(ln) - 1, aditiva entre acciones de un portafolio). Ver docs/series_de_tiempo.md.
 
 Uso:
   spark-submit construir_obt.py --modo snowflake
@@ -31,6 +35,7 @@ FUENTE_SNOWFLAKE = "net.snowflake.spark.snowflake"
 TABLAS_GOLD = ["FCT_PRECIOS_DIARIOS", "DIM_ACCION", "DIM_FECHA", "FCT_MERCADO_DIARIO"]
 MIN_OBS_HISTORIA = 200        # dias con retorno en los ultimos 252 para ser elegible
 MIN_DIAS_NEGOCIADOS_MES = 15
+LN2 = 0.6931471805599453
 FECHA_CORTE = os.environ.get("FECHA_CORTE_ENTRENAMIENTO", "2023-12-31")
 MES_CORTE = int(FECHA_CORTE[:4]) * 100 + int(FECHA_CORTE[5:7])
 
@@ -123,6 +128,18 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
                           "es_cierre_de_mes", "conjunto")
     diario = fct.join(fechas, "fecha_key", "inner")
     c.igual("join fct_precios_diarios x dim_fecha conserva filas", n_fct, diario.count())
+    # Mercado del mismo dia (muchos a uno), solo para la beta frente al S&P 500.
+    diario = diario.join(mkt.select("fecha_key", "ret_log_sp500"), "fecha_key", "left")
+    c.igual("join diario x fct_mercado_diario conserva filas", n_fct, diario.count())
+    # Solo las columnas que usan las ventanas y el resumen del mes: el hecho diario trae 33
+    # (OHLC sin ajustar, diferencias aritmeticas, etc.) y cada ventana las arrastraria todas,
+    # lo que agota la memoria del ejecutor (2 GB, un nucleo). La OBT diaria se arma aparte.
+    diario = diario.select(
+        "accion_key", "fecha_key", "fecha", "anio", "mes", "anio_mes", "mes_cerrado",
+        "es_cierre_de_mes", "conjunto", "en_sp500", "imputado", "despues_de_tramo_excluido",
+        "es_retorno_extremo", "precio_cierre", "precio_cierre_ajustado", "volumen",
+        "ret_log_diario", "ret_log_apertura", "ret_log_intradia", "ret_log_nocturno",
+        "ret_pct_intradia", "ret_pct_nocturno", "rango_log_hl", "rango_pct_hl", "ret_log_sp500")
 
     # 2. Variables de ventana por accion, con informacion hasta el dia (sin mirar adelante).
     w = Window.partitionBy("accion_key").orderBy("fecha")
@@ -131,6 +148,27 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
     # La volatilidad se mide solo con dias observados: el forward-fill de Silver deja
     # retorno 0 en los dias imputados y la subestimaria.
     r_obs = F.when(~F.col("imputado"), r)
+    obs = ~F.col("imputado")
+    # OHLC del dia (solo dias observados; un dia imputado no tiene rango ni intradia propios).
+    hl = F.col("rango_log_hl")                       # ln(maximo / minimo)
+    co = F.when(obs, F.col("ret_log_intradia"))      # ln(cierre / apertura)
+    sp_obs = F.when(r_obs.isNotNull(), F.col("ret_log_sp500"))
+    diario = (diario
+              .withColumn("rango_log_hl_prom_21d", F.avg(hl).over(w21))
+              .withColumn("rango_pct_hl_prom_21d", F.avg("rango_pct_hl").over(w21))
+              .withColumn("rango_log_hl_prom_63d", F.avg(hl).over(w63))
+              .withColumn("rango_pct_hl_prom_63d", F.avg("rango_pct_hl").over(w63))
+              # Volatilidad por rango (Parkinson, 1980) y por OHLC (Garman-Klass, 1980), anualizadas.
+              .withColumn("vol_parkinson_21d",
+                          F.sqrt(F.avg(hl * hl).over(w21) / F.lit(4 * LN2) * F.lit(252.0)))
+              .withColumn("vol_garman_klass_21d",
+                          F.sqrt(F.greatest(F.avg(F.lit(0.5) * hl * hl - F.lit(2 * LN2 - 1) * co * co).over(w21),
+                                            F.lit(0.0)) * F.lit(252.0)))
+              .withColumn("vol_intradia_21d", F.stddev(co).over(w21) * F.sqrt(F.lit(252.0)))
+              .withColumn("intradia_pct_prom_21d", F.avg(F.when(obs, F.col("ret_pct_intradia"))).over(w21))
+              .withColumn("nocturno_pct_prom_21d", F.avg(F.when(obs, F.col("ret_pct_nocturno"))).over(w21))
+              .withColumn("beta_252d", F.covar_samp(r_obs, sp_obs).over(w252) / F.var_samp(sp_obs).over(w252))
+              .withColumn("volumen_prom_252d", F.avg("volumen").over(w252)))
     diario = (diario
               .withColumn("vol_21d", F.stddev(r_obs).over(w21) * F.sqrt(F.lit(252.0)))
               .withColumn("vol_63d", F.stddev(r_obs).over(w63) * F.sqrt(F.lit(252.0)))
@@ -153,7 +191,15 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
         F.count("*").alias("dias_negociados_mes"),
         F.max(F.col("es_retorno_extremo").cast("int")).cast("boolean").alias("hubo_retorno_extremo_mes"),
         F.sum(F.col("imputado").cast("int")).alias("dias_imputados_mes"),
-        F.max(F.col("despues_de_tramo_excluido").cast("int")).cast("boolean").alias("hubo_tramo_excluido_mes")))
+        F.max(F.col("despues_de_tramo_excluido").cast("int")).cast("boolean").alias("hubo_tramo_excluido_mes"),
+        # Descomposicion del mes: en dias observados con retorno ret_log_diario = nocturno +
+        # intradia y en los imputados el retorno es 0, asi que intradia_log_mes +
+        # nocturno_log_mes = ret_log_mes. El primer dia de la serie (o tras un tramo excluido)
+        # no tiene cierre anterior: no entra en ninguna de las tres sumas.
+        F.sum(F.when(r_obs.isNotNull(), F.col("ret_log_intradia"))).alias("intradia_log_mes"),
+        F.sum(F.when(r_obs.isNotNull(), F.col("ret_log_nocturno"))).alias("nocturno_log_mes"),
+        F.avg(hl).alias("rango_log_hl_mes"),
+        F.avg("rango_pct_hl").alias("rango_pct_hl_mes")))
 
     # 4. Una fila por accion y mes cerrado: el ultimo dia que la accion cotizo en el mes.
     wm = Window.partitionBy("accion_key", "anio_mes").orderBy(F.col("fecha").desc())
@@ -173,7 +219,19 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
     obt = (obt.withColumn("_im", indice_mes)
            .withColumn("_im_sig", F.lead("_im").over(wa))
            .withColumn("ret_log_mes_siguiente",
-                       F.when(F.col("_im_sig") == F.col("_im") + 1, F.lead("ret_log_mes").over(wa)))
+                       F.when(F.col("_im_sig") == F.col("_im") + 1, F.lead("ret_log_mes").over(wa))))
+    # Rezagos del retorno mensual (los "rezagos" del PSet 1) y cambio del rango frente al mes
+    # anterior: solo con meses consecutivos; si hay un mes sin cotizar, quedan nulos.
+    for k in (1, 2, 3):
+        consecutivo = F.lag("_im", k).over(wa) == F.col("_im") - k
+        obt = (obt.withColumn(f"ret_log_mes_lag{k}", F.when(consecutivo, F.lag("ret_log_mes", k).over(wa)))
+                  .withColumn(f"ret_pct_mes_lag{k}", F.exp(F.col(f"ret_log_mes_lag{k}")) - 1))
+    ant = F.lag("_im", 1).over(wa) == F.col("_im") - 1
+    obt = (obt
+           .withColumn("cambio_rango_log_hl_mes",
+                       F.when(ant, F.col("rango_log_hl_mes") - F.lag("rango_log_hl_mes").over(wa)))
+           .withColumn("cambio_rango_pct_hl_mes",
+                       F.when(ant, F.col("rango_pct_hl_mes") / F.lag("rango_pct_hl_mes").over(wa) - 1))
            .drop("_im", "_im_sig"))
 
     # 6. Mercado del mes (muchos a uno por anio_mes).
@@ -187,7 +245,9 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
                        F.sum("rf_diaria").alias("rf_mes"),
                        F.avg("tasa_irx_anual_pct").alias("tasa_irx_prom_mes_pct"),
                        F.min(F.col("mes_cerrado").cast("int")).cast("boolean").alias("_mes_cerrado")))
-    wmk = Window.orderBy("anio_mes")
+    # Una fila por mes (~200): una sola particion no cuesta nada. La particion constante
+    # solo hace explicito eso y evita el WARN "No Partition Defined" de WindowExec.
+    wmk = Window.partitionBy(F.lit(1)).orderBy("anio_mes")
     sig_cerrado = F.coalesce(F.lead("_mes_cerrado").over(wmk), F.lit(False))
     mercado_mes = (mercado_mes
                    .withColumn("_sig_cerrado", sig_cerrado)
@@ -222,6 +282,16 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
     #    prueba; el modelo debe excluir esa fila al entrenar.
     obt = (obt
            .withColumn("momentum_12_1", F.col("ret_log_252d") - F.col("ret_log_21d"))
+           .withColumn("ret_pct_mes", F.exp("ret_log_mes") - 1)
+           .withColumn("intradia_pct_mes", F.exp("intradia_log_mes") - 1)
+           .withColumn("nocturno_pct_mes", F.exp("nocturno_log_mes") - 1)
+           .withColumn("cambio_rango_log_hl_21_63", F.log(F.col("rango_log_hl_prom_21d") / F.col("rango_log_hl_prom_63d")))
+           .withColumn("cambio_rango_pct_hl_21_63", F.col("rango_pct_hl_prom_21d") / F.col("rango_pct_hl_prom_63d") - 1)
+           .withColumn("exceso_sp500_log_mes", F.col("ret_log_mes") - F.col("ret_log_sp500_mes"))
+           .withColumn("exceso_sp500_pct_mes", F.exp("ret_log_mes") - F.exp("ret_log_sp500_mes"))
+           .withColumn("volumen_relativo_pct_21_252", F.col("volumen_prom_21d") / F.col("volumen_prom_252d") - 1)
+           .withColumn("volumen_relativo_log_21_252", F.log(F.col("volumen_prom_21d") / F.col("volumen_prom_252d")))
+           .withColumn("ret_pct_mes_siguiente", F.exp("ret_log_mes_siguiente") - 1)
            .withColumn("exceso_ret_mes_siguiente", F.col("ret_log_mes_siguiente") - F.col("rf_mes_siguiente"))
            .withColumn("objetivo_cruza_corte", F.col("anio_mes") == F.lit(MES_CORTE))
            .withColumn("elegible",
@@ -242,11 +312,52 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
         "ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes", "tasa_irx_prom_mes_pct",
         "ret_log_mes_siguiente", "exceso_ret_mes_siguiente", "ret_log_sp500_mes_siguiente",
         "ret_log_nyse_composite_mes_siguiente", "rf_mes_siguiente",
+        # Variables agregadas en el PSet 3 (pset-03/docs/migracion_pipeline.md, F1).
+        "ret_pct_mes", "ret_log_mes_lag1", "ret_pct_mes_lag1", "ret_log_mes_lag2", "ret_pct_mes_lag2",
+        "ret_log_mes_lag3", "ret_pct_mes_lag3",
+        "intradia_log_mes", "intradia_pct_mes", "nocturno_log_mes", "nocturno_pct_mes",
+        "intradia_pct_prom_21d", "nocturno_pct_prom_21d", "vol_intradia_21d",
+        "rango_log_hl_mes", "rango_pct_hl_mes", "cambio_rango_log_hl_mes", "cambio_rango_pct_hl_mes",
+        "rango_log_hl_prom_21d", "rango_pct_hl_prom_21d", "rango_log_hl_prom_63d", "rango_pct_hl_prom_63d",
+        "cambio_rango_log_hl_21_63", "cambio_rango_pct_hl_21_63",
+        "vol_parkinson_21d", "vol_garman_klass_21d", "beta_252d",
+        "exceso_sp500_log_mes", "exceso_sp500_pct_mes",
+        "volumen_relativo_log_21_252", "volumen_relativo_pct_21_252",
+        "ret_pct_mes_siguiente",
     ]
     obt = obt.select(*columnas)
     c.llave_unica("OBT (grano accion x mes)", obt, ["accion_key", "anio_mes"])
     c.igual("OBT tiene una fila por accion y mes cerrado", n_base, obt.count())
     return obt
+
+
+COLUMNAS_DIA = [
+    "accion_key", "ticker", "fecha", "anio_mes", "conjunto", "mes_cerrado", "en_sp500", "imputado",
+    "despues_de_tramo_excluido", "es_retorno_extremo",
+    "precio_apertura", "precio_maximo", "precio_minimo", "precio_cierre",
+    "precio_apertura_ajustado", "precio_maximo_ajustado", "precio_minimo_ajustado", "precio_cierre_ajustado",
+    "volumen",
+    "dif_cierre_ajustado", "ret_pct_diario", "ret_log_diario",
+    "dif_apertura_ajustada", "ret_pct_apertura", "ret_log_apertura",
+    "ret_pct_intradia", "ret_log_intradia", "ret_pct_nocturno", "ret_log_nocturno",
+    "rango_pct_hl", "rango_log_hl", "ret_log_sp500", "rf_diaria",
+]
+
+
+def construir_diaria(t: dict[str, DataFrame], c: Controles) -> DataFrame:
+    """Serie diaria por accion (grano accion x dia bursatil) para los modelos de series.
+
+    Trae todos los dias, tambien los posteriores a cada cierre de mes: el modelo debe cortar
+    la serie en la fecha de origen (cierre del mes) antes de pronosticar."""
+    fct, dim_a, dim_f, mkt = t["fct_precios_diarios"], t["dim_accion"], t["dim_fecha"], t["fct_mercado_diario"]
+    n_fct = fct.count()
+    dia = (fct.join(dim_f.select("fecha_key", "fecha", "anio_mes", "conjunto", "mes_cerrado"), "fecha_key", "inner")
+              .join(dim_a.select("accion_key", "ticker"), "accion_key", "inner")
+              .join(mkt.select("fecha_key", "ret_log_sp500", "rf_diaria"), "fecha_key", "left")
+              .select(*COLUMNAS_DIA))
+    c.igual("OBT_ACCION_DIA conserva las filas de fct_precios_diarios", n_fct, dia.count())
+    c.llave_unica("OBT_ACCION_DIA (grano accion x dia)", dia, ["accion_key", "fecha"])
+    return dia
 
 
 def main() -> None:
@@ -262,7 +373,9 @@ def main() -> None:
     spark.sparkContext.setLogLevel("WARN")
 
     controles = Controles()
-    obt = construir(leer_gold(spark, a.modo, a.entrada), controles).cache()
+    gold = leer_gold(spark, a.modo, a.entrada)
+    obt = construir(gold, controles).cache()
+    dia = construir_diaria(gold, controles)
 
     if not controles.todos_ok():
         escribir(controles.df(spark), "VALIDACION_OBT", a.modo, a.salida)
@@ -270,6 +383,7 @@ def main() -> None:
         sys.exit("Un control fallo: no se escribe la OBT (la version anterior queda intacta).")
 
     escribir(obt, "OBT_ACCION_MES", a.modo, a.salida)
+    escribir(dia, "OBT_ACCION_DIA", a.modo, a.salida)
     escribir(controles.df(spark), "VALIDACION_OBT", a.modo, a.salida)
     print(f"OBT_ACCION_MES escrita: {obt.count()} filas, "
           f"{obt.filter('elegible').count()} elegibles, {len(obt.columns)} columnas")
