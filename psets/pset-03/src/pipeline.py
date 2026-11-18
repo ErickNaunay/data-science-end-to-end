@@ -236,7 +236,10 @@ class ConditionMedianRegressor(RegressorMixin, BaseEstimator):
         )
 
 
-def make_model_pipeline(regressor: Any) -> Pipeline:
+def make_model_pipeline(
+    regressor: Any, feature_columns: tuple[str, ...] | list[str] = FEATURE_COLUMNS
+) -> Pipeline:
+    """Shared preparation; ``feature_columns`` only narrows it for ablations."""
     numeric = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),
@@ -244,7 +247,7 @@ def make_model_pipeline(regressor: Any) -> Pipeline:
         ]
     )
     preprocessing = ColumnTransformer(
-        transformers=[("numeric", numeric, list(FEATURE_COLUMNS))],
+        transformers=[("numeric", numeric, list(feature_columns))],
         remainder="drop",
     )
     return Pipeline(

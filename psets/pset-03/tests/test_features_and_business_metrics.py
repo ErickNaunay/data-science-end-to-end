@@ -5,6 +5,7 @@ import pandas as pd
 
 from src.business_metrics import (
     calibrate_pairwise_interval,
+    compare_alert_rules,
     coelution_proxy_metrics,
 )
 from src.pipeline import _mobile_phase_features, _molecule_features
@@ -74,3 +75,19 @@ class FeatureAndBusinessMetricTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_proxy_event_does_not_depend_on_interval_radius(self):
+        actual = np.array([1.0, 1.2, 5.0, 9.0, 1.1, 1.3, 6.0, 9.5])
+        predicted = actual + np.array([0.1, -0.1, 0.2, -0.2, 0.0, 0.1, -0.1, 0.2])
+        conditions = np.array(["a"] * 4 + ["b"] * 4)
+        compounds = np.array([f"c{i}" for i in range(8)])
+        narrow = {"lower_error_quantile": -0.1, "upper_error_quantile": 0.1, "pair_error_radius": 0.1}
+        wide = {"lower_error_quantile": -20.0, "upper_error_quantile": 20.0, "pair_error_radius": 20.0}
+        m_narrow = coelution_proxy_metrics(actual, predicted, conditions, compounds, narrow)
+        m_wide = coelution_proxy_metrics(actual, predicted, conditions, compounds, wide)
+        self.assertEqual(m_narrow["proxy_event_pairs"], m_wide["proxy_event_pairs"])
+        self.assertEqual(m_wide["potential_coelution_alert_rate"], 1.0)
+        self.assertLessEqual(m_narrow["potential_coelution_alert_rate"], m_wide["potential_coelution_alert_rate"])
+        rules = compare_alert_rules(actual, predicted, conditions, compounds, {"r": 0.5})
+        self.assertIn("precision", rules.columns)
+

@@ -18,10 +18,16 @@ cromatográfica (`TIEMPO_RETENCION`) para registros de columnas C18 de RepoRT.
   comparación debe mantener el mismo criterio de aceptación cromatográfica.
   Como métrica complementaria se registrarán los mL de solvente por método
   validado.
-- **Proxy técnico disponible ahora:** recall de pares con posible elución
-  cercana, priorizando no omitir un riesgo. RepoRT no incluye etiquetas
-  confirmadas de coelución ni resolución/ancho de pico; por ello, este resultado
-  no es una tasa real de coelución ni sustituye el KPI del piloto.
+- **Proxy técnico disponible ahora:** se evalúa la regla del intervalo del 95%
+  contra un evento químico independiente del modelo: dos compuestos cuya
+  retención real difiere ≤ 0,5 min en la misma condición. Se reportan recall
+  (error más costoso: no alertar), precisión y tasa de alertas. En el holdout,
+  el champion alerta el 99,1% de esos pares, pero marca el 91% de todos los
+  pares (precisión 20% frente a una tasa base de 18,7%). Con RMSE 2,3 min la
+  alerta todavía no discrimina. RepoRT no incluye resolución ni ancho de pico:
+  es un proxy, no una coelución confirmada (`docs/reglas_alerta.csv`).
+- **Meta del PSet 1:** RMSE ≤ 0,5 min y R² ≥ 0,90. El champion obtiene RMSE
+  2,329 y R² 0,828 en el holdout; la meta no se alcanza.
 - La reducción del 30% de corridas y solvente es una **hipótesis de negocio**.
   No se reportará como ahorro medido: faltan el número histórico de corridas y
   registros de consumo de solvente por método.
@@ -38,7 +44,8 @@ conexión no imprime ni registra credenciales.
 
 - `docker-compose.yml`: servidor de tracking MLflow con SQLite persistente,
   Model Registry y almacenamiento de artefactos.
-- `notebooks/`: EDA, features, líneas base y candidatos, tuning y selección.
+- `notebooks/`: EDA, features (ablación y prueba de no fuga), líneas base y
+  candidatos, tuning, selección y reproducción limpia del champion.
 - `src/datos.py`: extracción de OBT/SMILES, filtro C18 y huella reproducible.
 - `src/pipeline.py`: features de inferencia, preprocesamiento y validación.
 - `src/experiments.py`: CV agrupada, tuning anidado y registro reproducible.
@@ -70,7 +77,14 @@ conexión no imprime ni registra credenciales.
    ver el experimento y los modelos registrados.
 4. Ejecuta los notebooks en orden, con **Restart** y luego **Run All**:
    `01_eda.ipynb`, `02_features.ipynb`, `03_baseline_candidatos.ipynb`,
-   `04_tuning.ipynb` y `05_seleccion.ipynb`.
+   `04_tuning.ipynb`, `05_seleccion.ipynb` y `06_reproducir_champion.ipynb`.
+   Los notebooks 03, 04 y 05 reutilizan las corridas `FINISHED` de MLflow con
+   el mismo nombre, fase, familia y hash de muestra (columna
+   `reused_from_mlflow`), de modo que **Restart + Run All** no duplica
+   evidencia. En un servidor MLflow vacío, el mismo código entrena y registra
+   todo. `06_reproducir_champion.ipynb` es el notebook limpio: carga
+   `models:/qsrr-predict-modelo@champion` y comprueba que reproduce exactamente
+   el RMSE/MAE del holdout registrado.
 5. El tuning evaluará al menos 30 configuraciones para cada uno de los tres
    mejores candidatos. El conjunto de prueba se reserva para comparar al final
    al ganador y al segundo mejor.
@@ -90,12 +104,15 @@ conserva en MLflow y se identifica aparte en `seleccion_final.csv`. Los modelos
 finales se registran antes de la calibración OOF del intervalo pairwise, hecha
 con pliegues agrupados en la muestra de entrenamiento.
 
-La última celda de `05_seleccion.ipynb` calcula PSI y faltantes para una muestra
+La celda de monitoreo de `05_seleccion.ipynb` calcula PSI y faltantes para una muestra
 reproducible de 20.000 filas de entrenamiento y 20.000 de holdout. El CSV
 resultante es una comparación offline dentro de RepoRT, no una evaluación
-temporal ni una alarma de producción. En operación, el reporte se calcularía
-por cada lote nuevo y se mediría RMSE/MAE cuando estén disponibles las
-retenciones reales.
+temporal ni una alarma de producción. En operación, PSI y faltantes se calculan en
+cada lote de moléculas nuevas (al menos semanal). RMSE, MAE y cobertura
+requieren el tiempo real que mide el laboratorio al inyectar: se registran el
+día de la corrida y se recalculan al acumular 30 compuestos medidos o cada mes.
+Si el RMSE supera 3,09 min (CV + 2σ) o la cobertura cae bajo 90%, se revisa o
+reentrena el modelo.
 
 Las ejecuciones registran tabla(s) de origen, hora de extracción, SHA-256 del
 snapshot, semilla, métricas y duración. Los artefactos y modelos quedan en el

@@ -113,12 +113,39 @@ def calibrate_pairwise_interval(
     pair_errors = residual[left] - residual[right]
     tail = (1 - coverage) / 2
     lower, upper = np.quantile(pair_errors, [tail, 1 - tail])
+    paired_rows = np.unique(np.concatenate([left, right]))
+    single_rmse = float(np.sqrt(np.mean(residual[paired_rows] ** 2)))
+    pair_rmse = float(np.sqrt(np.mean(pair_errors**2)))
     return {
         "coverage": float(coverage),
         "lower_error_quantile": float(lower),
         "upper_error_quantile": float(upper),
         "pair_error_radius": float(max(abs(lower), abs(upper))),
         "calibration_pairs": int(len(pair_errors)),
+        # Theory for independent errors: pair_rmse ~= sqrt(2) * single_rmse.
+        "single_prediction_rmse": single_rmse,
+        "pair_difference_rmse": pair_rmse,
+        "pair_to_single_error_ratio": pair_rmse / single_rmse if single_rmse else float("nan"),
+    }
+
+
+COELUTION_WINDOW_MIN = 0.5
+"""Event definition from PSet 1: two compounds whose *observed* retention times
+differ by at most 0.5 min under the same condition. It is independent of the
+model; the alert rule (model uncertainty) is evaluated against it."""
+
+
+def _alert_scores(alerts: np.ndarray, events: np.ndarray) -> dict[str, float]:
+    event_count = int(events.sum())
+    alert_count = int(alerts.sum())
+    recall = float(alerts[events].mean()) if event_count else float("nan")
+    precision = float(events[alerts].mean()) if alert_count else float("nan")
+    return {
+        "alert_rate": float(alerts.mean()),
+        "recall": recall,
+        "false_negative_rate": 1.0 - recall if np.isfinite(recall) else float("nan"),
+        "precision": precision,
+        "false_alert_share": 1.0 - precision if np.isfinite(precision) else float("nan"),
     }
 
 
@@ -129,16 +156,25 @@ def coelution_proxy_metrics(
     molecule_groups: Sequence[object],
     interval: dict[str, float | int],
     *,
+    event_window_min: float = COELUTION_WINDOW_MIN,
     max_pairs: int = 100_000,
     random_state: int = 42,
 ) -> dict[str, float | int]:
-    """Evaluate near-retention alerts as a proxy, not as confirmed coelution."""
+    """Evaluate the interval alert rule against a model-independent proxy event.
+
+    Event (proxy of coelution): |observed delta| <= ``event_window_min``.
+    Alert: the calibrated pairwise interval around the predicted delta contains 0.
+    RepoRT has no resolution/peak width, so the event is a proxy, not a
+    confirmed coelution.
+    """
     actual = np.asarray(y_true, dtype=float)
     predicted = np.asarray(y_pred, dtype=float)
     if not (len(actual) == len(predicted) == len(condition_groups) == len(molecule_groups)):
         raise ValueError("Targets, predictions, and grouping arrays must align")
     if not np.isfinite(actual).all() or not np.isfinite(predicted).all():
         raise ValueError("Holdout targets and predictions must be finite")
+    if event_window_min <= 0:
+        raise ValueError("event_window_min must be positive")
 
     left, right = _sample_condition_pairs(
         condition_groups,
@@ -151,23 +187,47 @@ def coelution_proxy_metrics(
     lower = predicted_delta + float(interval["lower_error_quantile"])
     upper = predicted_delta + float(interval["upper_error_quantile"])
     alerts = (lower <= 0) & (upper >= 0)
-    radius = float(interval["pair_error_radius"])
-    near_retention_proxy = np.abs(observed_delta) <= radius
-    near_count = int(near_retention_proxy.sum())
-    recall = (
-        float(alerts[near_retention_proxy].mean())
-        if near_count
-        else float("nan")
-    )
+    events = np.abs(observed_delta) <= event_window_min
+    scores = _alert_scores(alerts, events)
     coverage = ((observed_delta >= lower) & (observed_delta <= upper)).mean()
     return {
         "comparison_pairs": int(len(left)),
-        "near_retention_proxy_pairs": near_count,
-        "coelution_proxy_recall": recall,
-        "coelution_proxy_false_negative_rate": (
-            1.0 - recall if np.isfinite(recall) else float("nan")
-        ),
-        "potential_coelution_alert_rate": float(alerts.mean()),
+        "event_window_min": float(event_window_min),
+        "proxy_event_pairs": int(events.sum()),
+        "proxy_event_base_rate": float(events.mean()),
+        "coelution_proxy_recall": scores["recall"],
+        "coelution_proxy_false_negative_rate": scores["false_negative_rate"],
+        "coelution_proxy_precision": scores["precision"],
+        "potential_coelution_alert_rate": scores["alert_rate"],
         "pairwise_prediction_interval_coverage": float(coverage),
         "coelution_labels_are_proxy": 1,
     }
+
+
+def compare_alert_rules(
+    y_true: Sequence[float],
+    y_pred: Sequence[float],
+    condition_groups: Sequence[object],
+    molecule_groups: Sequence[object],
+    thresholds_min: dict[str, float],
+    *,
+    event_window_min: float = COELUTION_WINDOW_MIN,
+    max_pairs: int = 100_000,
+    random_state: int = 42,
+) -> "pd.DataFrame":
+    """Alert when |predicted delta| <= threshold; score every rule on the same pairs."""
+    actual = np.asarray(y_true, dtype=float)
+    predicted = np.asarray(y_pred, dtype=float)
+    left, right = _sample_condition_pairs(
+        condition_groups, molecule_groups, max_pairs=max_pairs, random_state=random_state
+    )
+    events = np.abs(actual[left] - actual[right]) <= event_window_min
+    predicted_gap = np.abs(predicted[left] - predicted[right])
+    rows = []
+    for name, threshold in thresholds_min.items():
+        rows.append({
+            "regla": name,
+            "umbral_min": float(threshold),
+            **_alert_scores(predicted_gap <= threshold, events),
+        })
+    return pd.DataFrame(rows).set_index("regla")

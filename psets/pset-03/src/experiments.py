@@ -298,3 +298,46 @@ def run_nested_random_search(
 
     results = pd.DataFrame(rows).sort_values("cv_rmse_mean")
     return results, best_parameters
+
+
+_CV_METRIC_NAMES = (
+    "train_rmse_mean", "cv_rmse_mean", "cv_rmse_std", "train_mae_mean",
+    "cv_mae_mean", "cv_mae_std", "rmse_train_cv_gap", "cv_fit_seconds_total",
+    "cv_seconds_per_fold_mean", "full_train_rmse", "full_train_mae",
+)
+
+
+def evaluate_or_reuse_cv_run(**kwargs: Any) -> dict[str, Any]:
+    """Reuse a FINISHED run with the same name, phase, family and data sample.
+
+    Re-running a notebook (Restart + Run All) then does not duplicate the
+    evidence in MLflow; when no such run exists, it is trained and logged.
+    """
+    from mlflow.tracking import MlflowClient
+
+    experiment_id = configure_tracking()
+    metadata = kwargs["dataset_metadata"]
+    sample_hash = metadata.get("training_sample_sha256", metadata["sha256"])
+    runs = MlflowClient().search_runs(
+        [experiment_id],
+        filter_string=(
+            f"attributes.run_name = '{kwargs['run_name']}' "
+            f"AND tags.phase = '{kwargs['phase']}' "
+            f"AND tags.model_family = '{kwargs['family']}' "
+            f"AND tags.workflow_version = '{WORKFLOW_VERSION}' "
+            f"AND tags.training_sample_sha256 = '{sample_hash}' "
+            "AND attributes.status = 'FINISHED'"
+        ),
+        order_by=["attributes.start_time DESC"],
+        max_results=1,
+    )
+    if runs and all(name in runs[0].data.metrics for name in _CV_METRIC_NAMES):
+        run = runs[0]
+        return {
+            **{name: run.data.metrics[name] for name in _CV_METRIC_NAMES},
+            "run_id": run.info.run_id,
+            "family": kwargs["family"],
+            "phase": kwargs["phase"],
+            "reused_from_mlflow": True,
+        }
+    return {**evaluate_cv_run(**kwargs), "reused_from_mlflow": False}
