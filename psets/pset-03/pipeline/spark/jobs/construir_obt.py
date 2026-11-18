@@ -113,6 +113,21 @@ class Controles:
 # Construccion
 # ---------------------------------------------------------------------------
 
+def condicion_elegible():
+    """Accion que el asesor podia comprar al cierre del mes.
+
+    Miembro del S&P 500 ese mes, en la NYSE o con bolsa desconocida (ya no cotiza: excluirla
+    reintroduce sesgo de supervivencia), cotizo al cierre, historia y meses con negociacion
+    suficientes, y volumen promedio de 21 dias positivo (H18: sin volumen el precio es un
+    relleno de la fuente, p. ej. AMCR 2014-08 con precio plano y volumen 0 antes de cotizar).
+    """
+    return (F.col("en_sp500") & (F.col("es_nyse") | F.col("bolsa_desconocida"))
+            & F.col("cotizo_al_cierre_de_mes")
+            & (F.col("obs_252d") >= MIN_OBS_HISTORIA)
+            & (F.col("dias_negociados_mes") >= MIN_DIAS_NEGOCIADOS_MES)
+            & F.coalesce(F.col("volumen_prom_21d") > 0, F.lit(False)))
+
+
 def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
     fct, dim_a, dim_f, mkt = t["fct_precios_diarios"], t["dim_accion"], t["dim_fecha"], t["fct_mercado_diario"]
 
@@ -294,11 +309,7 @@ def construir(t: dict[str, DataFrame], c: Controles) -> DataFrame:
            .withColumn("ret_pct_mes_siguiente", F.exp("ret_log_mes_siguiente") - 1)
            .withColumn("exceso_ret_mes_siguiente", F.col("ret_log_mes_siguiente") - F.col("rf_mes_siguiente"))
            .withColumn("objetivo_cruza_corte", F.col("anio_mes") == F.lit(MES_CORTE))
-           .withColumn("elegible",
-                       F.col("en_sp500") & (F.col("es_nyse") | F.col("bolsa_desconocida"))
-                       & F.col("cotizo_al_cierre_de_mes")
-                       & (F.col("obs_252d") >= MIN_OBS_HISTORIA)
-                       & (F.col("dias_negociados_mes") >= MIN_DIAS_NEGOCIADOS_MES)))
+           .withColumn("elegible", condicion_elegible()))
 
     columnas = [
         "accion_key", "ticker", "nombre", "bolsa", "es_nyse", "bolsa_desconocida", "anio_mes", "anio",

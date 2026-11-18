@@ -57,7 +57,7 @@ entre acciones de un portafolio); la tasa libre de riesgo es tasa simple aproxim
 | Bolsa | bolsa, es_nyse, bolsa_desconocida | Bolsa actual, no histórica (439 de 1.130 acciones con bolsa desconocida) |
 | Tiempo | anio_mes, anio, mes, fecha_ultima_cotizacion | Última observación del mes cerrado |
 | Protocolo | conjunto, objetivo_cruza_corte | Separación por fecha; el PSet 3 divide por mes del objetivo |
-| Elegibilidad | cotizo_al_cierre_de_mes, en_sp500, sigue_en_sp500, elegible | sigue_en_sp500 describe el presente: no entra a X |
+| Elegibilidad | cotizo_al_cierre_de_mes, en_sp500, sigue_en_sp500, elegible | sigue_en_sp500 describe el presente: no entra a X. `elegible` = en_sp500 y (es_nyse o bolsa_desconocida) y cotizo_al_cierre_de_mes y obs_252d >= 200 y dias_negociados_mes >= 15 y volumen_prom_21d > 0 (H18, PSet 3) |
 | Nivel y retorno | precio_cierre_ajustado, ret_log_mes, ret_log_21d, ret_log_252d, momentum_12_1 | Ventanas hasta la fila (prueba de no fuga en spark/tests) |
 | Riesgo | vol_21d, vol_63d, vol_apertura_21d, drawdown_252d | Volatilidad anualizada con raíz de 252 |
 | Intradía | intradia_prom_21d, nocturno_prom_21d | Promedios de retornos intradía/nocturnos |

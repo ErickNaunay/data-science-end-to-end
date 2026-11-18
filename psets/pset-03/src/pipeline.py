@@ -81,6 +81,12 @@ FUGA = ['ret_log_mes_siguiente', 'ret_pct_mes_siguiente', 'exceso_ret_mes_siguie
         'sigue_en_sp500', 'bolsa', 'es_nyse', 'bolsa_desconocida', 'fecha_ultima_cotizacion']
 
 
+# Acciones fuera del analisis (H19): la semilla equivalencias_tickers une BMS (Bemis) con AMCR (Amcor) como
+# si fuera un cambio de simbolo, pero fue una adquisicion. AMCR 2012-2014 queda en el S&P 500 con barras de
+# solo cierre (rango maximo-minimo 0, volumen casi nulo) y deja predictores 0/0. Se quitan las dos.
+EXCLUIDAS = ('BMS', 'AMCR')
+
+
 def faltan_columnas(df, esperadas=OBT_MES):
     return [c for c in esperadas if c not in df.columns]
 
@@ -98,14 +104,32 @@ def preparar(df):
     d['momentum_por_riesgo'] = d.momentum_12_1 / d.vol_63d.replace(0, np.nan)
     d[FEATURES] = d[FEATURES].replace([np.inf, -np.inf], np.nan).astype(float)
     d = d[d.elegible.fillna(False).astype(bool) & d[TARGET].notna()].copy()
+    if 'ticker' in d:
+        d = d[~d.ticker.astype(str).str.upper().isin(EXCLUIDAS)]
     d['mes_objetivo'] = pd.PeriodIndex(d.anio_mes.astype(str), freq='M') + 1
     return d.reset_index(drop=True)
+
+
+def interpolar_huecos(d, columnas=FEATURES):
+    """Interpola linealmente, por accion y en orden de mes, solo los huecos intermedios (con un valor
+    observado antes y otro despues). Los nulos al inicio o al final de la historia quedan nulos y los
+    imputa la mediana del Pipeline, ajustada en cada pliegue. Se aplica a cada lado del corte por separado
+    (ver dividir), asi que un hueco del entrenamiento nunca se rellena con un mes del hold-out."""
+    columnas = [c for c in columnas if c in d]
+    if not columnas or 'accion_key' not in d or 'anio_mes' not in d or not d[columnas].isna().any().any():
+        return d
+    d = d.sort_values(['accion_key', 'anio_mes'])
+    d[columnas] = d.groupby('accion_key', sort=False)[columnas].transform(
+        lambda s: s.interpolate(method='linear', limit_area='inside'))
+    return d.sort_values(['anio_mes', 'accion_key'])
 
 
 def dividir(d, corte='2023-12'):
     limite = pd.Period(corte, freq='M')
     # Objetivos que terminan antes de 2024: diciembre 2023 no entra al entrenamiento.
-    return d[d.mes_objetivo <= limite].copy(), d[d.mes_objetivo > limite].copy()
+    # El corte se hace antes de interpolar: cada lado solo usa sus propios meses.
+    return (interpolar_huecos(d[d.mes_objetivo <= limite].copy()),
+            interpolar_huecos(d[d.mes_objetivo > limite].copy()))
 
 
 def pliegues(d, n_splits=5):

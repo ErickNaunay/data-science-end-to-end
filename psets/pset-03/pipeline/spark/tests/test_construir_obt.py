@@ -242,3 +242,18 @@ def test_obt_diaria_conserva_filas_y_trae_ohlcv(spark):
                 "precio_cierre_ajustado", "volumen", "dif_cierre_ajustado", "ret_pct_diario",
                 "ret_log_diario", "ret_pct_intradia", "rango_pct_hl", "rango_log_hl"]:
         assert col in dia.columns
+
+
+def test_elegible_exige_volumen_positivo(spark):
+    """H18: una accion sin volumen en 21 dias (precio de relleno) no es elegible."""
+    base = dict(en_sp500=True, es_nyse=True, bolsa_desconocida=False, cotizo_al_cierre_de_mes=True,
+                obs_252d=252, dias_negociados_mes=21)
+    filas = [dict(base, caso="con volumen", volumen_prom_21d=1000.0),
+             dict(base, caso="volumen cero", volumen_prom_21d=0.0),
+             dict(base, caso="volumen nulo", volumen_prom_21d=None),
+             dict(base, caso="historia corta", volumen_prom_21d=1000.0, obs_252d=100)]
+    df = spark.createDataFrame(filas, "en_sp500 boolean, es_nyse boolean, bolsa_desconocida boolean, "
+                                      "cotizo_al_cierre_de_mes boolean, obs_252d int, dias_negociados_mes int, "
+                                      "caso string, volumen_prom_21d double")
+    r = {x.caso: x.elegible for x in df.withColumn("elegible", obt_mod.condicion_elegible()).collect()}
+    assert r == {"con volumen": True, "volumen cero": False, "volumen nulo": False, "historia corta": False}

@@ -237,6 +237,19 @@ sin errores de memoria y sin el WARN `No Partition Defined`. Hasta el ultimo con
 4 min 08 s, frente a 5 min 32 s con 1 nucleo (corrida 4mLKrXy4A61Cpqu63pZ0ii). Verificacion: 17 controles OK,
 OBT_ACCION_MES 87.178 filas y 75 columnas (58.628 elegibles), OBT_ACCION_DIA 1.832.433 filas y 33 columnas.
 
+### H18: elegible exige volumen
+
+El EDA (`notebooks/01_eda.ipynb`) encontro una fila elegible con precio plano y sin negociacion: AMCR 2014-08
+(`vol_21d` = 0, `volumen_prom_21d` = 0), relleno de la fuente antes de que la accion cotizara. Aprobado por Paul el 18-nov.
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `spark/jobs/construir_obt.py` | `elegible` = en_sp500 y (es_nyse o bolsa_desconocida) y cotizo_al_cierre_de_mes y obs_252d >= 200 y dias_negociados_mes >= 15, escrito dentro de `construir()` | la misma condicion en `condicion_elegible()` mas `volumen_prom_21d > 0` (nulo cuenta como no elegible) |
+| `spark/tests/test_construir_obt.py` | 13 pruebas | 14: `test_elegible_exige_volumen_positivo` (con volumen, cero, nulo, historia corta) |
+| `docs/diccionario_datos.md` | `elegible` sin definicion explicita | definicion completa con la regla nueva |
+
+Efecto esperado: 1 fila menos de entrenamiento (46.926 -> 46.925). Se aplica al reconstruir la OBT (`scripts/reconstruir_obt.sh`) y tomar un snapshot nuevo.
+
 ## Cambios fuera de `pipeline/`
 
 | Archivo | Antes | Después |

@@ -3,7 +3,8 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import pandas as pd
 from sklearn.dummy import DummyRegressor
-from src.pipeline import dividir, pliegues, crear_pipeline, FEATURES
+from src.pipeline import dividir, pliegues, crear_pipeline, interpolar_huecos, FEATURES
+import numpy as np
 class Temporal(unittest.TestCase):
     def test_objetivo_cruza_corte(self):
         d=pd.DataFrame({'mes_objetivo':pd.PeriodIndex(['2023-12','2024-01'],freq='M')})
@@ -20,4 +21,15 @@ class Temporal(unittest.TestCase):
         p.predict(pd.DataFrame({c:[1e9,None] for c in FEATURES}))
         self.assertTrue((med==1.5).all())
         self.assertTrue((med==p.named_steps['preparar'].named_transformers_['numericas'].named_steps['imputar'].statistics_).all())
+    def test_interpola_solo_huecos_intermedios(self):
+        d=pd.DataFrame({'accion_key':[1]*5+[2]*2,'anio_mes':[201001,201002,201003,201004,201005,201001,201002],
+                        'vol_21d':[np.nan,1.,np.nan,3.,np.nan,5.,np.nan]})
+        r=interpolar_huecos(d,['vol_21d']).set_index(['accion_key','anio_mes']).vol_21d
+        self.assertEqual(r[(1,201003)],2.)
+        self.assertTrue(np.isnan(r[(1,201001)]) and np.isnan(r[(1,201005)]) and np.isnan(r[(2,201002)]))
+    def test_interpolacion_no_cruza_el_corte(self):
+        d=pd.DataFrame({'accion_key':[1]*3,'anio_mes':[202310,202311,202312],'vol_21d':[1.,np.nan,3.],
+                        'mes_objetivo':pd.PeriodIndex(['2023-11','2023-12','2024-01'],freq='M')})
+        a,b=dividir(d)
+        self.assertTrue(np.isnan(a.set_index('anio_mes').vol_21d[202311]))
 if __name__=='__main__': unittest.main()

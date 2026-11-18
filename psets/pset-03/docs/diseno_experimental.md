@@ -12,7 +12,7 @@ universo: miembros del S&P 500 en la NYSE en esa fecha (~500 por mes, 87.178 fil
 | Entrega de principio a fin en Colab | El PSet 3 pide un servidor MLflow en `docker-compose.yml` y Model Registry; Colab no corre Docker | Dos modos en `src/entorno.py`: local (servidor MLflow del compose) y Colab (`mlflow` con almacén de archivos en Drive). El Registry se demuestra en local |
 | Datos por descarga dinámica | La OBT está en Snowflake con llave privada | Colab lee el snapshot `data/obt.parquet` (sha256) desde Drive (`PSET3_DATOS`); Snowflake solo con secretos de Colab, nunca en el notebook |
 | "Usar exclusivamente Adj Close" | Las columnas cierre/apertura y máximo/mínimo que Paul pidió | Son compatibles: los cocientes del mismo día no dependen del ajuste (sección 2) |
-| Métrica principal IC de Spearman | El PSet 1 prometió RMSE/MAE frente al RW y acierto direccional; el PDF pide una métrica técnica única | IC para elegir modelos de ranking; MAE/RMSE y Diebold-Mariano para comparar con el RW (el RW con 0 no ordena acciones: su IC no existe). Decisión de Paul |
+| Métrica principal (W3, decidido 18-nov) | El PSet 1 prometió RMSE/MAE frente al RW y acierto direccional; el PDF pide una métrica técnica única | **MAE** es la métrica técnica única para elegir y comparar modelos (robusta a las colas del target: curtosis 9,6 en el EDA), con Diebold-Mariano frente al RW. El **IC de Spearman** por mes se reporta siempre como métrica del ranking (el EDA muestra que el 34,5 % de la varianza es del mes y que la señal entre acciones es débil); RMSE y acierto direccional, como secundarias |
 | Ensamble como modelo | El PSet 3 registra un campeón | El ensamble es un candidato más; si gana, se registra como `mlflow.pyfunc` con sus componentes |
 | Destilación de fundacionales | Rebalanceo mensual | Con ~500 series al mes la latencia no es un cuello de botella; se mide y se reporta, y la destilación queda para el despliegue (PSet 4) |
 
@@ -185,7 +185,7 @@ Dependencias (`pyproject.toml`):
 
 ## 9. Decisiones pendientes (Paul)
 
-1. Métrica principal: IC de Spearman (propuesta) o MAE.
+1. ~~Métrica principal~~: decidido 18-nov (W3): MAE como métrica técnica única; IC de Spearman por mes siempre reportado.
 2. Costo por transacción (10 pb propuesto), tope de volatilidad y `vol_21d` o `vol_63d` para los pesos.
 3. Colab: snapshot en Drive o lectura de Snowflake con secretos.
 4. Variables F2: distancia a SMA/EMA (21, 63, 200).

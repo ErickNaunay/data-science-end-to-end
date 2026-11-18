@@ -150,6 +150,22 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
         accion mas ("RVTY (PREVIOUSLY PKI)", sin precios), y esos dias RVTY no cuenta como miembro. Propuesta:
         en brz_composicion_sp500 quitar el sufijo "(PREVIOUSLY ...)" antes de las equivalencias, con prueba dbt
         (simbolo sin espacios ni minusculas) y antes/despues en migracion_pipeline.md. Decide Paul.
+[x] H18 (C+P) (18-nov, aprobado por Paul: condicion_elegible() en construir_obt.py exige volumen_prom_21d > 0;
+        prueba test_elegible_exige_volumen_positivo, 14 pruebas OK; corrida 3XOei8TFYGlqjjYCTo9eFI SUCCESS,
+        17/17 controles, 58.627 elegibles (antes 58.628); snapshot c3568917..., entrenamiento 46.925)
+        (17-nov, encontrado por el EDA) AMCR 2014-08 es elegible con vol_21d = 0 y volumen 0 (precio plano:
+        relleno de Yahoo antes de cotizar). Propuesta: elegible exige volumen_prom_21d > 0 en construir_obt.py, con
+        prueba y antes/despues en migracion_pipeline.md. Decide Paul (1 fila de 46.926 en entrenamiento).
+[~] H19 (C+P) (18-nov, decidido por Paul: BMS y AMCR fuera en src/pipeline.py EXCLUIDAS, 109 filas elegibles;
+        huecos intermedios por interpolacion lineal por accion a cada lado del corte (interpolar_huecos en dividir),
+        inicio/final con mediana del Pipeline; 2 pruebas nuevas, 18 OK; entrenamiento 46.851, hold-out 11.326, 0 nulos.
+        Pendiente opcional: corregir la semilla en el pipeline)
+        (18-nov, encontrado por el EDA 01_eda secc. 2) La semilla equivalencias_tickers mapea BMS -> AMCR
+        (2019-06-07). Amcor compro Bemis: es una adquisicion, no un cambio de simbolo. AMCR 2012-2014 queda en el
+        S&P 500 con barras de solo cierre (rango maximo-minimo 0, volumen medio ~40-300): 9 filas de entrenamiento
+        con cambio_rango_log_hl_21_63 nulo (division 0/0) y 20 elegibles dudosas. Propuesta: quitar la fila BMS
+        de la semilla (Bemis queda como accion propia hasta 2019-06) o fijar fecha_desde 2019-06-11, con prueba dbt
+        y antes/despues en migracion_pipeline.md. Decide Paul.
 [x] H14 (C) (17-nov: pipeline/docs/diccionario_datos.md con CALIDAD nueva y H1) Diccionario de datos de Gold y OBT para P3 (E5 del plan anterior): enlazar
        pset-02/docs/diccionario_datos.md y anotar cambios (H1) si los hay.
 
@@ -191,7 +207,7 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
 [x] V3.6 (C) (17-nov, tras F1: transformar 3bCTRKESZAhdNt1G86o1Co SUCCESS en 6 min 44 s; 17/17 controles;
         OBT_ACCION_MES 87.178 filas, 58.628 elegibles, 75 columnas; OBT_ACCION_DIA 1.832.433 filas = Gold,
         33 columnas; dbt PASS=112 WARN=1) (17-nov, scripts/reconstruir_obt.sh) Corregir H1, repetir V1.3 (pruebas Spark), V2.1 (transformar) y V3.1-V3.2.
-[x] V3.7 (P) (17-nov, tras F1) snapshot sha256 37dac0ce..., 87.178 filas, H1 OK (antes: 7ba7ba6a..., sin F1). docker compose down (sin -v) y snapshot: cd .. && uv run python -m src.datos
+[x] V3.7 (P) (18-nov, tras H18: snapshot c3568917...; 17-nov, tras F1) snapshot sha256 37dac0ce..., 87.178 filas, H1 OK (antes: 7ba7ba6a..., sin F1). docker compose down (sin -v) y snapshot: cd .. && uv run python -m src.datos
         (tabla PORTAFOLIO_P3.OBT.OBT_ACCION_MES; anotar sha256 en el memo).
 [x] V3.8 (C+P) (17-nov) Recursos de Spark, con antes y despues en docs/migracion_pipeline.md:
         - OOM de F1 (UNABLE_TO_ACQUIRE_MEMORY): poda de columnas y ejecutor 2g -> 5g, driver 1g -> 2g.
@@ -234,10 +250,16 @@ ColumnTransformer, probado), src/experimentos.py (2 bases y 4 familias), noteboo
 artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/pendientes_entrega.md.
 
 3.1 EDA (15% junto con features) - notebooks/01_eda.ipynb
-[ ] (C) Re-ejecutar con el snapshot de P3: tamano, tipos, faltantes por columna, descriptivos,
+[~] (C+P) (18-nov: notebooks/01_eda.ipynb con el snapshot c3568917, 27 celdas: 6b covarianza de la OBT,
+        6c covarianza de las variables normalizadas (= Pearson), detalle de nulos y motivo de la mediana frente a
+        interpolar; 9 figuras. 17-nov: rehecho contra CD_PSet_3.pdf; falta que Paul lo corra en la Mac)
+        Re-ejecutar con el snapshot de P3: tamano, tipos, faltantes por columna, descriptivos,
         distribucion del target (ret_log_mes_siguiente), IQR (boxplot), Z-score >= 3,
         Spearman (justificar frente a Pearson: colas gruesas) con el target.
-[ ] (C) 3 o mas hallazgos con evidencia y consecuencia (docs/hallazgos_eda.csv), por ejemplo:
+[~] (C) (17-nov: 7 hallazgos calculados en el notebook: colas del target (curtosis 9,6), el mes explica el 34,5 %
+        de la varianza, IC dentro del mes debil (max 0,020, ninguna |t| >= 2), 24 pares |rho| > 0,9, escala de
+        riesgo 2,8x, faltantes casi nulos, fila AMCR 2014-08 plana y sin volumen; apoyan W3: MAE + IC)
+        3 o mas hallazgos con evidencia y consecuencia (docs/hallazgos_eda.csv), por ejemplo:
         colas gruesas del target -> MAE como metrica principal y modelos robustos;
         filas con huecos o tramo excluido (H5) -> imputacion dentro del Pipeline;
         columnas de mercado del mes siguiente (H1) y sigue_en_sp500 -> excluir por fuga.
@@ -272,7 +294,9 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         Reemplaza a pliegues() de src/pipeline.py (TimeSeriesSplit) al migrar los notebooks.
 [~] W2 (C) (17-nov: src/modelos/tabulares.py probado) Pipeline: rango transversal, imputar,
         escalar, SelectKBest (filtro) y modelo; FEATURES_F1 en logaritmo.
-[ ] W3 (C+P) Decidir metrica principal: IC de Spearman (propuesta, ranking) o MAE; RMSE/MAE y
+[x] W3 (C+P) (18-nov, decision de Paul con la evidencia del EDA: MAE es la metrica tecnica unica; el IC de
+        Spearman por mes se reporta siempre para el ranking; ver docs/diseno_experimental.md)
+        Decidir metrica principal: IC de Spearman (propuesta, ranking) o MAE; RMSE/MAE y
         Diebold-Mariano frente al RW se reportan siempre (src/evaluacion.py, probado).
 [ ] (C) Division unica: objetivos hasta 2023-12 entrenamiento; desde 2024-01 hold-out.
         Revisar el mes que cruza el corte (objetivo_cruza_corte) para que no se filtre.
