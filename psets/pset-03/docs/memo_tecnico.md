@@ -1,6 +1,6 @@
 # Memo técnico — PSet 3: experimentación y selección de modelo
 
-**Proyecto:** QSRR-Predict · **Autor:** Jonatan Buenaño · **Fecha:** 15 de noviembre de 2026
+**Proyecto:** QSRR-Predict · **Autor:** Jonatan Buenaño · **Fecha:** 18 de noviembre de 2026
 
 ## Resumen ejecutivo
 
@@ -47,10 +47,10 @@ La validación se limita a RepoRT C18. No se dispone de corridas de control de u
 
 Como demostración offline, se compararon 20.000 observaciones de entrenamiento y 20.000 de holdout. Las 16 features presentaron PSI menor que 0,01 (máximo: 0,0080) y la diferencia absoluta máxima en la fracción de faltantes fue 0,0036. Estos valores describen únicamente la comparación aleatoria dentro de RepoRT y no acreditan estabilidad temporal ni generalización a un laboratorio.
 
-**Benchmark LLM:** se autorizó una comparación zero-shot de hasta 50 compuestos del holdout con Gemini 3.5 Flash-Lite (`gemini-3.5-flash-lite`). El prompt contiene SMILES y condiciones cromatográficas, pero excluye el tiempo de retención real y los identificadores. La clave `GEMINI_API_KEY` aún no está configurada en el entorno, por lo que no se han realizado llamadas ni se reportan métricas del LLM. Al ejecutarlo, se registrarán RMSE/MAE junto a champion y challenger en MLflow. Por ser un modelo preentrenado, puede haber solapamiento con RepoRT en sus datos de entrenamiento; el resultado sería exploratorio, no una comparación independiente.
+**Benchmark LLM:** se evaluaron 50 compuestos distintos del holdout con Gemini 3.5 Flash-Lite (`gemini-3.5-flash-lite`) en modo zero-shot. El prompt incluyó SMILES y condiciones cromatográficas, pero no la retención real ni identificadores. Sobre esa misma muestra, Gemini obtuvo RMSE **5,344 min** y MAE **4,528 min**; HistGradientBoosting (champion) obtuvo RMSE **2,064 min** y MAE **1,302 min**, mientras que Random Forest (challenger) obtuvo RMSE **2,103 min** y MAE **1,360 min**. En esta muestra acotada, los modelos supervisados tuvieron menor error; el resultado no permite concluir rendimiento general porque son solo 50 compuestos del holdout. Por ser preentrenado, Gemini también podría haber visto RepoRT durante su entrenamiento, por lo que la comparación no es una validación independiente. La corrida final quedó registrada en MLflow (`5a1907598abf485690cdd74b57557b3e`).
 
 ## Reproducibilidad y artefactos
 
 El tracking corre con MLflow 2.22.0 en el contenedor Docker del PSet 3, disponible localmente en `http://localhost:5000` mediante el port forwarding de Codespaces. El Model Registry tiene aliases `champion` y `challenger`; el modelo champion se volvió a cargar y reprodujo exactamente su RMSE de holdout. Los notebooks y tablas de resultados están en `notebooks/` y `docs/`; `corridas.csv` conserva el historial, incluidos intentos fallidos, para trazabilidad.
 
-Para repetir el flujo se requieren Python 3.11, las dependencias de `requirements.txt`, acceso autorizado a Snowflake y variables de entorno propias; no se incluyen credenciales. La instantánea Parquet y el split local están excluidos de Git, por lo que un evaluador necesita acceso a las tablas Snowflake para recrearlos. El benchmark Gemini se ejecuta con `python scripts/run_llm_benchmark.py` después de configurar `GEMINI_API_KEY` como secreto local.
+Para repetir el flujo se requieren Python 3.11, las dependencias de `requirements.txt`, acceso autorizado a Snowflake y variables de entorno propias; no se incluyen credenciales. La instantánea Parquet y el split local están excluidos de Git, por lo que un evaluador necesita acceso a las tablas Snowflake para recrearlos. El benchmark Gemini se ejecutó con `python scripts/run_llm_benchmark.py`; las predicciones y métricas están en `docs/llm_benchmark_predictions_20261118T013622Z.csv` y `docs/llm_benchmark_metrics_20261118T013622Z.json`.

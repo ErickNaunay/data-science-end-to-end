@@ -1,0 +1,25 @@
+{
+  "provider": "Google Gemini API",
+  "model": "gemini-3.5-flash-lite",
+  "benchmark_type": "zero-shot",
+  "prompt_version": "retention-zero-shot-v1",
+  "sample_size": 50,
+  "unique_compounds": 50,
+  "random_state": 42,
+  "data_sha256": "0c366b465f7b56e6b5873132279f7a3152532f0a035186c776f491c01a628210",
+  "holdout_split_hash": "11946390147981254053",
+  "target_labels_sent_to_provider": false,
+  "api_calls": 50,
+  "api_calls_this_run": 0,
+  "prompt_tokens_total": 8364,
+  "output_tokens_total": 825,
+  "mlflow_run_id": "5a1907598abf485690cdd74b57557b3e",
+  "metrics": {
+    "gemini_rmse_min": 5.343512327436578,
+    "gemini_mae_min": 4.528213333333333,
+    "champion_rmse_min": 2.063699309117214,
+    "champion_mae_min": 1.302483571913587,
+    "challenger_rmse_min": 2.102998906161233,
+    "challenger_mae_min": 1.3602095646482184
+  }
+}

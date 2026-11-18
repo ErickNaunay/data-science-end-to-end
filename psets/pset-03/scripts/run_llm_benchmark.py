@@ -5,11 +5,13 @@ from __future__ import annotations
 import json
 import os
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 import mlflow
 import mlflow.sklearn
+import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 
@@ -30,6 +32,19 @@ from src.splits import create_or_load_holdout
 SEED = 42
 SAMPLE_SIZE = 50
 MODEL_NAME = "qsrr-predict-modelo"
+REQUEST_INTERVAL_SECONDS = 4.5
+PROGRESS_COLUMNS = (
+    "hecho_id",
+    "inchikey",
+    "actual_retention_min",
+    "gemini_prediction_min",
+    "prompt_tokens",
+    "output_tokens",
+    "data_sha256",
+    "holdout_split_hash",
+    "model",
+    "prompt_version",
+)
 
 
 def main() -> None:
@@ -70,9 +85,56 @@ def main() -> None:
     challenger_predictions = challenger.predict(X_sample)
     clear_feature_caches()
 
-    sample_predictions = []
-    prompt_tokens = []
-    output_tokens = []
+    progress_path = PROJECT_ROOT / "data" / "gemini_benchmark_progress.csv"
+    progress_path.parent.mkdir(parents=True, exist_ok=True)
+    if progress_path.exists():
+        progress = pd.read_csv(
+            progress_path,
+            dtype={
+                "hecho_id": "string",
+                "data_sha256": "string",
+                "holdout_split_hash": "string",
+                "model": "string",
+                "prompt_version": "string",
+            },
+        )
+        if tuple(progress.columns) != PROGRESS_COLUMNS:
+            raise ValueError(
+                f"Benchmark checkpoint has unexpected columns: {progress_path}"
+            )
+        if progress["hecho_id"].duplicated().any():
+            raise ValueError("Benchmark checkpoint contains duplicate observations")
+        allowed_ids = set(sample["hecho_id"].astype(str))
+        if not set(progress["hecho_id"].astype(str)).issubset(allowed_ids):
+            raise ValueError("Benchmark checkpoint does not match the holdout sample")
+        if not progress.empty:
+            if not progress["data_sha256"].eq(data_metadata["sha256"]).all():
+                raise ValueError("Benchmark checkpoint belongs to a different snapshot")
+            if not progress["holdout_split_hash"].eq(
+                split_metadata["model_rows_hash"]
+            ).all():
+                raise ValueError("Benchmark checkpoint belongs to a different split")
+            if not progress["model"].eq(DEFAULT_MODEL).all():
+                raise ValueError("Benchmark checkpoint belongs to a different model")
+            if not progress["prompt_version"].eq(PROMPT_VERSION).all():
+                raise ValueError("Benchmark checkpoint belongs to a different prompt")
+            expected_targets = sample.set_index(
+                sample["hecho_id"].astype(str)
+            )["tiempo_retencion"]
+            for _, saved in progress.iterrows():
+                if not np.isclose(
+                    float(saved["actual_retention_min"]),
+                    float(expected_targets.loc[str(saved["hecho_id"])]),
+                    rtol=0,
+                    atol=1e-12,
+                ):
+                    raise ValueError(
+                        "Benchmark checkpoint labels do not match the holdout"
+                    )
+    else:
+        progress = pd.DataFrame(columns=PROGRESS_COLUMNS)
+
+    completed_ids = set(progress["hecho_id"].astype(str))
     token_totals = {}
     configure_tracking()
     run_name = f"gemini-zero-shot-{DEFAULT_MODEL}"
@@ -100,23 +162,56 @@ def main() -> None:
                 "target_labels_sent_to_provider": False,
             }
         )
-        for index, (_, row) in enumerate(sample.iterrows(), start=1):
+        for _, row in sample.iterrows():
+            observation_id = str(row["hecho_id"])
+            if observation_id in completed_ids:
+                continue
+            time.sleep(REQUEST_INTERVAL_SECONDS)
             result = request_gemini_prediction(
                 build_prediction_prompt(row),
                 api_key=api_key,
                 model=DEFAULT_MODEL,
             )
-            sample_predictions.append(float(result["prediction"]))
-            prompt_tokens.append(result["prompt_tokens"])
-            output_tokens.append(result["output_tokens"])
-            print(f"Gemini predictions: {index}/{len(sample)}")
+            new_progress = pd.DataFrame(
+                [
+                    {
+                        "hecho_id": observation_id,
+                        "inchikey": str(row["inchikey"]),
+                        "actual_retention_min": float(row["tiempo_retencion"]),
+                        "gemini_prediction_min": float(result["prediction"]),
+                        "prompt_tokens": result["prompt_tokens"],
+                        "output_tokens": result["output_tokens"],
+                        "data_sha256": data_metadata["sha256"],
+                        "holdout_split_hash": split_metadata["model_rows_hash"],
+                        "model": DEFAULT_MODEL,
+                        "prompt_version": PROMPT_VERSION,
+                    }
+                ],
+                columns=PROGRESS_COLUMNS,
+            )
+            if progress.empty:
+                progress = new_progress
+            else:
+                progress = pd.concat([progress, new_progress], ignore_index=True)
+            temporary_path = progress_path.with_suffix(".tmp")
+            progress.to_csv(temporary_path, index=False)
+            temporary_path.replace(progress_path)
+            completed_ids.add(observation_id)
+            print(f"Gemini predictions: {len(completed_ids)}/{len(sample)}")
+
+        if len(completed_ids) != len(sample):
+            raise RuntimeError(
+                f"Gemini benchmark incomplete: {len(completed_ids)}/{len(sample)}"
+            )
 
         predictions = pd.DataFrame(
             {
                 "hecho_id": sample["hecho_id"].astype(str),
                 "inchikey": sample["inchikey"].astype(str),
                 "actual_retention_min": y_sample.to_numpy(),
-                "gemini_prediction_min": sample_predictions,
+                "gemini_prediction_min": progress.set_index("hecho_id")
+                .loc[sample["hecho_id"].astype(str), "gemini_prediction_min"]
+                .to_numpy(),
                 "champion_prediction_min": champion_predictions,
                 "challenger_prediction_min": challenger_predictions,
             }
@@ -139,8 +234,8 @@ def main() -> None:
             )
         mlflow.log_metrics(metrics)
         for token_name, values in (
-            ("prompt_tokens_total", prompt_tokens),
-            ("output_tokens_total", output_tokens),
+            ("prompt_tokens_total", progress["prompt_tokens"].dropna().tolist()),
+            ("output_tokens_total", progress["output_tokens"].dropna().tolist()),
         ):
             known_values = [value for value in values if value is not None]
             token_totals[token_name] = (
@@ -185,6 +280,7 @@ def main() -> None:
         mlflow.log_artifact(str(predictions_path), artifact_path="llm_benchmark")
         mlflow.log_artifact(str(metrics_path), artifact_path="llm_benchmark")
 
+    progress_path.unlink(missing_ok=True)
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 

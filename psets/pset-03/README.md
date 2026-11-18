@@ -52,6 +52,10 @@ conexión no imprime ni registra credenciales.
   fallidos que se conservan para trazabilidad.
 - `docs/feature_drift_holdout.csv`: demostración offline de deriva entre
   muestras de entrenamiento y holdout; no representa monitoreo productivo.
+- `docs/llm_benchmark_metrics_20261118T013622Z.json` y
+  `docs/llm_benchmark_predictions_20261118T013622Z.csv`: benchmark zero-shot
+  de Gemini 3.5 Flash-Lite en 50 compuestos, comparado con los modelos
+  champion/challenger sobre la misma muestra.
 - `docs/memo_tecnico.md` y `docs/PSet3_memo_Buenaño_Peñafiel.pdf`: memo de
   resultados y límites del experimento. El PDF respeta el nombre requerido
   por la rúbrica.
@@ -99,14 +103,12 @@ volumen Docker de MLflow. Antes de interpretar los resultados se debe confirmar
 que Snowflake contiene la OBT de PSet 2 y que hay suficientes registros C18 con
 SMILES válidos.
 
-El benchmark no convierte la reducción del 30% en un resultado medido. Tampoco
-reporta el proxy de pares temporalmente cercanos como coelusión confirmada. La
-prueba con Gemini 3.5 Flash-Lite está autorizada para hasta 50 compuestos
-distintos del holdout. El prompt solo incluye SMILES y condiciones
-cromatográficas, nunca el tiempo de retención real ni identificadores. Para
-ejecutarla, configura `GEMINI_API_KEY` localmente o en el secreto del Codespace
-y corre `python scripts/run_llm_benchmark.py`; la clave no debe ir al repositorio.
-En este entorno la clave todavía no está configurada, así que no se han enviado
-observaciones ni se reportan métricas LLM. El benchmark zero-shot también puede
-tener solapamiento con datos de entrenamiento del proveedor y no equivale a una
-validación independiente.
+El benchmark zero-shot de Gemini 3.5 Flash-Lite se ejecutó en 50 compuestos
+distintos del holdout. El prompt envió únicamente SMILES y condiciones
+cromatográficas, no el tiempo de retención real ni identificadores. Gemini
+obtuvo RMSE 5,344 min y MAE 4,528 min; en la misma muestra, el champion logró
+RMSE 2,064 min y MAE 1,302 min, y el challenger RMSE 2,103 min y MAE 1,360 min.
+Es una comparación exploratoria pequeña, no evidencia independiente: Gemini
+puede haber visto RepoRT durante su preentrenamiento. La reducción del 30% de
+corridas sigue siendo una hipótesis de negocio y el proxy de pares cercanos no
+representa coelusión confirmada.
