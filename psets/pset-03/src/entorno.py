@@ -21,7 +21,7 @@ import numpy as np
 RAIZ = Path(__file__).resolve().parents[1]
 DATOS = Path(os.environ.get("PSET3_DATOS", RAIZ / "data"))
 ARTEFACTOS = Path(os.environ.get("PSET3_ARTEFACTOS", RAIZ / "artefactos"))
-SEMILLA = 7
+SEMILLA = 42   # semilla unica del proyecto (decision de Paul, 18-nov)
 
 
 def en_colab() -> bool:

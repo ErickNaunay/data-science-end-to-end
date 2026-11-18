@@ -131,7 +131,7 @@ def metrica_negocio(pred: pd.DataFrame, puntaje: str = "pred", riesgo: RiesgoDia
             "tope_portafolio_aplicado": riesgo is not None}
 
 
-def portafolios_aleatorios(df: pd.DataFrame, sorteos: int = 200, semilla: int = 7, **kw) -> pd.DataFrame:
+def portafolios_aleatorios(df: pd.DataFrame, sorteos: int = 200, semilla: int = 42, **kw) -> pd.DataFrame:
     """B4: distribucion del Sharpe de portafolios de n acciones elegidas al azar cada mes."""
     rng = np.random.default_rng(semilla)
     out = []

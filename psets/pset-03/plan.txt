@@ -331,6 +331,11 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         random walk, al portafolio aleatorio y a los indices. Decidir tope de volatilidad, costos
         y la ventana de volatilidad para los pesos (vol_21d o vol_63d; F5 del plan anterior).
 3.4 MLflow (20%) - docker-compose.yml de pset-03
+[~] (C+P) (18-nov: src/experimentos.py reescrito: CATALOGO con familia y modelo (tags separados), semilla 42
+        (src/entorno.py), metricas de validar() + IC por mes + metrica de negocio por corrida, SHA-256 de la OBT
+        mensual y diaria, predicciones fuera de muestra como artefacto, log_model con tipos skops confiables,
+        --verificar <run_id> recarga en proceso nuevo (probado en la nube: recarga_ok, diferencia 0).
+        docker-compose usa "portafolio-inversiones". FALTA: primera corrida en la Mac con commit limpio y captura)
 [ ] (C) Experimento "portafolio-inversiones". Cada corrida: parametros y semilla; datos (tabla,
         fecha del snapshot, sha256); metricas train, CV media y desviacion, segundos; tags (fase,
         familia, commit); artefacto mlflow.sklearn.log_model con firma y ejemplo de entrada.
