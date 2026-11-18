@@ -52,8 +52,9 @@ conexión no imprime ni registra credenciales.
   fallidos que se conservan para trazabilidad.
 - `docs/feature_drift_holdout.csv`: demostración offline de deriva entre
   muestras de entrenamiento y holdout; no representa monitoreo productivo.
-- `docs/memo_tecnico.md` y `docs/memo_tecnico.pdf`: memo de resultados y límites
-  del experimento.
+- `docs/memo_tecnico.md` y `docs/PSet3_memo_Buenaño_Peñafiel.pdf`: memo de
+  resultados y límites del experimento. El PDF respeta el nombre requerido
+  por la rúbrica.
 
 ## Reproducir
 

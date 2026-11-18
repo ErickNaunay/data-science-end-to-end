@@ -22,7 +22,7 @@ from reportlab.platypus import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SOURCE = PROJECT_ROOT / "docs" / "memo_tecnico.md"
-OUTPUT = PROJECT_ROOT / "docs" / "memo_tecnico.pdf"
+OUTPUT = PROJECT_ROOT / "docs" / "PSet3_memo_Buenaño_Peñafiel.pdf"
 
 
 def _inline(text: str) -> str:
