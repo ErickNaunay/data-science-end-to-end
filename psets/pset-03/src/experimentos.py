@@ -14,6 +14,7 @@ Uso (con MLflow levantado; ver README):
     uv run --group modelos python -m src.experimentos --verificar <run_id>    # recarga en sesion limpia
 """
 import argparse, json, os, subprocess, sys, time
+import tempfile
 import warnings
 # mes_calendario_obj es entero (1-12) y nunca falta: el aviso de MLflow sobre enteros con faltantes no aplica.
 warnings.filterwarnings('ignore', message='Hint: Inferred schema contains integer column')
@@ -161,9 +162,10 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
         if meta_dia:
             mlflow.log_dict(meta_dia, 'datos/snapshot_dia.json')
         mlflow.log_dict({'mae_cv': mae_pliegues}, 'pliegues.json')
-        pred.to_csv(ROOT / 'mlflow_predicciones_tmp.csv', index=False)
-        mlflow.log_artifact(str(ROOT / 'mlflow_predicciones_tmp.csv'), artifact_path='predicciones_cv')
-        (ROOT / 'mlflow_predicciones_tmp.csv').unlink()
+        with tempfile.TemporaryDirectory() as tmp:   # carpeta propia: varias corridas en paralelo
+            ruta_tmp = Path(tmp) / 'predicciones.csv'
+            pred.to_csv(ruta_tmp, index=False)
+            mlflow.log_artifact(str(ruta_tmp), artifact_path='predicciones_cv')
         ejemplo = X.iloc[:5]
         mlflow.log_dict({'X': ejemplo.to_dict(orient='list'), 'pred': pipe.predict(ejemplo).tolist()},
                         'verificacion/ejemplo_prediccion.json')
@@ -250,9 +252,10 @@ def registrar_referencia(modelo, serie, meta, fase='baseline', parametros=None, 
                            'meses': f'{serie.index.min()}..{serie.index.max()}', **(parametros or {})})
         mlflow.set_tags({'fase': fase, 'familia': 'N/A', 'modelo': modelo, 'git_commit': commit, 'git_dirty': str(sucio)})
         mlflow.log_metrics(metricas)
-        serie.to_csv(ROOT / 'mlflow_serie_tmp.csv')
-        mlflow.log_artifact(str(ROOT / 'mlflow_serie_tmp.csv'), artifact_path='serie_mensual')
-        (ROOT / 'mlflow_serie_tmp.csv').unlink()
+        with tempfile.TemporaryDirectory() as tmp:   # carpeta propia: varias corridas en paralelo
+            ruta_tmp = Path(tmp) / 'serie.csv'
+            serie.to_csv(ruta_tmp)
+            mlflow.log_artifact(str(ruta_tmp), artifact_path='serie_mensual')
         return {'modelo': modelo, 'familia': 'N/A', 'fase': fase, 'run_id': run.info.run_id, 'git_dirty': sucio, **metricas}
 
 
