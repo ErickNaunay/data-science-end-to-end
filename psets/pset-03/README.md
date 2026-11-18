@@ -35,14 +35,18 @@ MLflow queda en http://localhost:5001, con SQLite como backend y artefactos en
 3. `03_preparacion_validacion.ipynb`: división única, Pipeline/ColumnTransformer de `src/pipeline.py`,
    TimeSeriesSplit sobre meses (7 × 12 meses, gap 1) con tabla de fechas de corte, comparación de
    esquemas de CV, todas las métricas de regresión (decide el MAE) y la métrica de negocio con ejemplo.
-   `03_baseline_candidatos.ipynb` (se renumera al rehacer la sección 5): código preparado en `src/experimentos.py` para
-   dos bases y cuatro familias. Falta integrar la quinta familia fundacional y
-   probar el LLM por prompting o justificar su inaplicabilidad.
-4. `04_tuning.ipynb`: preparar los tres mejores usando solo CV; al menos 30
-   configuraciones por modelo y corridas hijas. Aún no ejecutado.
-5. `05_seleccion.ipynb`: guía pendiente de implementación final; comparar dos
-   finalistas una sola vez en hold-out, calcular métrica de negocio, registrar
-   champion/challenger y recargar el ganador en una sesión limpia.
+4. `03_baseline_candidatos.ipynb`: líneas base B1–B3, referencias de negocio (B4, B5, índices) y los
+   8 candidatos de las 5 familias (Ridge, random forest, LightGBM/XGBoost, MLP y los fundacionales Chronos,
+   TimesFM y Moirai en zero-shot), registrados en MLflow (`src/experimentos.py`). El LLM por prompting se
+   justifica como no aplicable (fuga por su fecha de corte).
+5. `04_tuning.ipynb`: Optuna (TPE, semilla 42) con 30 configuraciones por modelo para Ridge, LightGBM y
+   XGBoost, como corridas hijas (`src/tuning.py`).
+6. `05_seleccion.ipynb`: champion y challenger por MAE de CV, hold-out evaluado una sola vez, métrica de
+   negocio, costo y explicabilidad, Model Registry (`portafolio-inversiones-modelo`) y `docs/corridas.csv`
+   (`src/seleccion.py`).
+7. `06_champion.ipynb`: recarga limpia de `@champion` que reproduce su MAE del hold-out.
+
+Documento técnico: `docs/PSet3_memo_Gomez_Ehmig.pdf` (fuente en `docs/memo/`).
 
 El target es el retorno log del mes siguiente. El corte usa el mes del objetivo:
 objetivos hasta diciembre de 2023 en entrenamiento; posteriores en hold-out.
@@ -114,11 +118,9 @@ Los notebooks finales se entregan con Restart y Run All y salidas guardadas.
 
 ### Comprobaciones realizadas
 
-Los notebooks 01 y 02 se ejecutaron completos con el snapshot de 87.178 filas,
-con salidas y gráficos guardados. El entrenamiento elegible contiene 46.926
-filas y 158 meses. Tres pruebas verifican corte por objetivo, separación de
-meses e imputación ajustada solo con entrenamiento. Los notebooks 03-05
-son guías de ejecución; no contienen resultados de experimentación.
+Los notebooks 01 a 06 se ejecutaron completos con el snapshot de 87.178 filas (sha256 `c3568917…`), con
+salidas y gráficos guardados. Entrenamiento: 46.851 filas (objetivos hasta 2023-12); hold-out: 11.326 filas
+(2024-01 a 2026-10). `pytest tests` corre 28 pruebas de fuga, cortes, pipeline y regla de negocio.
 
 MLflow se construyó en Docker. Se configura con un solo worker y límite de 1 GB para reducir
 consumo. No ejecutar a la vez que Spark en el entorno de 8 GB: durante la
@@ -147,10 +149,6 @@ Ridge con alias `verificacion` en `portafolio-verificacion-modelo`, y comprueba
 que reproduce su RMSE de entrenamiento. No asigna champion, no elige ganador,
 no utiliza el hold-out y no sustituye las 98 corridas mínimas del PDF.
 La evidencia de esa prueba queda en `docs/verificacion/`.
-
-Los notebooks 03-05 y el programa de tuning siguen siendo la preparación para
-el trabajo experimental completo. Sus pendientes están en
-[docs/pendientes_entrega.md](docs/pendientes_entrega.md).
 
 ## Cadencia de negocio y futura inferencia
 
