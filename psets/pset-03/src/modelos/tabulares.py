@@ -21,18 +21,8 @@ from sklearn.preprocessing import StandardScaler
 
 from ..entorno import SEMILLA
 
-# Variables de la OBT despues de F1 (en logaritmo; las % quedan para EDA y la regla de negocio).
-FEATURES_F1 = [
-    "ret_log_mes", "ret_log_21d", "ret_log_252d", "momentum_12_1",
-    "ret_log_mes_lag1", "ret_log_mes_lag2", "ret_log_mes_lag3",
-    "vol_21d", "vol_63d", "vol_apertura_21d", "vol_intradia_21d", "vol_parkinson_21d", "vol_garman_klass_21d",
-    "drawdown_252d", "intradia_prom_21d", "nocturno_prom_21d", "intradia_log_mes", "nocturno_log_mes",
-    "rango_log_hl_mes", "rango_log_hl_prom_21d", "rango_log_hl_prom_63d",
-    "cambio_rango_log_hl_mes", "cambio_rango_log_hl_21_63",
-    "beta_252d", "exceso_sp500_log_mes", "volumen_relativo_log_21_252",
-    "volumen_prom_21d", "dolares_negociados_prom_21d", "obs_252d", "dias_negociados_mes",
-    "ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes",
-]
+# Variables de la OBT despues de F1 (en logaritmo): catalogo unico en src/pipeline.py.
+from ..pipeline import FEATURES_OBT as FEATURES_F1  # noqa: E402
 # Variables de mercado: iguales para todas las acciones del mes; el rango transversal las anula.
 DE_MERCADO = {"ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes"}
 

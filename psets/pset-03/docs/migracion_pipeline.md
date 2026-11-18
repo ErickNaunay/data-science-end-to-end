@@ -242,6 +242,9 @@ OBT_ACCION_MES 87.178 filas y 75 columnas (58.628 elegibles), OBT_ACCION_DIA 1.8
 | Archivo | Antes | Después |
 |---|---|---|
 | `src/datos.py` | `TABLA='PORTAFOLIO.OBT.OBT_ACCION_MES'` | `tabla()` usa `SNOWFLAKE_DATABASE`, por defecto `PORTAFOLIO_P3` |
+| `src/datos.py` (F1) | solo OBT_ACCION_MES; no revisaba columnas | `--grano mes|dia` (OBT_ACCION_DIA -> `data/obt_dia.parquet`, clave accion_key+fecha); `fetch_pandas_all` para las 1,8 M filas; `exportar` y `cargar` fallan si faltan columnas de F1 (snapshot viejo) |
+| `src/pipeline.py` (F1) | `BASE` de 17 variables + 2 derivadas (19); sin catalogo de columnas | catalogo `OBT_MES` (43 del PSet 2 + 32 de F1 = 75) y `OBT_DIA` (33); `FEATURES` = 17 + 16 de F1 en logaritmo + 2 derivadas (35); `F1_PCT` (15) fuera de los predictores (misma variable que la log); `FUGA` (11) nunca entra; `preparar` avisa si el snapshot no tiene F1 |
+| `src/modelos/tabulares.py` | `FEATURES_F1` con su propia lista de 33 | importa `FEATURES_OBT` de `src/pipeline.py` (fuente unica; mismas 33) |
 | `.env.example` | sin `SNOWFLAKE_DATABASE` | `SNOWFLAKE_DATABASE=PORTAFOLIO_P3` |
 | `analisis/equivalencias_tickers.py` | escribía la semilla en `../pset-02/dbt/seeds` y `../pset-02/kestra/scripts` | la escribe en `pipeline/dbt/seeds` y `pipeline/kestra/scripts` |
 | `.dockerignore` | sin `pipeline/` ni `analisis/` | los excluye del contexto de la imagen de MLflow |

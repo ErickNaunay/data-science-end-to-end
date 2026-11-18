@@ -145,13 +145,20 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
        2010) para toda la membresia de EQR mientras AVB queda con 1 dia con precio; BMS->AMCR da
        a Bemis 2010-2014 precios de Amcor (AMCR 19% de huecos). Decidir: quitar esas
        equivalencias (salida del indice) o mantenerlas documentadas (pipeline/docs/limitaciones.md).
+[ ] H17 (C+P) (17-nov, encontrado por Q1 en la muestra; confirmar en Snowflake) La fuente de composicion trae
+        el simbolo "RVTY (Previously PKI)": Bronze solo lo pasa a mayusculas y llega a Silver y Gold como una
+        accion mas ("RVTY (PREVIOUSLY PKI)", sin precios), y esos dias RVTY no cuenta como miembro. Propuesta:
+        en brz_composicion_sp500 quitar el sufijo "(PREVIOUSLY ...)" antes de las equivalencias, con prueba dbt
+        (simbolo sin espacios ni minusculas) y antes/despues en migracion_pipeline.md. Decide Paul.
 [x] H14 (C) (17-nov: pipeline/docs/diccionario_datos.md con CALIDAD nueva y H1) Diccionario de datos de Gold y OBT para P3 (E5 del plan anterior): enlazar
        pset-02/docs/diccionario_datos.md y anotar cambios (H1) si los hay.
 
 1.3 Pasos para verificar el pipeline (en este orden; nunca con MLflow levantado)
     Desde psets/pset-03/pipeline/ salvo que se indique.
 [x] V1.1 (P) bash scripts/preparar_env.sh (9 secretos) y .env con SNOWFLAKE_DATABASE=PORTAFOLIO_P3.
-[ ] V1.2 (C) git grep de secretos y check-ignore de .env, .env_encoded, secrets/ antes de cada commit.
+[x] V1.2 (C) git grep de secretos y check-ignore de .env, .env_encoded, secrets/ antes de cada commit.
+        (17-nov, antes del commit "updates pset-03": 72 archivos revisados, sin cuenta, llave ni correo
+        personal; .env ignorado. Repetir antes de cada commit.)
 [x] V1.3 (P) docker compose --profile pruebas run --rm --build spark-pruebas  -> 6 passed (17-nov).
 [x] V1.4 (P) (17-nov, probar_ingesta_y_reintentos.sh: 11 passed) uv sync --group dev && uv run pytest kestra/tests -> pruebas de la ingesta.
 [x] V1.5 (P) docker compose --profile herramientas build (capas en cache) y docker compose up -d.
@@ -181,9 +188,19 @@ Lo que el PSet 1 (v2) fija para el PSet 3 y no se reabre:
         scripts/generar_informe_calidad.py (H3); comparar con pset-02/docs/calidad.
 [ ] V3.5 (C) Comparar conteos P3 vs PSet 2: Bronze en adelante iguales salvo los dias nuevos;
         RAW distinto (una carga vs dos). Documentar en migracion_pipeline.md.
-[~] V3.6 (C) (repetir tras F1: 17 controles, 75 columnas) (17-nov, scripts/reconstruir_obt.sh) Corregir H1, repetir V1.3 (pruebas Spark), V2.1 (transformar) y V3.1-V3.2.
-[x] V3.7 (P) (17-nov) snapshot sha256 7ba7ba6a..., 87.178 filas, H1 OK. docker compose down (sin -v) y snapshot: cd .. && uv run python -m src.datos
+[x] V3.6 (C) (17-nov, tras F1: transformar 3bCTRKESZAhdNt1G86o1Co SUCCESS en 6 min 44 s; 17/17 controles;
+        OBT_ACCION_MES 87.178 filas, 58.628 elegibles, 75 columnas; OBT_ACCION_DIA 1.832.433 filas = Gold,
+        33 columnas; dbt PASS=112 WARN=1) (17-nov, scripts/reconstruir_obt.sh) Corregir H1, repetir V1.3 (pruebas Spark), V2.1 (transformar) y V3.1-V3.2.
+[x] V3.7 (P) (17-nov, tras F1) snapshot sha256 37dac0ce..., 87.178 filas, H1 OK (antes: 7ba7ba6a..., sin F1). docker compose down (sin -v) y snapshot: cd .. && uv run python -m src.datos
         (tabla PORTAFOLIO_P3.OBT.OBT_ACCION_MES; anotar sha256 en el memo).
+[x] V3.8 (C+P) (17-nov) Recursos de Spark, con antes y despues en docs/migracion_pipeline.md:
+        - OOM de F1 (UNABLE_TO_ACQUIRE_MEMORY): poda de columnas y ejecutor 2g -> 5g, driver 1g -> 2g.
+        - Worker registrado con 2 GB aunque .env decia 6g (contenedor no recreado): 50 min en
+          "Initial job has not accepted any resources"; se arreglo con --force-recreate.
+        - 4 nucleos (Docker tiene 16 CPU y 15,6 GB): worker 4 nucleos/8g, ejecutor 7g, 32 particiones
+          de shuffle, AQE. Hasta el ultimo control de OBT_ACCION_DIA: 4 min 08 s (1 nucleo: 5 min 32 s).
+        - WARN "No Partition Defined" del mercado mensual: Window.partitionBy(F.lit(1)); 13 pruebas OK.
+        - No usar Kill en Kestra por el aviso "sobre lo habitual" (la mediana es de la OBT sin F1).
 
 ======================================================================================
 2. VALIDAR analisis/  (antecedentes; no es la ruta activa del PSet 3)
@@ -224,10 +241,16 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         colas gruesas del target -> MAE como metrica principal y modelos robustos;
         filas con huecos o tramo excluido (H5) -> imputacion dentro del Pipeline;
         columnas de mercado del mes siguiente (H1) y sigue_en_sp500 -> excluir por fuga.
+[~] Q1 (C+P) (17-nov: notebook hecho y probado completo con la muestra DuckDB; falta que Paul lo corra
+        contra Snowflake: MOTOR=snowflake, Restart + Run All; guarda CSV en docs/calidad/analisis_pipeline/)
+        (pedido de Paul 17-nov) pipeline/docs/calidad/analisis_calidad_pipeline.ipynb con todos los
+        resultados: por columna y capa (RAW, BRONZE, SILVER, GOLD, CALIDAD, OBT_ACCION_MES y
+        OBT_ACCION_DIA) % de faltantes, % de invalidos por regla de dominio y % de imputados; informe de
+        las operaciones de cada nivel; estilo de MSDS_6010 Proyecto.ipynb. Solo SELECT; probar con DuckDB.
 3.2 Features - notebooks/02_features.ipynb
-[~] F1 (C+P) (17-nov: Paul pidio todas, en % y log, con OHLCV y diferencias aritmeticas, % y log.
-        Hecho en Silver, Gold, OBT_ACCION_MES (75 col.) y OBT_ACCION_DIA nueva; probado aqui en DuckDB
-        y Spark local; falta reconstruir_obt.sh en la Mac y actualizar src/pipeline.py y src/datos.py
+[x] F1 (C+P) (17-nov, src/pipeline.py y src/datos.py actualizados: 35 predictores, OBT diaria con --grano dia; 16 pruebas OK) (17-nov: Paul pidio todas, en % y log, con OHLCV y diferencias aritmeticas, % y log.
+        Hecho en Silver, Gold, OBT_ACCION_MES (75 col.) y OBT_ACCION_DIA nueva; probado en DuckDB, Spark
+        local y en Snowflake (V3.6, commit "updates pset-03"); src/pipeline.py y src/datos.py ya actualizados
         con las columnas nuevas y la OBT diaria; docs/series_de_tiempo.md) Columnas de los modelos:
         intradia del mes (cierre vs apertura), nocturno del mes, rango maximo-minimo (Parkinson),
         rezagos del retorno mensual (1-3 meses), exceso sobre el S&P 500, beta 252d, volumen
@@ -364,7 +387,8 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
 4. ORDEN PROPUESTO
 ======================================================================================
  1) V2.1, V3.3, V3.4 (evidencia de dbt, auditorias y calidad en P3).
- 2) H1 (Spark), V3.6 y V3.7 (OBT y snapshot corregidos).
+ 2) H1 (Spark), V3.6, V3.7 y V3.8 (OBT y snapshot corregidos) [hecho 17-nov].
+ 2b) Q1 (notebook de calidad), luego F1 en src/ (pipeline.py, datos.py) y W3/F2/L2-L8 por decidir.
  3) H10-H13, 2.2-2.4 (promesas del PSet 1, sesgo de supervivencia, no fuga, analisis/).
  4) H2-H9 y H14 documentados en migracion_pipeline.md y disclaimer.txt.
  5) PSet 3: 3.1 -> 3.2 -> 3.3 -> 3.4 -> 3.5 -> 3.6 -> 3.7 -> 3.8 -> 3.9.
