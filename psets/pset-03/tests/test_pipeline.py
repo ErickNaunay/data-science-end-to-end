@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import pandas as pd
 from sklearn.dummy import DummyRegressor
-from src.pipeline import dividir, pliegues, crear_pipeline, interpolar_huecos, FEATURES
+from src.pipeline import dividir, pliegues, crear_pipeline, interpolar_huecos, derivar, FEATURES, FEATURES_LINEALES, MESES_OBJETIVO
 import numpy as np
 class Temporal(unittest.TestCase):
     def test_objetivo_cruza_corte(self):
@@ -32,4 +32,15 @@ class Temporal(unittest.TestCase):
                         'mes_objetivo':pd.PeriodIndex(['2023-11','2023-12','2024-01'],freq='M')})
         a,b=dividir(d)
         self.assertTrue(np.isnan(a.set_index('anio_mes').vol_21d[202311]))
+    def test_dispersion_solo_usa_el_mes(self):
+        d=pd.DataFrame({'anio_mes':[202001]*3+[202002]*2,'ret_log_mes':[0.,.1,.2,5.,7.]})
+        r=derivar(d)
+        self.assertAlmostEqual(r.dispersion_mes.iloc[0],0.1)
+        self.assertAlmostEqual(r.dispersion_mes.iloc[3],np.std([5.,7.],ddof=1))
+    def test_mes_calendario_del_objetivo(self):
+        r=derivar(pd.DataFrame({'anio_mes':[202012,202101],'ret_log_mes':[0.,0.]}))
+        self.assertEqual(r[MESES_OBJETIVO].iloc[0].sum(),0)          # objetivo enero: referencia
+        self.assertEqual(r.mes_obj_02.iloc[1],1.)
+    def test_lineales_sin_redundantes(self):
+        self.assertEqual(len(FEATURES)-len(FEATURES_LINEALES),4)
 if __name__=='__main__': unittest.main()

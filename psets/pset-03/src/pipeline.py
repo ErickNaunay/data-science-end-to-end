@@ -71,8 +71,22 @@ F1_PCT = ['ret_pct_mes', 'ret_pct_mes_lag1', 'ret_pct_mes_lag2', 'ret_pct_mes_la
           'cambio_rango_pct_hl_mes', 'cambio_rango_pct_hl_21_63',
           'exceso_sp500_pct_mes', 'volumen_relativo_pct_21_252']
 FEATURES_OBT = BASE + F1_LOG                         # 33 columnas tal como vienen de la OBT
-DERIVADAS = ['vol_relativa', 'momentum_por_riesgo']  # se calculan en preparar()
-FEATURES = FEATURES_OBT + DERIVADAS                  # 35
+# Derivadas (notebooks/02_features.ipynb), se calculan en preparar() con datos del cierre del mes t:
+# - dispersion_mes: desviacion de ret_log_mes entre las acciones elegibles del mes (hallazgo 2 del EDA).
+# - mes_obj_02..mes_obj_12: mes calendario del objetivo en one-hot, enero como referencia (hallazgo 2).
+MESES_OBJETIVO = [f'mes_obj_{m:02d}' for m in range(2, 13)]
+DERIVADAS = ['dispersion_mes'] + MESES_OBJETIVO
+FEATURES = FEATURES_OBT + DERIVADAS                  # 33 + 12 = 45
+# Iguales para todas las acciones del mes: el rango transversal no las toca.
+DE_MERCADO_DERIVADAS = set(DERIVADAS)
+# Candidatas evaluadas y descartadas en 02_features por no reducir el MAE en walk-forward.
+DESCARTADAS = ['vol_relativa', 'momentum_por_riesgo', 'ret_idiosincratico_mes', 'regimen_vol']
+# Para modelos lineales sin regularizar: sin las 4 combinaciones lineales exactas del EDA (secc. 6b).
+REDUNDANTES = ['exceso_sp500_log_mes',   # = ret_log_mes - ret_log_sp500_mes
+               'nocturno_log_mes',       # = ret_log_mes - intradia_log_mes
+               'nocturno_prom_21d',      # proporcional a ret_log_21d - intradia_prom_21d
+               'ret_log_252d']           # = momentum_12_1 + ret_log_21d
+FEATURES_LINEALES = [c for c in FEATURES if c not in REDUNDANTES]
 
 # Nunca predictores: el futuro (objetivo y mercado del mes siguiente) y atributos de hoy que
 # no se conocian en el mes (sigue_en_sp500, bolsa actual, ultima cotizacion).
@@ -100,14 +114,26 @@ def preparar(df):
     num = [c for c in FEATURES_OBT + F1_PCT + [TARGET, 'ret_pct_mes_siguiente'] if c in d]
     for c in num:
         d[c] = pd.to_numeric(d[c], errors='coerce')
-    d['vol_relativa'] = d.vol_21d / d.vol_63d.replace(0, np.nan)
-    d['momentum_por_riesgo'] = d.momentum_12_1 / d.vol_63d.replace(0, np.nan)
-    d[FEATURES] = d[FEATURES].replace([np.inf, -np.inf], np.nan).astype(float)
-    d = d[d.elegible.fillna(False).astype(bool) & d[TARGET].notna()].copy()
+    d = d[d.elegible.fillna(False).astype(bool)].copy()
     if 'ticker' in d:
         d = d[~d.ticker.astype(str).str.upper().isin(EXCLUIDAS)]
-    d['mes_objetivo'] = pd.PeriodIndex(d.anio_mes.astype(str), freq='M') + 1
+    d = derivar(d)
+    d[FEATURES] = d[FEATURES].replace([np.inf, -np.inf], np.nan).astype(float)
+    # El objetivo se filtra despues de derivar: dispersion_mes usa todas las elegibles del mes, tambien las
+    # que dejan de cotizar en t+1 (al cierre de t no se sabe cuales tendran objetivo).
+    d = d[d[TARGET].notna()].copy()
     return d.reset_index(drop=True)
+
+
+def derivar(d):
+    """Features derivadas. Solo usan el mes t: el corte transversal del mismo mes y el calendario."""
+    d = d.copy()
+    d['mes_objetivo'] = pd.PeriodIndex(d.anio_mes.astype(int).astype(str), freq='M') + 1
+    d['dispersion_mes'] = d.groupby('anio_mes').ret_log_mes.transform('std')
+    mes = d.mes_objetivo.dt.month
+    for c in MESES_OBJETIVO:
+        d[c] = (mes == int(c[-2:])).astype(float)
+    return d
 
 
 def interpolar_huecos(d, columnas=FEATURES):

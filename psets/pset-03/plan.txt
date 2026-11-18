@@ -279,9 +279,16 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         relativo. Las que vayan a la OBT se agregan en pipeline/spark con antes y despues en
         docs/migracion_pipeline.md y su prueba; las que dependen del pliegue (residuo y
         coeficientes ARIMA) se calculan en src/, nunca en la OBT.
-[ ] (C) Al menos 2 derivadas (volatilidad relativa y momentum normalizado por riesgo), una
-        ligada a un hallazgo; por cada una: evidencia de aporte (ablacion en CV), por que existe
-        al cierre de mes (inferencia) y codificacion si es categorica.
+[~] (C+P) (18-nov: notebooks/02_features.ipynb rehecho, probado completo; falta que Paul lo corra en la Mac)
+        Derivadas: dispersion_mes (desviacion de ret_log_mes entre elegibles del mes, H-EDA 2) y mes calendario
+        del objetivo en one-hot (11 columnas, enero referencia). src/pipeline.py: derivar(), FEATURES = 45,
+        FEATURES_LINEALES (sin 4 REDUNDANTES, rango completo), DESCARTADAS; tabulares.py: DE_MERCADO incluye las
+        derivadas; 21 pruebas OK. Ablacion walk-forward 7 ventanas (Ridge y LightGBM x 3 semillas) en
+        docs/ablacion_features.csv: dispersion baja el MAE en ambos (no significativo), mes calendario t -2,7 en
+        LightGBM; vol_relativa y momentum_por_riesgo descartadas (|t| < 1). Pruebas de disponibilidad: alterar
+        t+1 no cambia las derivadas; dispersion se calcula antes de filtrar por objetivo.
+        Al menos 2 derivadas, una ligada a un hallazgo; por cada una: evidencia de aporte (ablacion en CV), por que
+        existe al cierre de mes (inferencia) y codificacion si es categorica.
 [ ] F2 (C) Distancia a medias moviles en Spark (log y %): ln(P/SMA_w), P/SMA_w - 1 y lo mismo con
         EMA, w = 21, 63, 200; con prueba y antes/despues (docs/diseno_experimental.md, sec. 2).
 [ ] F3 (C) ADF y KPSS por accion con la primera ventana de entrenamiento (EDA): ln P con raiz

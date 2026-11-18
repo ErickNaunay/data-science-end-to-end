@@ -24,7 +24,8 @@ from ..entorno import SEMILLA
 # Variables de la OBT despues de F1 (en logaritmo): catalogo unico en src/pipeline.py.
 from ..pipeline import FEATURES_OBT as FEATURES_F1  # noqa: E402
 # Variables de mercado: iguales para todas las acciones del mes; el rango transversal las anula.
-DE_MERCADO = {"ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes"}
+from ..pipeline import DE_MERCADO_DERIVADAS  # noqa: E402
+DE_MERCADO = {"ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes"} | DE_MERCADO_DERIVADAS
 
 
 class RangoTransversal(BaseEstimator, TransformerMixin):
