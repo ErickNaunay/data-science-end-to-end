@@ -14,6 +14,9 @@ Uso (con MLflow levantado; ver README):
     uv run --group modelos python -m src.experimentos --verificar <run_id>    # recarga en sesion limpia
 """
 import argparse, json, os, subprocess, sys, time
+import warnings
+# mes_calendario_obj es entero (1-12) y nunca falta: el aviso de MLflow sobre enteros con faltantes no aplica.
+warnings.filterwarnings('ignore', message='Hint: Inferred schema contains integer column')
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -42,21 +45,27 @@ CONSERVAR = ['accion_key', 'anio_mes', 'vol_63d', 'ret_pct_mes_siguiente', 'rf_m
 
 def _lightgbm():
     from lightgbm import LGBMRegressor          # grupo "modelos" de pyproject.toml
-    return LGBMRegressor(n_estimators=200, learning_rate=0.03, num_leaves=15, min_child_samples=200, subsample=0.8,
-                         subsample_freq=1, colsample_bytree=0.8, objective='l1', random_state=SEMILLA, verbose=-1)
+    return LGBMRegressor(random_state=SEMILLA, verbose=-1)
 
 
-# Modelos tabulares con su familia (tag "familia") y su nombre (tag "modelo"). Toda lista tiene >= 2 lineas base.
+def _xgboost():
+    from xgboost import XGBRegressor            # grupo "modelos" (en macOS requiere libomp)
+    return XGBRegressor(random_state=SEMILLA, n_jobs=-1)
+
+
+# Modelos con su familia (tag "familia") y su nombre (tag "modelo"). Toda lista tiene >= 2 lineas base.
+# Seccion 6 del PDF: candidatos con sus hiperparametros POR DEFECTO; solo se fija la semilla (y n_jobs).
+# Familias del PDF: lineal regularizado (M4), bagging (M2), boosting (M3, M3b), red neuronal (M5) y
+# state of the art (M8-M10, fundacionales en zero-shot: src/modelos/fundacionales.py).
 CATALOGO = {
     'B1_media':         ('linea_base',   lambda: DummyRegressor()),
     'B2_rw_cero':       ('linea_base',   lambda: DummyRegressor(strategy='constant', constant=0.0)),
     'B3_rw_deriva':     ('linea_base',   lambda: MediaPorAccion()),
-    'M2_random_forest': ('arboles',      lambda: RandomForestRegressor(n_estimators=300, min_samples_leaf=50,
-                                                                       max_features=0.5, n_jobs=-1, random_state=SEMILLA)),
+    'M2_random_forest': ('bagging',      lambda: RandomForestRegressor(random_state=SEMILLA, n_jobs=-1)),
     'M3_lightgbm':      ('boosting',     _lightgbm),
-    'M4_ridge':         ('lineal',       lambda: Ridge(alpha=10.0)),
-    'M5_mlp':           ('red_neuronal', lambda: MLPRegressor(hidden_layer_sizes=(64, 32), early_stopping=True,
-                                                              random_state=SEMILLA)),
+    'M3b_xgboost':      ('boosting',     _xgboost),
+    'M4_ridge':         ('lineal',       lambda: Ridge()),
+    'M5_mlp':           ('red_neuronal', lambda: MLPRegressor(random_state=SEMILLA)),
 }
 
 
@@ -86,29 +95,40 @@ def _mlflow():
     return mlflow
 
 
-def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None, nested=False):
+def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None, nested=False,
+              pipe=None, columnas=None, parametros_extra=None, log_modelo=True):
     """Una corrida: CV temporal, metricas, IC, metrica de negocio, ajuste final y registro completo."""
     mlflow = _mlflow()
     from mlflow.models import infer_signature
     familia = CATALOGO[nombre][0] if nombre in CATALOGO else 'otro'
     modelo = CATALOGO[nombre][1]() if modelo is None else modelo
-    columnas = COLUMNAS_PROPIAS.get(nombre, FEATURES)
+    columnas = columnas or COLUMNAS_PROPIAS.get(nombre, FEATURES)
     X, y = train[columnas], train[TARGET]
     cv = pliegues(train)
-    pipe = Pipeline([('modelo', clone(modelo))]) if nombre in COLUMNAS_PROPIAS else crear_pipeline(clone(modelo))
+    if pipe is None:
+        pipe = Pipeline([('modelo', clone(modelo))]) if nombre in COLUMNAS_PROPIAS else crear_pipeline(clone(modelo))
     inicio = time.perf_counter()
     with mlflow.start_run(run_name=nombre, nested=nested) as run:
-        scores = cross_validate(pipe, X, y, cv=cv, scoring=PUNTAJES, return_train_score=True,
-                                return_estimator=True, n_jobs=1, error_score='raise')
-        partes = []
-        for k, ((_, iv), est) in enumerate(zip(cv, scores['estimator'])):
+        # Mismo calculo que cross_validate(scoring=PUNTAJES, return_train_score=True), pero pliegue a pliegue:
+        # cada modelo se descarta al terminar su pliegue (un random forest por defecto ocupa ~1 GB).
+        from .pipeline import metricas_regresion
+        partes, filas_cv, filas_ent = [], [], []
+        for k, (it, iv) in enumerate(cv):
+            est = clone(pipe).fit(X.iloc[it], y.iloc[it])
+            filas_ent.append(metricas_regresion(y.iloc[it], est.predict(X.iloc[it])))
             v = train.iloc[iv]
-            partes.append(v[[c for c in CONSERVAR if c in v]].assign(pliegue=k, pred=est.predict(v[columnas]),
-                                                                     real=v[TARGET].values))
+            p_val = est.predict(v[columnas])
+            filas_cv.append(metricas_regresion(v[TARGET], p_val))
+            partes.append(v[[c for c in CONSERVAR if c in v]].assign(pliegue=k, pred=p_val, real=v[TARGET].values))
+            del est
         pred = pd.concat(partes, ignore_index=True)
         pipe.fit(X, y)
         segundos = time.perf_counter() - inicio
-        todas = resumir_cv(scores); mae_pliegues = todas.pop('mae_pliegues')
+        cvd, entd = pd.DataFrame(filas_cv), pd.DataFrame(filas_ent)
+        todas = {}
+        for m in cvd.columns:
+            todas.update({f'{m}_cv_media': cvd[m].mean(), f'{m}_cv_std': cvd[m].std(ddof=1), f'{m}_train_cv': entd[m].mean()})
+        mae_pliegues = [round(float(x), 5) for x in cvd['mae']]
         ic = resumen_ic(ic_por_mes(pred))
         # Una prediccion constante no ordena acciones: la regla elegiria por el orden de las filas. Su
         # referencia de negocio es B4 (portafolios al azar), no esta corrida.
@@ -128,7 +148,8 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
                            'snapshot_dia': (meta_dia or {}).get('snapshot_utc', 'sin_datos_diarios'),
                            **{f'regla_{k}': str(v) for k, v in REGLA.items()},
                            'tope_portafolio_aplicado': str(riesgo is not None),
-                           'metrica_negocio': 'calculada' if ordena else 'no_aplica_prediccion_constante'})
+                           'metrica_negocio': 'calculada' if ordena else 'no_aplica_prediccion_constante',
+                           **{k: str(v) for k, v in (parametros_extra or {}).items()}})
         mlflow.set_tags({'fase': fase, 'familia': familia, 'modelo': nombre, 'git_commit': commit,
                          'git_dirty': str(sucio)})
         mlflow.log_metrics(metricas)
@@ -146,10 +167,73 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
         ejemplo = X.iloc[:5]
         mlflow.log_dict({'X': ejemplo.to_dict(orient='list'), 'pred': pipe.predict(ejemplo).tolist()},
                         'verificacion/ejemplo_prediccion.json')
-        info = mlflow.sklearn.log_model(pipe, name='pipeline', skops_trusted_types=_tipos_confiables(pipe),
-                                        signature=infer_signature(ejemplo, pipe.predict(ejemplo)), input_example=ejemplo)
+        uri = None
+        if log_modelo:
+            info = mlflow.sklearn.log_model(pipe, name='pipeline', skops_trusted_types=_tipos_confiables(pipe),
+                                            signature=infer_signature(ejemplo, pipe.predict(ejemplo)), input_example=ejemplo)
+            uri = info.model_uri
         return {'modelo': nombre, 'familia': familia, 'fase': fase, 'run_id': run.info.run_id,
-                'model_uri': info.model_uri, 'git_dirty': sucio, **metricas}
+                'model_uri': uri, 'git_dirty': sucio, **metricas}
+
+
+FUNDACIONALES = {'M8_chronos': 'chronos', 'M9_timesfm': 'timesfm', 'M10_moirai': 'moirai'}
+
+
+def registrar_fundacional(nombre, train, meta, riesgo=None, meta_dia=None, fase='candidato'):
+    """Modelo fundacional en zero-shot (familia State of the Art del PDF): no se entrena; sus pronosticos
+    (artefactos/fundacional_<m>.parquet, generados con python -m src.modelos.fundacionales) se evaluan en los
+    MISMOS pliegues y con las MISMAS metricas que los tabulares. Las filas sin historia suficiente (< 64 dias)
+    reciben la media del entrenamiento del pliegue (como B1) y se reporta la cobertura en validacion. Si solo se
+    pronosticaron los meses de validacion (TimesFM en CPU es lento), el MAE de entrenamiento usa los meses del
+    entrenamiento de cada pliegue que tienen pronostico."""
+    from .pipeline import metricas_regresion
+    clave = FUNDACIONALES[nombre]
+    ruta = ROOT / 'artefactos' / f'fundacional_{clave}.parquet'
+    info = json.loads(ruta.with_suffix('.json').read_text())
+    fp = pd.read_parquet(ruta)[['accion_key', 'anio_mes', 'pred', 'ancho_10_90']]
+    d = train.merge(fp, on=['accion_key', 'anio_mes'], how='left')
+    cv = pliegues(d)
+    cobertura = float(d.iloc[np.concatenate([iv for _, iv in cv])].pred.notna().mean())
+    mlflow = _mlflow()
+    with mlflow.start_run(run_name=nombre) as run:
+        filas_cv, filas_ent, partes = [], [], []
+        for k, (it, iv) in enumerate(cv):
+            media = float(d[TARGET].iloc[it].mean())
+            ent, val = d.iloc[it], d.iloc[iv]
+            con = ent[ent.pred.notna()]           # si solo se pronosticaron los meses de validacion, la metrica
+            if len(con):                          # de entrenamiento usa los meses del pliegue que si tienen pronostico
+                filas_ent.append(metricas_regresion(con[TARGET], con.pred))
+            filas_cv.append(metricas_regresion(val[TARGET], val.pred.fillna(media)))
+            partes.append(val[[c for c in CONSERVAR if c in val]].assign(pliegue=k, pred=val.pred.fillna(media).values,
+                                                                       real=val[TARGET].values))
+        pred = pd.concat(partes, ignore_index=True)
+        cvd, entd = pd.DataFrame(filas_cv), pd.DataFrame(filas_ent)
+        metricas = {}
+        for m in cvd.columns:
+            metricas.update({f'{m}_cv_media': cvd[m].mean(), f'{m}_cv_std': cvd[m].std(ddof=1),
+                             f'{m}_train_cv': entd[m].mean() if m in entd else np.nan})
+        ic = resumen_ic(ic_por_mes(pred))
+        negocio = metrica_negocio(pred, riesgo=riesgo)
+        metricas.update({'brecha_mae': metricas['mae_cv_media'] - metricas['mae_train_cv'],
+                         'segundos_entrenamiento': 0.0, 'segundos_inferencia': info.get('segundos_total', np.nan),
+                         'latencia_ms_por_serie': info.get('latencia_ms_por_serie') or np.nan, 'cobertura': cobertura,
+                         **{k2: v for k2, v in ic.items() if isinstance(v, (int, float))},
+                         **{f'negocio_{k2}': v for k2, v in negocio.items() if isinstance(v, (int, float)) and not isinstance(v, bool)}})
+        metricas = {k2: float(v) for k2, v in metricas.items() if v is not None and np.isfinite(v)}
+        commit, sucio = _git()
+        mlflow.log_params({'modelo_hf': info['id'], 'contexto_dias': info['contexto'], 'horizonte_dias': info['horizonte_dias'],
+                           'zero_shot': 'True', 'semilla': SEMILLA, 'tabla': meta['tabla'], 'snapshot': meta['snapshot_utc'],
+                           'sha256': meta['sha256'], 'sha256_dia': (meta_dia or {}).get('sha256', 'sin_datos_diarios'),
+                           'sha256_pronosticos': info['sha256'], 'filas_entrenamiento': len(train),
+                           'pliegues': f'TimeSeriesSplit({len(cv)}, test_size=12 meses, gap=1)',
+                           **{f'regla_{k2}': str(v) for k2, v in REGLA.items()}})
+        mlflow.set_tags({'fase': fase, 'familia': 'fundacional', 'modelo': nombre, 'git_commit': commit, 'git_dirty': str(sucio)})
+        mlflow.log_metrics(metricas)
+        mlflow.log_artifact(str(ruta), artifact_path='pronosticos')
+        mlflow.log_artifact(str(ruta.with_suffix('.json')), artifact_path='pronosticos')
+        mlflow.log_artifact(str(ROOT / 'src/modelos/fundacionales.py'), artifact_path='codigo')
+        mlflow.log_dict(meta, 'datos/snapshot_mes.json')
+        return {'modelo': nombre, 'familia': 'fundacional', 'fase': fase, 'run_id': run.info.run_id, 'git_dirty': sucio, **metricas}
 
 
 def registrar_referencia(modelo, serie, meta, fase='baseline', parametros=None, meta_dia=None):
@@ -216,8 +300,11 @@ def evaluar_candidatos(train, meta, riesgo=None, meta_dia=None, nombres=None):
     inicio, filas = time.perf_counter(), []
     try:
         for n in nombres:
-            filas.append(registrar(n, train, meta, 'baseline' if CATALOGO[n][0] == 'linea_base' else 'candidato',
-                                   riesgo=riesgo, meta_dia=meta_dia))
+            if n in FUNDACIONALES:
+                filas.append(registrar_fundacional(n, train, meta, riesgo, meta_dia))
+            else:
+                filas.append(registrar(n, train, meta, 'baseline' if CATALOGO[n][0] == 'linea_base' else 'candidato',
+                                       riesgo=riesgo, meta_dia=meta_dia))
     except Exception as e:
         avisar('Fail', 'experimentos MLflow', f'Fallo en {n} tras {len(filas)} corridas: {type(e).__name__}: {e}')
         raise
@@ -237,7 +324,8 @@ def evaluar_candidatos(train, meta, riesgo=None, meta_dia=None, nombres=None):
 def ajustar(train,meta,mejores,n_iter=30):
     import mlflow
     if len(set(mejores))!=3 or n_iter<30: raise ValueError('La guía exige 3 modelos y >=30 configuraciones cada uno')
-    espacios={'M4_ridge':{'alpha':loguniform(1e-4,1e4)},
+    espacios={'M3b_xgboost':{'learning_rate':loguniform(.01,.3),'max_depth':randint(2,9),'min_child_weight':loguniform(1,500),'reg_lambda':loguniform(1e-3,100)},
+              'M4_ridge':{'alpha':loguniform(1e-4,1e4)},
               'M2_random_forest':{'n_estimators':randint(100,501),'max_depth':randint(3,25),'min_samples_leaf':randint(1,200)},
               'M3_lightgbm':{'learning_rate':loguniform(.01,.3),'num_leaves':randint(8,65),'min_child_samples':randint(50,500),'reg_lambda':loguniform(1e-5,10)},
               'M5_mlp':{'alpha':loguniform(1e-6,1),'learning_rate_init':loguniform(1e-4,1e-2),'hidden_layer_sizes':[(32,),(64,),(64,32),(128,64)]}}

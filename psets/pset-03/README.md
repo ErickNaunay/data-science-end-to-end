@@ -56,6 +56,23 @@ Los notebooks 02 en adelante necesitan el grupo `modelos` (lightgbm, xgboost):
 uv run --group modelos jupyter execute --inplace notebooks/03_preparacion_validacion.ipynb
 ```
 
+## Modelos fundacionales (M8–M10): pronósticos zero-shot
+
+Cada uno corre una vez, en un entorno temporal propio (`--no-project`), porque sus paquetes chocan entre sí y con
+el lock. Descargan el modelo de Hugging Face la primera vez y dejan `artefactos/fundacional_<modelo>.parquet` y
+`.json` (con SHA-256 y latencia). Después, `notebooks/03_baseline_candidatos.ipynb` (sección 6.3) los evalúa con
+los mismos pliegues y métricas y los registra en MLflow (`familia = fundacional`).
+
+```bash
+uv run --no-project --python 3.11 --with chronos-forecasting --with pandas --with pyarrow python -m src.modelos.fundacionales --modelo chronos
+uv run --no-project --python 3.11 --with "timesfm[torch]" --with pandas --with pyarrow python -m src.modelos.fundacionales --modelo timesfm
+uv run --no-project --python 3.11 --with "uni2ts @ git+https://github.com/SalesforceAIResearch/uni2ts.git" --with pandas --with "pyarrow>=14,<18" --with fastparquet python -m src.modelos.fundacionales --modelo moirai
+```
+
+Para probar antes de la corrida completa, agregar `--limite 500`.
+`uni2ts` fija NumPy 1.26, por eso Moirai necesita `pyarrow<18` (las versiones nuevas exigen NumPy 2). TimesFM en
+CPU tarda ~110 ms por serie: se corre solo para los meses de validación con `--desde 201612 --hasta 202311`.
+
 ## Permisos de los archivos copiados por Claude (`chmod 644`)
 
 Los archivos que Claude escribe en esta carpeta desde su entorno (`device_commit_files`) llegan a la Mac
