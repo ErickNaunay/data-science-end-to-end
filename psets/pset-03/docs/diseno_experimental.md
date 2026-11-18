@@ -91,7 +91,7 @@ Con Optuna (`src/tuning.py`), por cuatro razones:
 - Cada trial puede ser una corrida hija de MLflow.
 
 Configuración:
-- **Muestreador y poda:** TPE con semilla 7 y `MedianPruner(n_startup_trials=8)`.
+- **Muestreador y poda:** TPE con semilla 42 (la del proyecto, `src/entorno.py`) y `MedianPruner(n_startup_trials=8)`.
 - **Objetivo:** maximizar el IC medio de las 3 ventanas de tuning.
 - **Mejora real:** la mejora sobre la configuración por defecto se compara con la desviación entre ventanas.
 
