@@ -69,4 +69,9 @@ Código de modelado (semanas 9 a 11):
 - Mantener `psets/pset-03/plan.txt` al día ([x] hecho, [~] parcial, [ ] pendiente, [!] hallazgo;
   (C) Claude, (P) Paul).
 - No levantar Spark/Kestra a la vez que MLflow (memoria). No modificar un `.sh` mientras corre.
+  Los comandos que se le den a Paul para MLflow incluyen la verificación: `docker ps` sin contenedores
+  de Kestra/Spark y `curl -s localhost:5001/health` que responda `OK`.
+- **Semilla 42 en todo el proyecto** (`src/entorno.py` `SEMILLA`, notebooks, sorteos, `random_state`).
+- MLflow del PSet 3: experimento `portafolio-inversiones`; tags `fase`, `familia` y `modelo` por separado.
+  Toda lista de modelos tiene al menos dos líneas base.
 - El correo de avisos solo en `.env` (`AVISO_CORREO`), nunca en archivos versionados.
