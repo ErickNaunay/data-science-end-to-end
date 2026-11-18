@@ -296,20 +296,36 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
 3.3 Preparacion y validacion (15%) - src/validacion.py, src/modelos/tabulares.py
     Diseno completo en docs/diseno_experimental.md (17-nov): auditoria de fuga, walk-forward,
     Optuna, ensamble, presupuesto M4/Colab y estructura de src/ (16 pruebas en tests/).
-[~] W1 (C) (17-nov: src/validacion.py probado) Walk-forward anual expansivo 2017-2023 (7 ventanas,
+[x] W1 (C) (18-nov: unificado en src/pipeline.py pliegues() = TimeSeriesSplit(7, test_size=12 meses, gap=1)
+        sobre meses; mismos 84 meses de validacion que el walk-forward; validacion.py queda para ventanas a medida)
+        (17-nov: src/validacion.py probado) Walk-forward anual expansivo 2017-2023 (7 ventanas,
         84 meses) con embargo de 1 mes; tuning en 2021-2023; hold-out desde 2024-01 una vez.
         Reemplaza a pliegues() de src/pipeline.py (TimeSeriesSplit) al migrar los notebooks.
-[~] W2 (C) (17-nov: src/modelos/tabulares.py probado) Pipeline: rango transversal, imputar,
+[x] W2 (C) (18-nov: tabulares.py reutiliza preparacion() de src/pipeline.py) (17-nov: probado) Pipeline: rango transversal, imputar,
         escalar, SelectKBest (filtro) y modelo; FEATURES_F1 en logaritmo.
 [x] W3 (C+P) (18-nov, decision de Paul con la evidencia del EDA: MAE es la metrica tecnica unica; el IC de
         Spearman por mes se reporta siempre para el ranking; ver docs/diseno_experimental.md)
         Decidir metrica principal: IC de Spearman (propuesta, ranking) o MAE; RMSE/MAE y
         Diebold-Mariano frente al RW se reportan siempre (src/evaluacion.py, probado).
-[ ] (C) Division unica: objetivos hasta 2023-12 entrenamiento; desde 2024-01 hold-out.
+[x] (C) (18-nov, notebooks/03_preparacion_validacion.ipynb secc. 1: 46.851 / 11.326 filas; las 332 de 2023-12
+        van al hold-out con objetivo_cruza_corte) Division unica: objetivos hasta 2023-12 entrenamiento; desde 2024-01 hold-out.
         Revisar el mes que cruza el corte (objetivo_cruza_corte) para que no se filtre.
-[ ] (C) CV temporal por mes (TimeSeriesSplit por meses con purga de 1 mes); justificar frente a
+[x] (C) (18-nov, 03_preparacion_validacion secc. 3: KFold aleatorio y GroupKFold por accion dan MAE 27 % mas
+        optimista; TimeSeriesSplit sobre filas corta meses) CV temporal por mes (TimeSeriesSplit por meses con purga de 1 mes); justificar frente a
         GroupKFold por accion y frente a aleatorio.
-[ ] (C+P) Metricas: tecnica unica para todos (propuesta: MAE, con RMSE y acierto direccional
+[~] (C+P) (18-nov: validar() devuelve MAE (decide) y RMSE, MSE, MedAE, error maximo, R2, varianza explicada,
+        R2 contra RW y acierto direccional (PUNTAJES, metricas_regresion, resumir_cv); experimentos.py registra
+        todas en MLflow; 03_preparacion_validacion secc. 4.2 define la metrica de negocio paso a paso con un
+        ejemplo de 4 acciones; tabla de fechas de corte en docs/cortes_cv.csv; README documenta chmod 644.
+        metrica_negocio() en src/negocio.py con REGLA top 10 1/vol_63d, 10 pb, sin tope.
+        DECIDIDO por Paul (18-nov): tope relativo por accion (sin el 20 % mas volatil del mes, percentil 80
+        de vol_63d), tope de portafolio 1,35 x vol del S&P 500 (covarianza de 63 dias de OBT_ACCION_DIA; si se
+        pasa, la fraccion sobrante queda en efectivo a rf), costo 15 pb por US$ operado; todo en US$.
+        Implementado en src/negocio.py (REGLA, RiesgoDiario) con 2 pruebas en tests/test_diseno.py.
+        FALTA: exportar data/obt_dia.parquet (uv run python -m src.datos --grano dia) para activar el tope
+        de portafolio en el notebook 03; sin ese archivo solo se aplica el tope relativo.
+        Pendiente de la propuesta del PSet 1: umbral minimo de cambio de ponderaciones para operar)
+        Metricas: tecnica unica para todos (propuesta: MAE, con RMSE y acierto direccional
         como secundarias, segun PSet 1); negocio: Sharpe neto de costos y drawdown del
         portafolio de la regla del PSet 1 (top 10, pesos 1/vol, tope de volatilidad) frente al
         random walk, al portafolio aleatorio y a los indices. Decidir tope de volatilidad, costos
@@ -460,7 +476,7 @@ entregado), I1-I4, J8-J11. A2/A2e/A3 (correr analisis/ con Yahoo) pasan a la sec
         o justificar.
 [ ] L4 (C) MLflow como en el laboratorio 11-1: huella_datos = md5[:12] del archivo (hoy sha256),
         tag candidato = final, MLFLOW_TRACKING_URI solo desde el entorno, corridas_proyecto.csv.
-[ ] L5 (C) Validacion como en 11-2: el esquema temporal (walk-forward) Y uno al azar (KFold
+[x] L5 (C) (18-nov: 03_preparacion_validacion secc. 3.1, docs/comparacion_esquemas_cv.csv) Validacion como en 11-2: el esquema temporal (walk-forward) Y uno al azar (KFold
         mezclado, random_state=42) solo para comparar y mostrar que sobreestima; tabla con
         promedio, desviacion y cada pliegue. (Choca con "prohibido KFold aleatorio" del pedido
         del 17-nov: se usa solo como contraste, nunca para elegir.)

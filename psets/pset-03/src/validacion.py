@@ -62,7 +62,8 @@ def indices(d: pd.DataFrame, v: Ventana) -> tuple[np.ndarray, np.ndarray]:
 
 
 def pliegues_walk_forward(d: pd.DataFrame, **kw):
-    """Generador compatible con cross_validate(cv=list(...)) de scikit-learn."""
+    """Los pliegues oficiales son src.pipeline.pliegues (TimeSeriesSplit sobre meses). Este generador
+    se conserva para ventanas a medida (p. ej. ventana fija con ventana_meses)."""
     for v in ventanas_walk_forward(**kw):
         it, iv = indices(d, v)
         if len(it) and len(iv):

@@ -1,7 +1,7 @@
 """Candidatos tabulares (M2-M6) como Pipelines de scikit-learn sobre OBT_ACCION_MES.
 
-Pipeline:  rango transversal (opcional) -> imputar mediana -> escalar -> filtro (SelectKBest)
-           -> modelo
+Pipeline:  rango transversal (opcional) -> preparacion() de src/pipeline.py (mediana + escalar,
+           moda + one-hot) -> filtro (SelectKBest) -> modelo
 - Rango transversal: cada variable se convierte en su percentil dentro del mes. Solo usa
   acciones del mismo mes (conocidas al cierre): no hay fuga, y quita el nivel de mercado
   (el modelo aprende que acciones ganan a las otras, que es lo que necesita el ranking).
@@ -21,8 +21,8 @@ from sklearn.preprocessing import StandardScaler
 
 from ..entorno import SEMILLA
 
-# Variables de la OBT despues de F1 (en logaritmo): catalogo unico en src/pipeline.py.
-from ..pipeline import FEATURES_OBT as FEATURES_F1  # noqa: E402
+# Columnas de X: catalogo unico en src/pipeline.py (33 de la OBT + 2 derivadas).
+from ..pipeline import FEATURES as FEATURES_F1, preparacion as preparacion_comun, separar  # noqa: E402
 # Variables de mercado: iguales para todas las acciones del mes; el rango transversal las anula.
 from ..pipeline import DE_MERCADO_DERIVADAS  # noqa: E402
 DE_MERCADO = {"ret_log_sp500_mes", "ret_log_nyse_composite_mes", "rf_mes"} | DE_MERCADO_DERIVADAS
@@ -52,14 +52,9 @@ def informacion_mutua(X, y):
 
 
 def preparacion(features, transversal: bool = True, k: int | str = "all", filtro: str = "f_regression"):
-    pasos = []
-    if transversal:
-        pasos.append(("rango_transversal", RangoTransversal(features)))
-    else:
-        pasos.append(("seleccionar", ColumnTransformer([("num", "passthrough", features)], remainder="drop")))
+    pasos = [("rango_transversal", RangoTransversal(features))] if transversal else []
     puntaje = f_regression if filtro == "f_regression" else informacion_mutua
-    pasos += [("imputar", SimpleImputer(strategy="median", keep_empty_features=True)),
-              ("escalar", StandardScaler()),
+    pasos += [("preparar", preparacion_comun(*separar(features))),
               ("filtro", SelectKBest(puntaje, k=k))]
     return pasos
 

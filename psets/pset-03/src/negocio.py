@@ -1,16 +1,20 @@
-"""Metrica de negocio del PSet 1: portafolio mensual de 10 acciones con pesos 1/vol.
+"""Metrica de negocio del PSet 1: portafolio mensual de 10 acciones ponderadas por 1/vol, en US$.
 
-Regla (PSet 1 con feedback): cada cierre de mes se eligen las n acciones elegibles con mayor
-puntaje cuya volatilidad no supere el tope del cliente; pesos proporcionales a 1/vol. Solo
-compras, sin apalancamiento. Se mide en retornos SIMPLES (ret_pct_mes_siguiente), que son los
-que se suman entre acciones.
+Regla (decidida por Paul el 18-nov), cada cierre de mes t:
+1. Candidatas: acciones elegibles con prediccion; se excluye el 20 % mas volatil del mes
+   (vol_63d por encima del percentil 80 del mes: tope relativo por accion).
+2. Se eligen las n = 10 con mayor prediccion; ponderacion w_i = (1/vol_i) / sum(1/vol_j).
+3. Tope de portafolio: la volatilidad estimada del portafolio (covarianza de los ultimos 63 dias
+   habiles de OBT_ACCION_DIA, anualizada con raiz de 252) no puede superar 1,35 veces la del
+   S&P 500 en los mismos 63 dias. Si la supera, se invierte solo la fraccion k = tope / vol_port en
+   acciones y el resto queda en efectivo, que gana la tasa libre de riesgo. Solo compras, sin
+   apalancamiento.
+4. Costo: 15 pb (0,15 %) por cada US$ comprado o vendido: costo = turnover * costo_bps / 1e4,
+   turnover = suma |w_nuevo - w_derivado| de las acciones, con w_derivado la ponderacion del mes
+   anterior despues de moverse con los precios.
 
-Costos: turnover = suma |w_nuevo - w_derivado| (compras + ventas), donde w_derivado son los
-pesos del mes anterior despues de moverse con los precios. costo = turnover * costo_bps / 1e4.
-
-Pendiente de decidir con Paul: tope de volatilidad, costo_bps y ventana de vol (vol_21d o
-vol_63d). La comprobacion del tope a nivel de portafolio (covarianza historica) necesita
-OBT_ACCION_DIA y queda para cuando este el snapshot diario.
+Se mide en retornos SIMPLES (ret_pct_mes_siguiente), que son los que se suman entre acciones.
+"Ponderacion" (peso) es la fraccion del capital en cada accion, no una moneda: todo esta en US$.
 """
 from __future__ import annotations
 
@@ -19,8 +23,11 @@ import pandas as pd
 
 
 def pesos_mes(g: pd.DataFrame, puntaje: str, vol: str = "vol_63d", n: int = 10,
-              tope_vol: float | None = None) -> pd.Series:
+              tope_vol: float | None = None, tope_percentil: float | None = None) -> pd.Series:
+    """Ponderaciones 1/vol de las n acciones con mayor puntaje del mes, tras los topes por accion."""
     c = g[g[puntaje].notna() & (g[vol] > 0)]
+    if tope_percentil is not None and len(c):
+        c = c[c[vol] <= g.loc[g[vol] > 0, vol].quantile(tope_percentil)]   # percentil del mes, todo el universo
     if tope_vol is not None:
         c = c[c[vol] <= tope_vol]
     c = c.nlargest(n, puntaje)
@@ -30,25 +37,66 @@ def pesos_mes(g: pd.DataFrame, puntaje: str, vol: str = "vol_63d", n: int = 10,
     return (w / w.sum()).set_axis(c["accion_key"])
 
 
+class RiesgoDiario:
+    """Covarianzas de 63 dias habiles hasta el cierre de cada mes, desde OBT_ACCION_DIA."""
+    def __init__(self, dia: pd.DataFrame, ventana: int = 63):
+        d = dia[["fecha", "accion_key", "ret_log_diario"]].dropna()
+        self.r = d.pivot_table(index="fecha", columns="accion_key", values="ret_log_diario").sort_index()
+        sp = dia[["fecha", "ret_log_sp500"]].dropna().drop_duplicates("fecha").set_index("fecha")["ret_log_sp500"]
+        self.sp = sp.sort_index()
+        self.fechas = pd.to_datetime(self.r.index)
+        self.ventana = ventana
+
+    def _hasta(self, anio_mes: int):
+        fin = pd.Period(str(int(anio_mes)), freq="M").end_time
+        return self.fechas <= fin
+
+    def vol_portafolio(self, anio_mes: int, w: pd.Series) -> float:
+        m = self._hasta(anio_mes)
+        bloque = self.r.loc[m, self.r.columns.intersection(w.index)].iloc[-self.ventana:]
+        bloque = bloque.loc[:, bloque.notna().sum() >= self.ventana // 2]
+        ww = w.reindex(bloque.columns).fillna(0.0)
+        cov = bloque.cov(min_periods=self.ventana // 2).fillna(0.0).values
+        return float(np.sqrt(max(ww.values @ cov @ ww.values, 0.0) * 252))
+
+    def vol_sp500(self, anio_mes: int) -> float:
+        fin = pd.Period(str(int(anio_mes)), freq="M").end_time
+        s = self.sp[pd.to_datetime(self.sp.index) <= fin].iloc[-self.ventana:]
+        return float(s.std(ddof=1) * np.sqrt(252))
+
+
 def backtest(df: pd.DataFrame, puntaje: str, n: int = 10, vol: str = "vol_63d",
-             tope_vol: float | None = None, costo_bps: float = 10.0,
-             retorno: str = "ret_pct_mes_siguiente", rf: str = "rf_mes_siguiente") -> pd.DataFrame:
-    """Serie mensual: retorno bruto, turnover, costo, retorno neto y tasa libre de riesgo."""
+             tope_vol: float | None = None, tope_percentil: float | None = None,
+             factor_tope_portafolio: float | None = None, riesgo: RiesgoDiario | None = None,
+             costo_bps: float = 15.0, retorno: str = "ret_pct_mes_siguiente",
+             rf: str = "rf_mes_siguiente") -> pd.DataFrame:
+    """Serie mensual: retorno bruto, turnover, costo, retorno neto, tasa libre de riesgo, fraccion
+    invertida en acciones y volatilidades estimadas (si hay datos diarios para el tope de portafolio)."""
     if retorno not in df:                                   # snapshot anterior a F1
         df = df.assign(ret_pct_mes_siguiente=np.expm1(df["ret_log_mes_siguiente"]))
     filas, previos = [], pd.Series(dtype=float)
     for mes, g in df.sort_values("anio_mes").groupby("anio_mes"):
-        w = pesos_mes(g, puntaje, vol, n, tope_vol)
+        w = pesos_mes(g, puntaje, vol, n, tope_vol, tope_percentil)
+        tasa = float(g[rf].iloc[0]) if rf in g and g[rf].notna().any() else 0.0
+        vol_port = vol_sp = np.nan
+        invertido = 1.0
+        if factor_tope_portafolio is not None and riesgo is not None and len(w):
+            vol_port, vol_sp = riesgo.vol_portafolio(mes, w), riesgo.vol_sp500(mes)
+            tope = factor_tope_portafolio * vol_sp
+            if np.isfinite(vol_port) and np.isfinite(tope) and vol_port > tope > 0:
+                invertido = tope / vol_port
+                w = w * invertido                           # el resto (1 - invertido) queda en efectivo
         r = g.set_index("accion_key")[retorno].reindex(w.index).fillna(0.0)   # sin cotizacion: 0
-        bruto = float((w * r).sum())
+        bruto = float((w * r).sum() + (1 - w.sum()) * tasa)
         todos = w.index.union(previos.index)
         turnover = float((w.reindex(todos, fill_value=0) - previos.reindex(todos, fill_value=0)).abs().sum())
         neto = bruto - turnover * costo_bps / 1e4
-        tasa = float(g[rf].iloc[0]) if rf in g and g[rf].notna().any() else 0.0
-        filas.append({"anio_mes": mes, "bruto": bruto, "turnover": turnover, "neto": neto,
-                      "rf": tasa, "n_acciones": len(w)})   # rf_mes de la OBT ya es tasa simple aprox.
-        derivado = w * (1 + r)
-        previos = derivado / derivado.sum() if derivado.sum() > 0 else derivado
+        filas.append({"anio_mes": mes, "bruto": bruto, "turnover": turnover, "neto": neto, "rf": tasa,
+                      "n_acciones": len(w), "invertido": float(w.sum()), "vol_portafolio": vol_port,
+                      "vol_sp500": vol_sp})
+        valor = w * (1 + r)
+        total = valor.sum() + (1 - w.sum()) * (1 + tasa)
+        previos = valor / total if total > 0 else valor
     return pd.DataFrame(filas).set_index("anio_mes")
 
 
@@ -66,6 +114,21 @@ def resumen(serie: pd.DataFrame) -> dict:
     return {"sharpe_neto": sharpe_anual(serie, "neto"), "sharpe_bruto": sharpe_anual(serie, "bruto"),
             "drawdown_max": drawdown_maximo(serie), "turnover_prom": float(serie["turnover"].mean()),
             "retorno_anual_neto": float((1 + serie["neto"]).prod() ** (12 / len(serie)) - 1)}
+
+
+# Regla del PSet 1 con las decisiones de Paul del 18-nov.
+REGLA = {"n": 10, "vol": "vol_63d", "tope_percentil": 0.80, "tope_vol": None,
+         "factor_tope_portafolio": 1.35, "costo_bps": 15.0}
+
+
+def metrica_negocio(pred: pd.DataFrame, puntaje: str = "pred", riesgo: RiesgoDiario | None = None,
+                    **regla) -> dict:
+    """Metrica de negocio sobre predicciones fuera de muestra (src.pipeline.predecir_pliegues):
+    Sharpe anual neto de costos del portafolio top 10 con pesos 1/vol, y drawdown maximo, que mide el
+    error mas costoso del proyecto (una caida que el cliente no tolera y lo lleva a vender en panico)."""
+    serie = backtest(pred, puntaje, riesgo=riesgo, **{**REGLA, **regla})
+    return {**resumen(serie), "meses": len(serie), "invertido_prom": float(serie["invertido"].mean()),
+            "tope_portafolio_aplicado": riesgo is not None}
 
 
 def portafolios_aleatorios(df: pd.DataFrame, sorteos: int = 200, semilla: int = 7, **kw) -> pd.DataFrame:

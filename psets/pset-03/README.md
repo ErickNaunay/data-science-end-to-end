@@ -30,9 +30,12 @@ MLflow queda en http://localhost:5001, con SQLite como backend y artefactos en
 ## Orden de trabajo
 
 1. `notebooks/01_eda.ipynb`: distribución, faltantes, IQR, Z-score, Spearman y tres hallazgos.
-2. `02_features.ipynb`: volatilidad relativa y momentum normalizado por riesgo;
-   comprobar disponibilidad y posteriormente aporte por ablación en CV.
-3. `03_baseline_candidatos.ipynb`: código preparado en `src/experimentos.py` para
+2. `02_features.ipynb`: `dispersion_mes` y mes calendario del objetivo (one-hot), con pruebas de
+   disponibilidad y ablación en los pliegues temporales.
+3. `03_preparacion_validacion.ipynb`: división única, Pipeline/ColumnTransformer de `src/pipeline.py`,
+   TimeSeriesSplit sobre meses (7 × 12 meses, gap 1) con tabla de fechas de corte, comparación de
+   esquemas de CV, todas las métricas de regresión (decide el MAE) y la métrica de negocio con ejemplo.
+   `03_baseline_candidatos.ipynb` (se renumera al rehacer la sección 5): código preparado en `src/experimentos.py` para
    dos bases y cuatro familias. Falta integrar la quinta familia fundacional y
    probar el LLM por prompting o justificar su inaplicabilidad.
 4. `04_tuning.ipynb`: preparar los tres mejores usando solo CV; al menos 30
@@ -46,6 +49,33 @@ objetivos hasta diciembre de 2023 en entrenamiento; posteriores en hold-out.
 La CV separa meses completos y purga un mes. Imputación y escalado se ajustan
 adentro de cada Pipeline/ColumnTransformer. Se excluyen columnas del futuro y
 atributos actuales como `sigue_en_sp500` de los predictores.
+
+Los notebooks 02 en adelante necesitan el grupo `modelos` (lightgbm, xgboost):
+
+```bash
+uv run --group modelos jupyter execute --inplace notebooks/03_preparacion_validacion.ipynb
+```
+
+## Permisos de los archivos copiados por Claude (`chmod 644`)
+
+Los archivos que Claude escribe en esta carpeta desde su entorno (`device_commit_files`) llegan a la Mac
+con permisos `-rw-------` (solo el dueño los lee). Eso basta para `uv run` en la Mac, pero los
+contenedores de Docker (Spark, Kestra, dbt) corren con otro usuario y fallan con `PermissionError` al
+leerlos: así falló la prueba de `reconstruir_obt.sh` el 18-nov. Después de cada copia hay que darles
+lectura para todos:
+
+```bash
+chmod 644 ruta/al/archivo1 ruta/al/archivo2
+```
+
+Para corregir de una vez todo lo que haya quedado en 600 sin tocar los secretos, que deben seguir en 600:
+
+```bash
+find . -type f -perm 600 ! -name '*.p8' ! -name '.env' ! -name '.env_encoded' ! -name '*.duckdb' ! -path '*/.venv/*' ! -path '*/secrets/*' -exec chmod 644 {} +
+```
+
+Git no guarda la diferencia entre 600 y 644 (solo el bit de ejecución), así que este paso no aparece en
+`git status`.
 
 ## Estado y límites
 

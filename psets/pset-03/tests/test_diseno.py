@@ -148,3 +148,31 @@ def test_arima_garch_sin_fuga():
     dia.loc[dia.fecha > "2018-01-31", "ret_log_diario"] = 0.2
     b = caracteristicas_accion(dia, org, [2018], ordenes=((0, 0), (1, 0)))
     assert a and a == b
+
+
+def test_tope_relativo_excluye_el_20_por_ciento_mas_volatil():
+    g = pd.DataFrame({"accion_key": list("ABCDEFGHIJ"), "puntaje": range(10, 0, -1),
+                      "vol_63d": [0.9, 0.8, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.15, 0.25]})
+    w = negocio.pesos_mes(g, "puntaje", n=10, tope_percentil=0.80)
+    assert "A" not in w.index and "B" not in w.index and len(w) == 8
+    assert abs(w.sum() - 1) < 1e-12
+
+
+def test_tope_de_portafolio_deja_efectivo_cuando_se_pasa():
+    rng = np.random.default_rng(0)
+    fechas = pd.bdate_range("2024-01-01", "2024-03-29")
+    filas = []
+    for f in fechas:
+        sp = rng.normal(0, 0.005)
+        for k, s in (("A", 0.03), ("B", 0.03)):
+            filas.append({"fecha": f, "accion_key": k, "ret_log_diario": rng.normal(0, s), "ret_log_sp500": sp})
+    riesgo = negocio.RiesgoDiario(pd.DataFrame(filas))
+    d = pd.DataFrame({"anio_mes": [202403] * 2, "accion_key": ["A", "B"], "p": [2, 1], "vol_63d": [0.45, 0.45],
+                      "ret_pct_mes_siguiente": [0.10, 0.10], "rf_mes_siguiente": [0.004] * 2})
+    s = negocio.backtest(d, "p", n=2, factor_tope_portafolio=1.35, riesgo=riesgo, costo_bps=15)
+    fila = s.iloc[0]
+    assert fila.vol_portafolio > 1.35 * fila.vol_sp500
+    k = 1.35 * fila.vol_sp500 / fila.vol_portafolio
+    assert abs(fila.invertido - k) < 1e-9
+    assert abs(fila.bruto - (k * 0.10 + (1 - k) * 0.004)) < 1e-12
+    assert abs(fila.neto - (fila.bruto - k * 15 / 1e4)) < 1e-12        # solo se paga por lo invertido

@@ -10,8 +10,8 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import cross_validate, ParameterSampler
-from sklearn.metrics import root_mean_squared_error
-from .pipeline import crear_pipeline, pliegues, FEATURES, TARGET
+from sklearn.metrics import mean_absolute_error
+from .pipeline import crear_pipeline, pliegues, resumir_cv, PUNTAJES, FEATURES, TARGET
 ROOT=Path(__file__).resolve().parents[1]
 SEMILLA=7
 
@@ -28,10 +28,12 @@ def registrar(nombre,modelo,train,meta,fase,nested=False):
     mlflow.set_experiment(os.environ.get('MLFLOW_EXPERIMENT_NAME','portafolio-inversiones'))
     X,y=train[FEATURES],train[TARGET]; pipe=crear_pipeline(clone(modelo)); inicio=time.perf_counter()
     with mlflow.start_run(run_name=nombre,nested=nested) as run:
-        scores=cross_validate(pipe,X,y,cv=list(pliegues(train)),scoring='neg_root_mean_squared_error',return_train_score=True,n_jobs=1,error_score='raise')
+        scores=cross_validate(pipe,X,y,cv=pliegues(train),scoring=PUNTAJES,return_train_score=True,n_jobs=1,error_score='raise')
         pipe.fit(X,y); segundos=time.perf_counter()-inicio
-        cv=-scores['test_score']; ent=-scores['train_score']
-        metricas={'rmse_train_cv':float(ent.mean()),'rmse_cv_media':float(cv.mean()),'rmse_cv_std':float(cv.std(ddof=1)),'brecha':float(cv.mean()-ent.mean()),'segundos_entrenamiento':segundos,'rmse_train_final':root_mean_squared_error(y,pipe.predict(X))}
+        cv=-scores['test_mae']
+        todas=resumir_cv(scores); todas.pop('mae_pliegues')     # todas las metricas de PUNTAJES
+        metricas={**{k:v for k,v in todas.items() if np.isfinite(v)},'brecha':todas['mae_cv_media']-todas['mae_train_cv'],
+                  'segundos_entrenamiento':segundos,'mae_train_final':mean_absolute_error(y,pipe.predict(X))}
         mlflow.log_params({**{k:str(v) for k,v in modelo.get_params().items()},'semilla':SEMILLA,'tabla':meta['tabla'],'snapshot':meta['snapshot_utc'],'sha256':meta['sha256'],'corte':meta['corte']})
         try:
             commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
@@ -44,7 +46,7 @@ def registrar(nombre,modelo,train,meta,fase,nested=False):
             mlflow.log_artifact(str(source),artifact_path='codigo')
         mlflow.log_artifact(str(ROOT/'requirements.txt'),artifact_path='codigo')
         mlflow.log_dict(meta,'snapshot.json')
-        mlflow.log_metrics(metricas); mlflow.log_dict({'rmse_cv':cv.tolist()},'pliegues.json')
+        mlflow.log_metrics(metricas); mlflow.log_dict({'mae_cv':cv.tolist()},'pliegues.json')
         info=mlflow.sklearn.log_model(pipe,name='pipeline',skops_trusted_types=['numpy.dtype'],signature=infer_signature(X.iloc[:5],pipe.predict(X.iloc[:5])),input_example=X.iloc[:5])
         return {'modelo':nombre,'run_id':run.info.run_id,'model_uri':info.model_uri,**metricas}
 
