@@ -5,7 +5,7 @@ subtitle: "MSDS 6003 · Allan Paul Gómez Ehmig (00351916) · 18 de noviembre de
 
 **Problema.** Para cada acción del S&P 500 que cotiza en la NYSE, al cierre de cada mes *t* se pronostica `ret_log_mes_siguiente`, el retorno logarítmico del mes *t+1*. Con ese pronóstico se arma un portafolio de 10 acciones ponderadas por 1/volatilidad. Los datos vienen de la OBT `PORTAFOLIO_P3.OBT.OBT_ACCION_MES` de Snowflake: 87.178 filas, snapshot `sha256 c3568917…`, que cada corrida registra en MLflow. Repositorio: `VirtualZen/data-science-end-to-end`, rama `work`, carpeta `psets/pset-03`.
 
-**Resultado en una línea.** Ningún modelo supera a la media histórica (B1) en el MAE de forma que se distinga de la variación entre pliegues. El champion, LightGBM ajustado, obtiene un Sharpe neto de 0,87 en el hold-out, frente a 0,68 del universo con igual ponderación (B5). Ese resultado es para confirmar: su IC es prácticamente cero.
+**Resultado en una línea.** Ningún modelo supera a la media histórica (B1) en el MAE de forma que se distinga de la variación entre pliegues. El champion, LightGBM ajustado, obtiene un Sharpe neto de 0,87 en el hold-out, frente a 0,68 del universo con igual ponderación (B5). Ese resultado es para confirmar: su IC es prácticamente cero. Una regla manual, B3 (comprar cada mes las 10 acciones con mejor retorno medio histórico del universo común), logra el mejor Sharpe neto en CV (0,585) sin tecnología y queda como estrategia contingente.
 
 # 1. EDA
 
@@ -178,6 +178,17 @@ Se ajustan los 3 mejores modelos con hiperparámetros: Ridge, LightGBM y XGBoost
 **Reproducibilidad.** `06_champion.ipynb` recarga `models:/portafolio-inversiones-modelo@champion` en un kernel limpio y reproduce el MAE del hold-out: 0,0673399888, idéntico al registrado.
 
 **Recomendación.** Registrar el champion como referencia, pero **no usarlo todavía para invertir**. Su ventaja en el Sharpe del hold-out no aparece en CV (0,30) ni tiene respaldo en el IC.
+
+**Implicaciones de negocio.**
+
+- **Para el asesor, el valor sigue estando en la disciplina del proceso**, no en la predicción: rebalanceo mensual en fecha fija, topes de volatilidad acordados con el cliente, 15 pb por US\$ negociado y aprobación del cliente antes de cada cambio. Ningún modelo aporta todavía una señal de selección que justifique su costo de operación (pipeline, Snowflake, servidor de modelos y monitoreo).
+- **Estrategia contingente sin tecnología.** Es la regla de B3: cada mes, el asesor ordena las acciones del universo común S&P 500 ∩ NYSE por su retorno medio histórico, toma las 10 mejores y aplica la misma ponderación 1/vol con los mismos topes. Se arma en una hoja de cálculo con precios públicos, sin modelo ni infraestructura.
+  - En CV obtuvo el mejor Sharpe neto de todo el experimento: **0,585**, frente a 0,544 de B5 y 0,568 del mejor candidato (Chronos).
+  - Sirve como **plan de contingencia** si el pipeline o el modelo fallan: Kestra o Snowflake caídos, o un modelo degradado.
+  - También es la **vara mínima de negocio**: un modelo solo justifica su costo si la supera con un margen mayor que la variación entre pliegues.
+  - Su Sharpe en el hold-out queda por medir en el PSet 4.
+- **Frente al índice.** En el hold-out, comprar el S&P 500 completo (Sharpe 1,10) le gana a toda estrategia restringida a la NYSE: el universo común deja fuera a las grandes tecnológicas que cotizan en NASDAQ. Para un cliente que solo busca retorno ajustado por riesgo, un fondo indexado es la alternativa de menor costo. El servicio se justifica por el control de volatilidad y la personalización, no por superar al índice.
+- **Operación recomendada.** Hasta que un modelo supere a B3 y B5 con margen claro, se opera con la regla contingente o con el universo de igual ponderación. El champion corre en paralelo sin decidir compras, y se registra mes a mes su pronóstico y su desempeño para decidir con evidencia fuera de muestra.
 
 # 8. Limitaciones
 
