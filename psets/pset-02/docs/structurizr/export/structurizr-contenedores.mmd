@@ -1,0 +1,51 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Container View: Pipeline de datos del portafolio"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>Asesor de inversiones</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Usuario de la herramienta:<br />lanza el backfill, revisa las<br />ejecuciones y consume la OBT<br />para la decisión mensual.</div>"]
+    style 1 fill:#08427b,stroke:#052e56,color:#ffffff
+    2["<div style='font-weight: bold'>Yahoo Finance</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Precios diarios OHLCV y<br />cierre ajustado (API no<br />oficial, vía yfinance):<br />acciones, ^GSPC, ^NYA, ^IRX.</div>"]
+    style 2 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    3["<div style='font-weight: bold'>GitHub (fuentes de referencia)</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Composición histórica del S&P<br />500 (chinobing) y listados de<br />bolsa (rreichel3).</div>"]
+    style 3 fill:#999999,stroke:#6b6b6b,color:#ffffff
+
+    subgraph 4 ["Pipeline de datos del portafolio"]
+      style 4 fill:#ffffff,stroke:#0b4884,color:#0b4884
+
+      10["<div style='font-weight: bold'>spark-master</div><div style='font-size: 70%; margin-top: 0px'>[Container: Spark 3.5.3 · RPC :7077 · UI :8081]</div><div style='font-size: 80%; margin-top:10px'>Coordina los recursos del<br />clúster; servicio persistente<br />de Compose.</div>"]
+      style 10 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      11["<div style='font-weight: bold'>spark-worker</div><div style='font-size: 70%; margin-top: 0px'>[Container: Spark 3.5.3 · pset2-spark]</div><div style='font-size: 80%; margin-top:10px'>Ejecuta las tareas<br />distribuidas; ofrece 2 GB al<br />ejecutor.</div>"]
+      style 11 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      12[("<div style='font-weight: bold'>Snowflake · base PORTAFOLIO</div><div style='font-size: 70%; margin-top: 0px'>[Container: SaaS]</div><div style='font-size: 80%; margin-top:10px'>Esquemas RAW, BRONZE, SILVER,<br />GOLD, OBT y CALIDAD. Bodega<br />PSET2_WH (XSMALL,<br />autosuspensión).</div>")]
+      style 12 fill:#2a6a4f,stroke:#1d4a37,color:#ffffff
+      5["<div style='font-weight: bold'>Kestra</div><div style='font-size: 70%; margin-top: 0px'>[Container: Kestra 2.0 · Docker · UI :8090]</div><div style='font-size: 80%; margin-top:10px'>Orquestación: flows<br />ingesta_diaria (L–V 18:30 NY,<br />retries, recuperación),<br />backfill_historico (por año)<br />y transformar.</div>"]
+      style 5 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      6[("<div style='font-weight: bold'>Postgres</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL 18 · Docker]</div><div style='font-size: 80%; margin-top:10px'>Estado interno de Kestra<br />(flows, ejecuciones, colas).</div>")]
+      style 6 fill:#2a6a4f,stroke:#1d4a37,color:#ffffff
+      7["<div style='font-weight: bold'>Tarea de ingesta</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python 3.11 · imagen pset2-ingesta]</div><div style='font-size: 80%; margin-top:10px'>extraer_cargar.py: descarga<br />precios, composición y<br />listados; traduce símbolos<br />con equivalencias_tickers y<br />carga a RAW (append-only, con<br />lote).</div>"]
+      style 7 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      8["<div style='font-weight: bold'>Tarea dbt</div><div style='font-size: 70%; margin-top: 0px'>[Container: dbt Core + dbt-snowflake · imagen pset2-dbt]</div><div style='font-size: 80%; margin-top:10px'>dbt build: Bronze (staging:<br />tipos, deduplicación), Silver<br />(calendario NYSE, imputación<br />de huecos cortos, retornos,<br />membresía), Gold (dos hechos<br />y tres dimensiones, incluida<br />membresía histórica) y<br />CALIDAD; tests de integridad<br />y negocio.</div>"]
+      style 8 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      9["<div style='font-weight: bold'>Driver Spark / tarea OBT</div><div style='font-size: 70%; margin-top: 0px'>[Container: Spark 3.5.3 · pset2-spark · tarea efímera]</div><div style='font-size: 80%; margin-top:10px'>construir_obt.py: lee Gold,<br />construye acción por mes,<br />verifica 13 controles y<br />escribe OBT. Ejecutor 2 GB;<br />driver 1 GB; un core total.</div>"]
+      style 9 fill:#438dd5,stroke:#2e6295,color:#ffffff
+    end
+
+    1-. "<div>Lanza el backfill y supervisa<br />ejecuciones</div><div style='font-size: 70%'>[UI en localhost:8090]</div>" .->5
+    5-. "<div>Guarda su estado en</div><div style='font-size: 70%'></div>" .->6
+    5-. "<div>Ejecuta como contenedor de<br />tarea (trigger L–V 18:30 NY;<br />reintentos exponenciales)</div><div style='font-size: 70%'></div>" .->7
+    5-. "<div>Ejecuta al terminar la<br />ingesta (subflow transformar)</div><div style='font-size: 70%'></div>" .->8
+    5-. "<div>Ejecuta spark-submit tras dbt</div><div style='font-size: 70%'></div>" .->9
+    7-. "<div>Descarga OHLCV diario<br />(yfinance, por lotes con<br />reintentos)</div><div style='font-size: 70%'></div>" .->2
+    7-. "<div>Descarga composición<br />histórica y listados de bolsa</div><div style='font-size: 70%'></div>" .->3
+    7-. "<div>Carga RAW con write_pandas<br />(append-only + bitácora)</div><div style='font-size: 70%'></div>" .->12
+    8-. "<div>Transforma RAW → BRONZE →<br />SILVER → GOLD y calcula<br />CALIDAD.DQ_METRICAS</div><div style='font-size: 70%'></div>" .->12
+    9-. "<div>Solicita recursos del clúster</div><div style='font-size: 70%'>[spark://spark-master:7077]</div>" .->10
+    10-. "<div>Asigna ejecutores</div><div style='font-size: 70%'></div>" .->11
+    9-. "<div>Coordina tareas y resultados</div><div style='font-size: 70%'></div>" .->11
+    11-. "<div>Lee y escribe particiones<br />mediante el conector<br />Snowflake</div><div style='font-size: 70%'></div>" .->12
+    9-. "<div>Lee GOLD y escribe<br />OBT.OBT_ACCION_MES y<br />VALIDACION_OBT</div><div style='font-size: 70%'></div>" .->12
+    1-. "<div>Consulta la OBT y las<br />métricas de calidad</div><div style='font-size: 70%'>[Snowsight]</div>" .->12
+
+  end

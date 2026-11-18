@@ -1,0 +1,139 @@
+{
+  "estado": "OK",
+  "tipo": "validacion_estatica_y_parse_sin_ejecutar_SQL",
+  "dbt_version": "1.12.7",
+  "modelos": [
+    {
+      "modelo": "brz_precios_diarios",
+      "esquema": "BRONZE",
+      "archivo": "models/bronze/brz_precios_diarios.sql",
+      "depende_de": [
+        "source.portafolio.raw.precios_diarios"
+      ]
+    },
+    {
+      "modelo": "brz_composicion_sp500",
+      "esquema": "BRONZE",
+      "archivo": "models/bronze/brz_composicion_sp500.sql",
+      "depende_de": [
+        "source.portafolio.raw.composicion_sp500",
+        "seed.portafolio.equivalencias_tickers"
+      ]
+    },
+    {
+      "modelo": "brz_listados_bolsa",
+      "esquema": "BRONZE",
+      "archivo": "models/bronze/brz_listados_bolsa.sql",
+      "depende_de": [
+        "source.portafolio.raw.listados_bolsa"
+      ]
+    },
+    {
+      "modelo": "slv_calendario_nyse",
+      "esquema": "SILVER",
+      "archivo": "models/silver/slv_calendario_nyse.sql",
+      "depende_de": [
+        "model.portafolio.brz_precios_diarios",
+        "seed.portafolio.calendario_nyse"
+      ]
+    },
+    {
+      "modelo": "slv_mercado_diario",
+      "esquema": "SILVER",
+      "archivo": "models/silver/slv_mercado_diario.sql",
+      "depende_de": [
+        "model.portafolio.brz_precios_diarios",
+        "model.portafolio.slv_calendario_nyse"
+      ]
+    },
+    {
+      "modelo": "slv_precios_acciones",
+      "esquema": "SILVER",
+      "archivo": "models/silver/slv_precios_acciones.sql",
+      "depende_de": [
+        "model.portafolio.brz_precios_diarios",
+        "model.portafolio.slv_calendario_nyse"
+      ]
+    },
+    {
+      "modelo": "slv_acciones",
+      "esquema": "SILVER",
+      "archivo": "models/silver/slv_acciones.sql",
+      "depende_de": [
+        "model.portafolio.slv_membresia_sp500",
+        "model.portafolio.slv_precios_acciones",
+        "model.portafolio.brz_listados_bolsa"
+      ]
+    },
+    {
+      "modelo": "slv_membresia_sp500",
+      "esquema": "SILVER",
+      "archivo": "models/silver/slv_membresia_sp500.sql",
+      "depende_de": [
+        "model.portafolio.brz_composicion_sp500"
+      ]
+    },
+    {
+      "modelo": "dq_metricas",
+      "esquema": "CALIDAD",
+      "archivo": "models/calidad/dq_metricas.sql",
+      "depende_de": [
+        "source.portafolio.raw.precios_diarios",
+        "model.portafolio.brz_precios_diarios",
+        "model.portafolio.slv_calendario_nyse",
+        "model.portafolio.slv_membresia_sp500",
+        "model.portafolio.brz_composicion_sp500",
+        "model.portafolio.fct_precios_diarios",
+        "model.portafolio.dim_accion",
+        "model.portafolio.dim_fecha",
+        "model.portafolio.slv_precios_acciones",
+        "model.portafolio.slv_mercado_diario"
+      ]
+    },
+    {
+      "modelo": "fct_precios_diarios",
+      "esquema": "GOLD",
+      "archivo": "models/gold/fct_precios_diarios.sql",
+      "depende_de": [
+        "model.portafolio.slv_precios_acciones",
+        "model.portafolio.dim_accion",
+        "model.portafolio.dim_fecha",
+        "model.portafolio.slv_membresia_sp500"
+      ]
+    },
+    {
+      "modelo": "dim_fecha",
+      "esquema": "GOLD",
+      "archivo": "models/gold/dim_fecha.sql",
+      "depende_de": [
+        "model.portafolio.slv_calendario_nyse"
+      ]
+    },
+    {
+      "modelo": "dim_accion",
+      "esquema": "GOLD",
+      "archivo": "models/gold/dim_accion.sql",
+      "depende_de": [
+        "model.portafolio.slv_acciones"
+      ]
+    },
+    {
+      "modelo": "fct_mercado_diario",
+      "esquema": "GOLD",
+      "archivo": "models/gold/fct_mercado_diario.sql",
+      "depende_de": [
+        "model.portafolio.slv_mercado_diario",
+        "model.portafolio.dim_fecha"
+      ]
+    }
+  ],
+  "seed_equivalencias_identico": true,
+  "compose_config": "OK",
+  "structurizr_validate": "OK",
+  "fecha_corte_spark_kestra": "secret FECHA_CORTE_ENTRENAMIENTO; igual que dbt",
+  "limitacion": "No sustituye un bootstrap completo sobre una cuenta vacia; evidencia operativa aislada previa en kestra_ejecucion_aislada.json.",
+  "pruebas_corte": {
+    "yaml_dbt_spark_mismo_secret": "OK",
+    "spark_corte_alternativo_202212": "OK"
+  }
+}

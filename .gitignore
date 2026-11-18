@@ -37,6 +37,8 @@ dbt_packages/
 spark-warehouse/
 metastore_db/
 derby.log
+resumen_por_categoria/
+resumen_envios/
 
 # Registro de MLflow: el del servidor del Codespace (.mlflow/) y el local si trabajas
 # sin servidor (mlruns/). Cada estudiante lo regenera al correr; pesa decenas de MB.
