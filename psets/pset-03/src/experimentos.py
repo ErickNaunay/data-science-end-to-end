@@ -145,6 +145,26 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
                 'model_uri': info.model_uri, 'git_dirty': sucio, **metricas}
 
 
+def registrar_referencia(modelo, serie, meta, fase='baseline', parametros=None, meta_dia=None):
+    """Corrida de una referencia de negocio sin modelo (portafolio al azar, universo, indices):
+    familia "N/A", modelo = descripcion corta; registra la metrica de negocio y la serie mensual."""
+    from .negocio import resumen
+    mlflow = _mlflow()
+    with mlflow.start_run(run_name=modelo) as run:
+        res = {**resumen(serie), 'meses': len(serie), 'invertido_prom': float(serie['invertido'].mean())}
+        metricas = {f'negocio_{k}': float(v) for k, v in res.items() if v is not None and np.isfinite(v)}
+        commit, sucio = _git()
+        mlflow.log_params({'tabla': meta['tabla'], 'snapshot': meta['snapshot_utc'], 'sha256': meta['sha256'],
+                           'sha256_dia': (meta_dia or {}).get('sha256', 'sin_datos_diarios'), 'semilla': SEMILLA,
+                           'meses': f'{serie.index.min()}..{serie.index.max()}', **(parametros or {})})
+        mlflow.set_tags({'fase': fase, 'familia': 'N/A', 'modelo': modelo, 'git_commit': commit, 'git_dirty': str(sucio)})
+        mlflow.log_metrics(metricas)
+        serie.to_csv(ROOT / 'mlflow_serie_tmp.csv')
+        mlflow.log_artifact(str(ROOT / 'mlflow_serie_tmp.csv'), artifact_path='serie_mensual')
+        (ROOT / 'mlflow_serie_tmp.csv').unlink()
+        return {'modelo': modelo, 'familia': 'N/A', 'fase': fase, 'run_id': run.info.run_id, 'git_dirty': sucio, **metricas}
+
+
 def verificar(run_id):
     """Recarga el Pipeline registrado (en un proceso nuevo) y compara con las predicciones guardadas."""
     mlflow = _mlflow()

@@ -23,8 +23,10 @@ import pandas as pd
 
 
 def pesos_mes(g: pd.DataFrame, puntaje: str, vol: str = "vol_63d", n: int = 10,
-              tope_vol: float | None = None, tope_percentil: float | None = None) -> pd.Series:
-    """Ponderaciones 1/vol de las n acciones con mayor puntaje del mes, tras los topes por accion."""
+              tope_vol: float | None = None, tope_percentil: float | None = None,
+              ponderacion: str = "inv_vol") -> pd.Series:
+    """Ponderaciones de las n acciones con mayor puntaje del mes, tras los topes por accion:
+    1/vol (regla del PSet 1) o iguales (portafolio del universo, B5)."""
     c = g[g[puntaje].notna() & (g[vol] > 0)]
     if tope_percentil is not None and len(c):
         c = c[c[vol] <= g.loc[g[vol] > 0, vol].quantile(tope_percentil)]   # percentil del mes, todo el universo
@@ -33,7 +35,7 @@ def pesos_mes(g: pd.DataFrame, puntaje: str, vol: str = "vol_63d", n: int = 10,
     c = c.nlargest(n, puntaje)
     if c.empty:
         return pd.Series(dtype=float)
-    w = 1.0 / c[vol]
+    w = 1.0 / c[vol] if ponderacion == "inv_vol" else pd.Series(1.0, index=c.index)
     return (w / w.sum()).set_axis(c["accion_key"])
 
 
@@ -69,14 +71,14 @@ def backtest(df: pd.DataFrame, puntaje: str, n: int = 10, vol: str = "vol_63d",
              tope_vol: float | None = None, tope_percentil: float | None = None,
              factor_tope_portafolio: float | None = None, riesgo: RiesgoDiario | None = None,
              costo_bps: float = 15.0, retorno: str = "ret_pct_mes_siguiente",
-             rf: str = "rf_mes_siguiente") -> pd.DataFrame:
+             rf: str = "rf_mes_siguiente", ponderacion: str = "inv_vol") -> pd.DataFrame:
     """Serie mensual: retorno bruto, turnover, costo, retorno neto, tasa libre de riesgo, fraccion
     invertida en acciones y volatilidades estimadas (si hay datos diarios para el tope de portafolio)."""
     if retorno not in df:                                   # snapshot anterior a F1
         df = df.assign(ret_pct_mes_siguiente=np.expm1(df["ret_log_mes_siguiente"]))
     filas, previos = [], pd.Series(dtype=float)
     for mes, g in df.sort_values("anio_mes").groupby("anio_mes"):
-        w = pesos_mes(g, puntaje, vol, n, tope_vol, tope_percentil)
+        w = pesos_mes(g, puntaje, vol, n, tope_vol, tope_percentil, ponderacion)
         tasa = float(g[rf].iloc[0]) if rf in g and g[rf].notna().any() else 0.0
         vol_port = vol_sp = np.nan
         invertido = 1.0
@@ -139,3 +141,19 @@ def portafolios_aleatorios(df: pd.DataFrame, sorteos: int = 200, semilla: int = 
         d = df.assign(_azar=rng.random(len(df)))
         out.append({"sorteo": s, **resumen(backtest(d, "_azar", **kw))})
     return pd.DataFrame(out)
+
+
+# ---------------------------------------------------------------- referencias de negocio (seccion 5)
+def portafolio_universo(df: pd.DataFrame, costo_bps: float = REGLA["costo_bps"]) -> pd.DataFrame:
+    """B5: todas las acciones elegibles del mes (S&P 500 que cotizan en NYSE) con igual ponderacion,
+    rebalanceo mensual y el mismo costo. Es el "indice" de nuestro universo, sin elegir acciones."""
+    return backtest(df.assign(_todas=1.0), "_todas", n=10**6, costo_bps=costo_bps, ponderacion="igual")
+
+
+def serie_indice(df: pd.DataFrame, columna_log: str, rf: str = "rf_mes_siguiente") -> pd.DataFrame:
+    """B6: comprar y mantener un indice (^GSPC o ^NYA). Son indices de PRECIO: no incluyen dividendos,
+    a diferencia de los retornos ajustados de las acciones, asi que subestiman al indice ~1,5-2 % al anio."""
+    m = df.groupby("anio_mes").agg(log=(columna_log, "first"), rf=(rf, "first")).sort_index()
+    bruto = np.expm1(m["log"])
+    return pd.DataFrame({"bruto": bruto, "turnover": 0.0, "neto": bruto, "rf": m["rf"].fillna(0.0),
+                         "n_acciones": np.nan, "invertido": 1.0}, index=m.index)

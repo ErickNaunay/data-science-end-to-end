@@ -250,20 +250,20 @@ ColumnTransformer, probado), src/experimentos.py (2 bases y 4 familias), noteboo
 artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/pendientes_entrega.md.
 
 3.1 EDA (15% junto con features) - notebooks/01_eda.ipynb
-[~] (C+P) (18-nov: notebooks/01_eda.ipynb con el snapshot c3568917, 27 celdas: 6b covarianza de la OBT,
+[x] (C+P) (18-nov: Paul lo corrio en la Mac) (18-nov: notebooks/01_eda.ipynb con el snapshot c3568917, 27 celdas: 6b covarianza de la OBT,
         6c covarianza de las variables normalizadas (= Pearson), detalle de nulos y motivo de la mediana frente a
         interpolar; 9 figuras. 17-nov: rehecho contra CD_PSet_3.pdf; falta que Paul lo corra en la Mac)
         Re-ejecutar con el snapshot de P3: tamano, tipos, faltantes por columna, descriptivos,
         distribucion del target (ret_log_mes_siguiente), IQR (boxplot), Z-score >= 3,
         Spearman (justificar frente a Pearson: colas gruesas) con el target.
-[~] (C) (17-nov: 7 hallazgos calculados en el notebook: colas del target (curtosis 9,6), el mes explica el 34,5 %
+[x] (C) (18-nov: docs/hallazgos_eda.csv generado en la Mac) (17-nov: 7 hallazgos calculados en el notebook: colas del target (curtosis 9,6), el mes explica el 34,5 %
         de la varianza, IC dentro del mes debil (max 0,020, ninguna |t| >= 2), 24 pares |rho| > 0,9, escala de
         riesgo 2,8x, faltantes casi nulos, fila AMCR 2014-08 plana y sin volumen; apoyan W3: MAE + IC)
         3 o mas hallazgos con evidencia y consecuencia (docs/hallazgos_eda.csv), por ejemplo:
         colas gruesas del target -> MAE como metrica principal y modelos robustos;
         filas con huecos o tramo excluido (H5) -> imputacion dentro del Pipeline;
         columnas de mercado del mes siguiente (H1) y sigue_en_sp500 -> excluir por fuga.
-[~] Q1 (C+P) (17-nov: notebook hecho y probado completo con la muestra DuckDB; falta que Paul lo corra
+[x] Q1 (C+P) (17-nov: Paul lo corrio contra Snowflake: 92 consultas, 37,6 s, CSV en docs/calidad/analisis_pipeline/) (17-nov: notebook hecho y probado completo con la muestra DuckDB; falta que Paul lo corra
         contra Snowflake: MOTOR=snowflake, Restart + Run All; guarda CSV en docs/calidad/analisis_pipeline/)
         (pedido de Paul 17-nov) pipeline/docs/calidad/analisis_calidad_pipeline.ipynb con todos los
         resultados: por columna y capa (RAW, BRONZE, SILVER, GOLD, CALIDAD, OBT_ACCION_MES y
@@ -279,7 +279,7 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         relativo. Las que vayan a la OBT se agregan en pipeline/spark con antes y despues en
         docs/migracion_pipeline.md y su prueba; las que dependen del pliegue (residuo y
         coeficientes ARIMA) se calculan en src/, nunca en la OBT.
-[~] (C+P) (18-nov: notebooks/02_features.ipynb rehecho, probado completo; falta que Paul lo corra en la Mac)
+[x] (C+P) (18-nov: corrido en la Mac con semillas 42-44) (18-nov: notebooks/02_features.ipynb rehecho, probado completo)
         Derivadas: dispersion_mes (desviacion de ret_log_mes entre elegibles del mes, H-EDA 2) y mes calendario
         del objetivo en one-hot (11 columnas, enero referencia). src/pipeline.py: derivar(), FEATURES = 45,
         FEATURES_LINEALES (sin 4 REDUNDANTES, rango completo), DESCARTADAS; tabulares.py: DE_MERCADO incluye las
@@ -339,28 +339,30 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         docker-compose usa "portafolio-inversiones". Primera corrida en la Mac (18-nov): M3_lightgbm, run
         636a13c62e0c4adab6dece4ffb2689e8, git_dirty False, MAE CV 0,0651, IC 0,024, Sharpe neto 0,31;
         --verificar: recarga_ok, diferencia 0. FALTA: corridas de lineas base y candidatos, y la captura)
-[ ] (C) Experimento "portafolio-inversiones". Cada corrida: parametros y semilla; datos (tabla,
+[x] (C) (18-nov: cumplido por src/experimentos.py; corrida 636a13c6 en la Mac) Experimento "portafolio-inversiones". Cada corrida: parametros y semilla; datos (tabla,
         fecha del snapshot, sha256); metricas train, CV media y desviacion, segundos; tags (fase,
         familia, commit); artefacto mlflow.sklearn.log_model con firma y ejemplo de entrada.
-[ ] (C) No levantar MLflow con Kestra/Spark (OOM previo). Copiar mlflow/ de la carpeta
+[x] (C) (18-nov: regla en CLAUDE.md y en los comandos: docker ps sin Kestra/Spark y /health) No levantar MLflow con Kestra/Spark (OOM previo). Copiar mlflow/ de la carpeta
         proyecto si se quieren conservar las 4 corridas de verificacion del 16-nov.
 3.5 Lineas base (15% con candidatos) - notebooks/03_baseline_candidatos.ipynb
     Origen: PDF del PSet 3 (ingenua y de negocio) y PSet 1 con feedback (filas "Baseline" y
     "Metrica tecnica" del memo v2; hoja Modelos, "Piso aleatorio (obligatorio)"). Todas con el
     mismo hold-out; tag fase=baseline y origen. Todo candidato debe superar B1 y B2; si no, hallazgo.
-[ ] B1 (C) Ingenua del PDF: DummyRegressor(strategy='mean') (existe: dummy_media). Registrar
+[~] B1 (C) (18-nov: notebooks/03_baseline_candidatos.ipynb la registra en MLflow, familia linea_base; MAE CV 0,0641) Ingenua del PDF: DummyRegressor(strategy='mean') (existe: dummy_media). Registrar
         tambien la mediana y justificar cual se usa (colas gruesas del target, 3.1).
-[ ] B2 (C) Random walk con retorno 0 (PSet 1, piso de la metrica tecnica):
+[~] B2 (C) (18-nov: registrada igual que B1; MAE CV 0,0647) Random walk con retorno 0 (PSet 1, piso de la metrica tecnica):
         DummyRegressor(constant=0) (existe: regla_cero). Es la referencia de Diebold-Mariano en 3.8.
 [ ] B3 (C) Random walk con deriva: media historica del retorno mensual de cada accion, solo con
         el pliegue de entrenamiento. No esta en el PSet 1 (viene de analisis/modelos, rw_deriva):
         se incluye como referencia extra y se dice asi en el memo.
-[ ] B4 (C+P) Portafolio aleatorio de igual peso (PSet 1, piso de la metrica de negocio):
+[~] B4 (C+P) (18-nov: 200 sorteos con la regla completa; Sharpe neto mediana 0,34; en MLflow como 'Portafolio al azar, regla PSet 1', familia N/A) Portafolio aleatorio de igual peso (PSet 1, piso de la metrica de negocio):
         cada mes 10 acciones elegibles al azar con igual peso, N sorteos con semilla fija; Sharpe
         y drawdown en hold-out como distribucion (media y percentiles 5-95). No es un estimador:
         va en un modulo nuevo src/negocio.py junto con la regla top 10 con pesos 1/vol.
-[ ] B5 (C) Portafolio igual peso de todo el universo elegible (PSet 1): Sharpe y drawdown.
-[ ] B6 (C) Indices S&P 500 y NYSE Composite (PSet 1): Sharpe y drawdown con
+[~] B5 (C+P) (18-nov, decision de Paul: es la LINEA BASE DE NEGOCIO, universo S&P 500 ∩ NYSE con igual ponderacion y 15 pb;
+        Sharpe neto 0,54, drawdown -29,3 %; familia N/A en MLflow; docs/lineas_base.csv) Portafolio igual peso de todo el universo elegible (PSet 1): Sharpe y drawdown.
+[~] B6 (C) (18-nov: contexto, indices de precio sin dividendos; S&P 500 Sharpe 0,63 > B5: hallazgo, el universo NYSE
+        no compra las tecnologicas de NASDAQ; NYSE Composite 0,34; familia N/A en MLflow) Indices S&P 500 y NYSE Composite (PSet 1): Sharpe y drawdown con
         ret_log_sp500_mes_siguiente, ret_log_nyse_composite_mes_siguiente y rf_mes_siguiente de
         la OBT (H1: solo meses cerrados). Meta del PSet 1: Sharpe del modelo >= indice + 0,1.
 

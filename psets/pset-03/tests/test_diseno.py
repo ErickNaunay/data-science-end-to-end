@@ -176,3 +176,13 @@ def test_tope_de_portafolio_deja_efectivo_cuando_se_pasa():
     assert abs(fila.invertido - k) < 1e-9
     assert abs(fila.bruto - (k * 0.10 + (1 - k) * 0.004)) < 1e-12
     assert abs(fila.neto - (fila.bruto - k * 15 / 1e4)) < 1e-12        # solo se paga por lo invertido
+
+
+def test_universo_igual_ponderacion_e_indice():
+    d = pd.DataFrame({"anio_mes": [202401] * 4, "accion_key": list("ABCD"), "vol_63d": [0.1, 0.2, 0.3, 0.4],
+                      "ret_pct_mes_siguiente": [0.04, 0.0, -0.04, 0.08], "rf_mes_siguiente": [0.0] * 4,
+                      "ret_log_sp500_mes_siguiente": [np.log(1.02)] * 4})
+    u = negocio.portafolio_universo(d, costo_bps=15)
+    assert abs(u.bruto.iloc[0] - 0.02) < 1e-12 and u.n_acciones.iloc[0] == 4
+    i = negocio.serie_indice(d, "ret_log_sp500_mes_siguiente")
+    assert abs(i.neto.iloc[0] - 0.02) < 1e-12 and i.turnover.iloc[0] == 0
