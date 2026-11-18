@@ -352,7 +352,8 @@ artefactos en mlflow/), verificacion de entorno (docs/verificacion/). Ver docs/p
         tambien la mediana y justificar cual se usa (colas gruesas del target, 3.1).
 [~] B2 (C) (18-nov: registrada igual que B1; MAE CV 0,0647) Random walk con retorno 0 (PSet 1, piso de la metrica tecnica):
         DummyRegressor(constant=0) (existe: regla_cero). Es la referencia de Diebold-Mariano en 3.8.
-[ ] B3 (C) Random walk con deriva: media historica del retorno mensual de cada accion, solo con
+[~] B3 (C) (18-nov: src/modelos/lineas_base.py MediaPorAccion, en el catalogo como B3_rw_deriva; MAE CV 0,0652,
+        IC 0,018, Sharpe neto 0,58 > B5 0,54: hallazgo, la historia de cada accion ya supera al universo) Random walk con deriva: media historica del retorno mensual de cada accion, solo con
         el pliegue de entrenamiento. No esta en el PSet 1 (viene de analisis/modelos, rw_deriva):
         se incluye como referencia extra y se dice asi en el memo.
 [~] B4 (C+P) (18-nov: 200 sorteos con la regla completa; Sharpe neto mediana 0,34; en MLflow como 'Portafolio al azar, regla PSet 1', familia N/A) Portafolio aleatorio de igual peso (PSet 1, piso de la metrica de negocio):

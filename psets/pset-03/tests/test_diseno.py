@@ -186,3 +186,11 @@ def test_universo_igual_ponderacion_e_indice():
     assert abs(u.bruto.iloc[0] - 0.02) < 1e-12 and u.n_acciones.iloc[0] == 4
     i = negocio.serie_indice(d, "ret_log_sp500_mes_siguiente")
     assert abs(i.neto.iloc[0] - 0.02) < 1e-12 and i.turnover.iloc[0] == 0
+
+
+def test_b3_media_por_accion_sin_futuro():
+    from src.modelos.lineas_base import MediaPorAccion
+    X = pd.DataFrame({"accion_key": [1, 1, 2, 2]})
+    m = MediaPorAccion().fit(X, [0.02, 0.04, -0.01, 0.01])
+    p = m.predict(pd.DataFrame({"accion_key": [1, 2, 3]}))
+    assert np.allclose(p, [0.03, 0.0, 0.015])                  # la 3 no tiene historia: media general

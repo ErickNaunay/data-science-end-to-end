@@ -29,6 +29,11 @@ from .entorno import SEMILLA
 from .pipeline import crear_pipeline, pliegues, resumir_cv, PUNTAJES, FEATURES, TARGET
 from .evaluacion import ic_por_mes, resumen_ic
 from .negocio import REGLA, RiesgoDiario, metrica_negocio
+from .modelos.lineas_base import MediaPorAccion
+from sklearn.pipeline import Pipeline
+
+# Modelos que no usan la preparacion comun: sus columnas de X y van sin crear_pipeline().
+COLUMNAS_PROPIAS = {'B3_rw_deriva': ['accion_key']}
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENTO = 'portafolio-inversiones'
@@ -45,6 +50,7 @@ def _lightgbm():
 CATALOGO = {
     'B1_media':         ('linea_base',   lambda: DummyRegressor()),
     'B2_rw_cero':       ('linea_base',   lambda: DummyRegressor(strategy='constant', constant=0.0)),
+    'B3_rw_deriva':     ('linea_base',   lambda: MediaPorAccion()),
     'M2_random_forest': ('arboles',      lambda: RandomForestRegressor(n_estimators=300, min_samples_leaf=50,
                                                                        max_features=0.5, n_jobs=-1, random_state=SEMILLA)),
     'M3_lightgbm':      ('boosting',     _lightgbm),
@@ -86,9 +92,10 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
     from mlflow.models import infer_signature
     familia = CATALOGO[nombre][0] if nombre in CATALOGO else 'otro'
     modelo = CATALOGO[nombre][1]() if modelo is None else modelo
-    X, y = train[FEATURES], train[TARGET]
+    columnas = COLUMNAS_PROPIAS.get(nombre, FEATURES)
+    X, y = train[columnas], train[TARGET]
     cv = pliegues(train)
-    pipe = crear_pipeline(clone(modelo))
+    pipe = Pipeline([('modelo', clone(modelo))]) if nombre in COLUMNAS_PROPIAS else crear_pipeline(clone(modelo))
     inicio = time.perf_counter()
     with mlflow.start_run(run_name=nombre, nested=nested) as run:
         scores = cross_validate(pipe, X, y, cv=cv, scoring=PUNTAJES, return_train_score=True,
@@ -96,7 +103,7 @@ def registrar(nombre, train, meta, fase, modelo=None, riesgo=None, meta_dia=None
         partes = []
         for k, ((_, iv), est) in enumerate(zip(cv, scores['estimator'])):
             v = train.iloc[iv]
-            partes.append(v[[c for c in CONSERVAR if c in v]].assign(pliegue=k, pred=est.predict(v[FEATURES]),
+            partes.append(v[[c for c in CONSERVAR if c in v]].assign(pliegue=k, pred=est.predict(v[columnas]),
                                                                      real=v[TARGET].values))
         pred = pd.concat(partes, ignore_index=True)
         pipe.fit(X, y)
@@ -170,7 +177,7 @@ def verificar(run_id):
     mlflow = _mlflow()
     modelo = mlflow.sklearn.load_model(f'runs:/{run_id}/pipeline')
     guardado = mlflow.artifacts.load_dict(f'runs:/{run_id}/verificacion/ejemplo_prediccion.json')
-    X = pd.DataFrame(guardado['X'])[FEATURES]
+    X = pd.DataFrame(guardado['X'])
     nuevo = modelo.predict(X)
     igual = bool(np.allclose(nuevo, guardado['pred'], rtol=0, atol=1e-12))
     print(json.dumps({'run_id': run_id, 'recarga_ok': igual, 'max_diferencia': float(np.max(np.abs(nuevo - guardado['pred'])))}))
@@ -189,12 +196,43 @@ def datos_para_registro():
     return train.reset_index(drop=True), meta, riesgo, meta_dia
 
 
+def avisar(estado, tarea, detalle):
+    """Correo con el resultado, con el mismo notificador y credenciales (AVISO_* de pipeline/.env) que los
+    avisos de Kestra. Nunca hace fallar la corrida; AVISO_EXPERIMENTOS=0 lo apaga."""
+    if os.environ.get('AVISO_EXPERIMENTOS', '1') == '0':
+        return False
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('notificar', ROOT / 'pipeline/scripts/notificar.py')
+        notificar = importlib.util.module_from_spec(spec); spec.loader.exec_module(notificar)
+        return notificar.enviar(estado, tarea, detalle)
+    except Exception as e:                      # el aviso es opcional
+        print(f'Aviso no enviado: {e}')
+        return False
+
+
 def evaluar_candidatos(train, meta, riesgo=None, meta_dia=None, nombres=None):
     nombres = list(CATALOGO) if nombres is None else nombres
-    filas = [registrar(n, train, meta, 'baseline' if CATALOGO[n][0] == 'linea_base' else 'candidato',
-                       riesgo=riesgo, meta_dia=meta_dia) for n in nombres]
-    df = pd.DataFrame(filas); df.to_csv(ROOT / 'docs/candidatos.csv', index=False)
-    return df
+    inicio, filas = time.perf_counter(), []
+    try:
+        for n in nombres:
+            filas.append(registrar(n, train, meta, 'baseline' if CATALOGO[n][0] == 'linea_base' else 'candidato',
+                                   riesgo=riesgo, meta_dia=meta_dia))
+    except Exception as e:
+        avisar('Fail', 'experimentos MLflow', f'Fallo en {n} tras {len(filas)} corridas: {type(e).__name__}: {e}')
+        raise
+    df = pd.DataFrame(filas)
+    destino = ROOT / 'docs/candidatos.csv'
+    if destino.exists():                        # acumula: reemplaza solo las filas de los modelos corridos
+        previo = pd.read_csv(destino)
+        df = pd.concat([previo[~previo.modelo.isin(df.modelo)], df], ignore_index=True)
+    df.to_csv(destino, index=False)
+    cols = [c for c in ['modelo', 'familia', 'mae_cv_media', 'ic_media', 'negocio_sharpe_neto', 'run_id'] if c in df]
+    uri = os.environ.get('MLFLOW_TRACKING_URI', 'http://localhost:5001')
+    avisar('Success', 'experimentos MLflow',
+           f"{len(filas)} corridas en {time.perf_counter() - inicio:.0f} s, experimento {EXPERIMENTO} ({uri})\n\n"
+           + df[df.modelo.isin(nombres)][cols].round(4).to_string(index=False))
+    return df[df.modelo.isin(nombres)].reset_index(drop=True)
 
 def ajustar(train,meta,mejores,n_iter=30):
     import mlflow
