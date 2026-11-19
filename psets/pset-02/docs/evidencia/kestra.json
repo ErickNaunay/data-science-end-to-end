@@ -1,0 +1,61 @@
+{
+  "flow": "pset2.pipeline.ingest_report_to_snowflake",
+  "execution_id": "5uusBpmloEf4BRdcyPl80l",
+  "state": "SUCCESS",
+  "duration": "00:00:59.393",
+  "started_utc": "2026-11-18T00:01:08",
+  "finished_utc": "2026-11-18T00:02:07",
+  "trigger": "weekly_schedule",
+  "scheduled_for": "2026-11-16T02:00Z[Etc/UTC]",
+  "tasks": [
+    {
+      "task": "ensure_snowflake_stage",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:08.851"
+    },
+    {
+      "task": "ensure_csv_file_format",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:02.732"
+    },
+    {
+      "task": "extract_dataset",
+      "type": "Commands",
+      "state": "SUCCESS",
+      "duration": "00:00:28.154"
+    },
+    {
+      "task": "upload_to_snowflake_stage",
+      "type": "Upload",
+      "state": "SUCCESS",
+      "duration": "00:00:07.110"
+    },
+    {
+      "task": "create_load_table",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:00.717"
+    },
+    {
+      "task": "copy_to_load_table",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:05.925"
+    },
+    {
+      "task": "replace_raw_snapshot",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:02.714"
+    },
+    {
+      "task": "drop_load_table",
+      "type": "Query",
+      "state": "SUCCESS",
+      "duration": "00:00:02.420"
+    }
+  ],
+  "source": "docker logs kestra_server"
+}

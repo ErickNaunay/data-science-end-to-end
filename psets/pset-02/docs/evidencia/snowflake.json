@@ -1,0 +1,131 @@
+{
+  "consultado_utc": "2026-11-19 01:01",
+  "tablas": {
+    "sql": "SELECT TABLE_SCHEMA, TABLE_NAME, ROW_COUNT,\n       TO_CHAR(CONVERT_TIMEZONE('UTC', LAST_ALTERED), 'YYYY-MM-DD HH24:MI') AS ULTIMA_ACTUALIZACION_UTC\nFROM <DB>.INFORMATION_SCHEMA.TABLES\nWHERE TABLE_SCHEMA IN ('RAW', 'BRONZE', 'SILVER', 'GOLD') AND ROW_COUNT > 0\nORDER BY CASE TABLE_SCHEMA WHEN 'RAW' THEN 1 WHEN 'BRONZE' THEN 2\n         WHEN 'SILVER' THEN 3 ELSE 4 END, TABLE_NAME",
+    "columns": [
+      "TABLE_SCHEMA",
+      "TABLE_NAME",
+      "ROW_COUNT",
+      "ULTIMA_ACTUALIZACION_UTC"
+    ],
+    "rows": [
+      [
+        "RAW",
+        "RAW_REPORT_DATA",
+        "183199",
+        "2026-11-18 00:02"
+      ],
+      [
+        "BRONZE",
+        "STG_REPORT_DATA",
+        "183199",
+        "2026-11-10 23:49"
+      ],
+      [
+        "SILVER",
+        "INT_RETENCION_FILTRADA",
+        "183198",
+        "2026-11-10 23:49"
+      ],
+      [
+        "GOLD",
+        "DIM_COMPUESTO",
+        "97688",
+        "2026-11-10 23:49"
+      ],
+      [
+        "GOLD",
+        "DIM_CONDICIONES",
+        "151",
+        "2026-11-10 23:49"
+      ],
+      [
+        "GOLD",
+        "FACT_RETENCION_CROMATOGRAFICA",
+        "183198",
+        "2026-11-10 23:49"
+      ],
+      [
+        "GOLD",
+        "OBT_QSRR_FINAL",
+        "183198",
+        "2026-11-10 23:50"
+      ]
+    ]
+  },
+  "obt": {
+    "sql": "SELECT COUNT(*) AS TOTAL_FILAS, COUNT(DISTINCT HECHO_ID) AS HECHOS_UNICOS,\n       COUNT_IF(HECHO_ID IS NULL) AS HECHO_ID_NULOS\nFROM <DB>.GOLD.OBT_QSRR_FINAL",
+    "columns": [
+      "TOTAL_FILAS",
+      "HECHOS_UNICOS",
+      "HECHO_ID_NULOS"
+    ],
+    "rows": [
+      [
+        "183198",
+        "183198",
+        "0"
+      ]
+    ]
+  },
+  "referencial": {
+    "sql": "SELECT\n  (SELECT COUNT(*) FROM <DB>.GOLD.FACT_RETENCION_CROMATOGRAFICA f\n     LEFT JOIN <DB>.GOLD.DIM_COMPUESTO d USING (COMPUESTO_ID)\n    WHERE d.COMPUESTO_ID IS NULL) AS HECHOS_SIN_COMPUESTO,\n  (SELECT COUNT(*) FROM <DB>.GOLD.FACT_RETENCION_CROMATOGRAFICA f\n     LEFT JOIN <DB>.GOLD.DIM_CONDICIONES d USING (CONDICION_ID)\n    WHERE d.CONDICION_ID IS NULL) AS HECHOS_SIN_CONDICION",
+    "columns": [
+      "HECHOS_SIN_COMPUESTO",
+      "HECHOS_SIN_CONDICION"
+    ],
+    "rows": [
+      [
+        "0",
+        "0"
+      ]
+    ]
+  },
+  "muestra_obt": {
+    "sql": "SELECT HECHO_ID, INCHIKEY, TIPO_COLUMNA, FLUJO_ML_MIN, TIEMPO_RETENCION\nFROM <DB>.GOLD.OBT_QSRR_FINAL ORDER BY HECHO_ID LIMIT 5",
+    "columns": [
+      "HECHO_ID",
+      "INCHIKEY",
+      "TIPO_COLUMNA",
+      "FLUJO_ML_MIN",
+      "TIEMPO_RETENCION"
+    ],
+    "rows": [
+      [
+        "00005957f772c064cde73ba62c642a11",
+        "GRXRQJGHRBUPEL-UHFFFAOYSA-N",
+        "Agilent ZORBAX Extend-C18",
+        "0.1",
+        "18.736666666666668"
+      ],
+      [
+        "000064dbb3aff255fb7d50fe5a354c19",
+        "FBOUYBDGKBSUES-UHFFFAOYSA-N",
+        "Thermo Scientific Acclaim RSLC 120 C18",
+        "0.2",
+        "7.95"
+      ],
+      [
+        "0000d9a06308c6216101a060544b107c",
+        "OVSQVDMCBVZWGM-UHFFFAOYSA-N",
+        "Thermo Scientific Hypersil GOLD",
+        "—",
+        "22.94"
+      ],
+      [
+        "0001b9523881449f5cc5b2262ef762ba",
+        "CFFZDZCDUFSOFZ-UHFFFAOYSA-N",
+        "Merck Supelco Ascentis Express C18",
+        "0.25",
+        "3.216666667"
+      ],
+      [
+        "00021d12c90b205acbadfe74c80de5e1",
+        "KKNMFUKPCCPJKT-UHFFFAOYSA-N",
+        "Agilent ZORBAX Extend-C18",
+        "0.1",
+        "12.825"
+      ]
+    ]
+  }
+}

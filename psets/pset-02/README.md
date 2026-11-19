@@ -170,6 +170,16 @@ python -m pip install -r docs/requirements.txt
 python docs/generate_memo.py
 ```
 
+`docs/PSet2_anexos_Buenaño_Peñafiel.pdf` reúne la evidencia de ejecución:
+capturas de pantalla (`docs/capturas/`), la ejecución programada de Kestra, el
+resultado de `dbt build` y consultas de verificación en Snowflake. Las tablas
+salen de `docs/evidencia/*.json`; para recolectarlas de nuevo (requiere Kestra
+corriendo, `dbt/target/run_results.json` y `.env` exportado):
+
+```bash
+python docs/generate_anexos.py --refresh   # o sin --refresh para solo rearmar el PDF
+```
+
 ## 7. Prueba local de descarga
 
 Antes de enviar todo el repositorio a Snowflake, se puede verificar la descarga

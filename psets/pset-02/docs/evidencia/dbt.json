@@ -1,0 +1,162 @@
+{
+  "command": "dbt build",
+  "generated_at": "2026-11-10T23:49:38",
+  "elapsed_seconds": 10.8,
+  "dbt_version": "1.13.0rc1",
+  "results": [
+    {
+      "kind": "model",
+      "name": "stg_report_data",
+      "status": "success",
+      "seconds": 2.53,
+      "rows": 183199
+    },
+    {
+      "kind": "test",
+      "name": "not_null_stg_report_data_registro_id",
+      "status": "pass",
+      "seconds": 0.71,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_stg_report_data_registro_id",
+      "status": "pass",
+      "seconds": 0.81,
+      "rows": 1
+    },
+    {
+      "kind": "model",
+      "name": "int_retencion_filtrada",
+      "status": "success",
+      "seconds": 1.19,
+      "rows": 183198
+    },
+    {
+      "kind": "test",
+      "name": "not_null_int_retencion_filtrada_registro_id",
+      "status": "pass",
+      "seconds": 0.27,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_int_retencion_filtrada_tiempo_retencion",
+      "status": "pass",
+      "seconds": 0.25,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_int_retencion_filtrada_registro_id",
+      "status": "pass",
+      "seconds": 0.35,
+      "rows": 1
+    },
+    {
+      "kind": "model",
+      "name": "dim_condiciones",
+      "status": "success",
+      "seconds": 0.97,
+      "rows": 151
+    },
+    {
+      "kind": "model",
+      "name": "dim_compuesto",
+      "status": "success",
+      "seconds": 1.03,
+      "rows": 97688
+    },
+    {
+      "kind": "model",
+      "name": "fact_retencion_cromatografica",
+      "status": "success",
+      "seconds": 1.17,
+      "rows": 183198
+    },
+    {
+      "kind": "test",
+      "name": "not_null_dim_condiciones_condicion_id",
+      "status": "pass",
+      "seconds": 0.35,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_dim_condiciones_condicion_id",
+      "status": "pass",
+      "seconds": 0.35,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_dim_compuesto_inchikey",
+      "status": "pass",
+      "seconds": 0.17,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_dim_compuesto_compuesto_id",
+      "status": "pass",
+      "seconds": 0.31,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_dim_compuesto_compuesto_id",
+      "status": "pass",
+      "seconds": 0.25,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_fact_retencion_cromatografica_compuesto_id",
+      "status": "pass",
+      "seconds": 0.32,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_fact_retencion_cromatografica_condicion_id",
+      "status": "pass",
+      "seconds": 0.31,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "not_null_fact_retencion_cromatografica_hecho_id",
+      "status": "pass",
+      "seconds": 0.17,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_dim_compuesto_inchikey",
+      "status": "pass",
+      "seconds": 0.44,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "unique_fact_retencion_cromatografica_hecho_id",
+      "status": "pass",
+      "seconds": 0.2,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "relationships_fact_retencion_cromatografica_condicion_id__condicion_id__ref_dim_condiciones_",
+      "status": "pass",
+      "seconds": 0.29,
+      "rows": 1
+    },
+    {
+      "kind": "test",
+      "name": "relationships_fact_retencion_cromatografica_compuesto_id__compuesto_id__ref_dim_compuesto_",
+      "status": "pass",
+      "seconds": 0.33,
+      "rows": 1
+    }
+  ]
+}
