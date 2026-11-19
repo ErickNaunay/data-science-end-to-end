@@ -14,13 +14,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     Image,
-    KeepInFrame,
     ListFlowable,
     ListItem,
     PageBreak,
@@ -35,8 +36,63 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DOCS = PROJECT_ROOT / "docs"
 SOURCE = DOCS / "memo_tecnico.md"
 OUTPUT = DOCS / "PSet3_memo_Buenaño_Peñafiel.pdf"
+ANNEX_OUTPUT = DOCS / "PSet3_anexo_Buenaño_Peñafiel.pdf"
+BODY_PAGE_LIMIT = 6
 FIGURES = DOCS / "figures"
 BENCHMARK_REPORT = DOCS / "llm_benchmark_metrics_20261118T013622Z.json"
+
+FONT = "TimesNewRoman"
+FONT_BOLD = "TimesNewRoman-Bold"
+FONT_ITALIC = "TimesNewRoman-Italic"
+FONT_BOLD_ITALIC = "TimesNewRoman-BoldItalic"
+TITLE_SIZE = 14
+SUBTITLE_SIZE = 12
+BODY_SIZE = 10
+TABLE_SIZE = 9
+SUBTITLE_COLOR = colors.HexColor("#c00000")
+
+# Times New Roman de Microsoft si está instalada; si no, Liberation Serif,
+# que tiene las mismas métricas y cubre símbolos como ≤, √, Δ y σ.
+_FONT_CANDIDATES = {
+    FONT: ("Times_New_Roman.ttf", "times.ttf", "LiberationSerif-Regular.ttf"),
+    FONT_BOLD: ("Times_New_Roman_Bold.ttf", "timesbd.ttf", "LiberationSerif-Bold.ttf"),
+    FONT_ITALIC: ("Times_New_Roman_Italic.ttf", "timesi.ttf", "LiberationSerif-Italic.ttf"),
+    FONT_BOLD_ITALIC: (
+        "Times_New_Roman_Bold_Italic.ttf",
+        "timesbi.ttf",
+        "LiberationSerif-BoldItalic.ttf",
+    ),
+}
+_FONT_DIRS = (Path("/usr/share/fonts"), Path.home() / ".fonts", Path("/Library/Fonts"))
+
+
+def _register_fonts() -> None:
+    for name, candidates in _FONT_CANDIDATES.items():
+        for filename in candidates:
+            found = next(
+                (
+                    path
+                    for directory in _FONT_DIRS
+                    if directory.is_dir()
+                    for path in directory.rglob(filename)
+                ),
+                None,
+            )
+            if found:
+                pdfmetrics.registerFont(TTFont(name, str(found)))
+                break
+        else:
+            raise FileNotFoundError(
+                f"No se encontró Times New Roman ni Liberation Serif para {name}"
+            )
+    pdfmetrics.registerFontFamily(
+        FONT,
+        normal=FONT,
+        bold=FONT_BOLD,
+        italic=FONT_ITALIC,
+        boldItalic=FONT_BOLD_ITALIC,
+    )
+
 
 _IMAGE_PATTERN = re.compile(
     r"!\[(?P<caption>.*?)\]\((?P<path>.*?)\)(?:\s*\{width=(?P<width>\d+)%\})?"
@@ -44,20 +100,44 @@ _IMAGE_PATTERN = re.compile(
 
 
 def _inline(text: str) -> str:
-    escaped = html.escape(text, quote=False)
+    escaped = html.escape(text.replace("\\|", "|"), quote=False)
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escaped)
-    escaped = re.sub(r"`(.+?)`", r'<font name="Courier">\1</font>', escaped)
+    escaped = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<i>\1</i>", escaped)
+    escaped = re.sub(r"`(.+?)`", r'<i>\1</i>', escaped)
     return escaped
 
 
 def _table_rows(lines: list[str]) -> list[list[str]]:
     rows = []
     for line in lines:
-        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        content = line.strip()
+        content = content[1:] if content.startswith("|") else content
+        content = content[:-1] if content.endswith("|") and not content.endswith("\\|") else content
+        # Split only on unescaped pipes so "\|Z\|" stays inside one cell.
+        cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", content)]
         if cells and all(re.fullmatch(r":?-{3,}:?", cell) for cell in cells):
             continue
         rows.append(cells)
+    widths = {len(row) for row in rows}
+    if len(widths) > 1:
+        raise ValueError(f"Table rows have different column counts {sorted(widths)}: {lines[0][:60]}")
     return rows
+
+
+def _column_widths(rows: list[list[str]], total_width: float) -> list[float]:
+    """Width proportional to each column's text, with a floor for short columns."""
+    column_count = len(rows[0])
+    weights = []
+    for column in range(column_count):
+        lengths = sorted(len(row[column]) for row in rows[1:]) or [0]
+        typical = lengths[len(lengths) // 2] * 0.5 + lengths[-1] * 0.5
+        # Header words should not break mid-word; sqrt keeps long columns from dominating.
+        weights.append(max(typical, len(rows[0][column]) * 0.9, 8.0) ** 0.5)
+    floor = total_width * (0.12 if column_count <= 5 else 0.09)
+    raw = [total_width * weight / sum(weights) for weight in weights]
+    widths = [max(width, floor) for width in raw]
+    scale = total_width / sum(widths)
+    return [width * scale for width in widths]
 
 
 def _extract_eda_figures() -> None:
@@ -227,7 +307,7 @@ def _image_flowable(match: re.Match, styles, doc):
         raise ValueError(f"Report image is missing or outside docs: {relative_path}")
     width_fraction = int(match.group("width") or 100) / 100
     max_width = doc.width * width_fraction
-    max_height = doc.height * (0.30 if width_fraction < 1 else 0.46)
+    max_height = doc.height * (0.24 if width_fraction < 1 else 0.34)
     image = Image(str(path))
     scale = min(max_width / image.imageWidth, max_height / image.imageHeight)
     image.drawWidth = image.imageWidth * scale
@@ -246,7 +326,13 @@ def _build_story(styles, doc) -> list:
             index += 1
             continue
         if line == r"\newpage":
-            pages.append([])
+            # Sections flow continuously to respect the 6-page body limit;
+            # only the annex (which does not count) starts on a new page.
+            next_line = next(
+                (item.strip() for item in lines[index + 1:] if item.strip()), ""
+            )
+            if next_line.startswith("## Anexo"):
+                pages.append([])
             index += 1
             continue
         if line.startswith("!["):
@@ -287,16 +373,22 @@ def _build_story(styles, doc) -> list:
             while index < len(lines) and lines[index].strip().startswith("|"):
                 table_lines.append(lines[index])
                 index += 1
-            rows = [
-                [Paragraph(_inline(cell), styles["MemoTable"]) for cell in row]
-                for row in _table_rows(table_lines)
-            ]
-            if not rows:
+            text_rows = _table_rows(table_lines)
+            if not text_rows:
                 continue
-            column_count = len(rows[0])
+            rows = [
+                [
+                    Paragraph(
+                        f"<b>{_inline(cell)}</b>" if row_index == 0 else _inline(cell),
+                        styles["MemoTable"],
+                    )
+                    for cell in row
+                ]
+                for row_index, row in enumerate(text_rows)
+            ]
             table = Table(
                 rows,
-                colWidths=[doc.width / column_count] * column_count,
+                colWidths=_column_widths(text_rows, doc.width),
                 repeatRows=1,
                 hAlign="LEFT",
             )
@@ -305,7 +397,7 @@ def _build_story(styles, doc) -> list:
                     [
                         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#dce6f1")),
                         ("TEXTCOLOR", (0, 0), (-1, 0), colors.HexColor("#17365d")),
-                        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                        ("FONTNAME", (0, 0), (-1, 0), FONT_BOLD),
                         ("GRID", (0, 0), (-1, -1), 0.3, colors.HexColor("#aab7c4")),
                         ("VALIGN", (0, 0), (-1, -1), "TOP"),
                         ("LEFTPADDING", (0, 0), (-1, -1), 3),
@@ -324,14 +416,17 @@ def _build_story(styles, doc) -> list:
                 items.append(ListItem(Paragraph(_inline(item), styles["MemoBody"])))
                 index += 1
             pages[-1].append(
-                ListFlowable(items, bulletType="bullet", leftIndent=12, bulletFontSize=5)
+                ListFlowable(items, bulletType="bullet", leftIndent=12, bulletFontName=FONT, bulletFontSize=BODY_SIZE)
             )
             pages[-1].append(Spacer(1, 2))
             continue
         heading = re.match(r"^(#{1,3})\s+(.*)", line)
         if heading:
             level, text = len(heading.group(1)), heading.group(2)
-            style = styles["MemoTitle"] if level == 1 else styles["MemoHeading"]
+            style = {
+                1: styles["MemoTitle"],
+                2: styles["MemoHeading"],
+            }.get(level, styles["MemoSubheading"])
             pages[-1].append(Paragraph(_inline(text), style))
             index += 1
             continue
@@ -353,74 +448,99 @@ def _build_story(styles, doc) -> list:
 
     story = []
     for page_index, content in enumerate(pages):
-        story.append(
-            KeepInFrame(
-                doc.width,
-                doc.height,
-                content,
-                mode="shrink",
-                hAlign="LEFT",
-                vAlign="TOP",
-            )
-        )
+        story.extend(content)
         if page_index < len(pages) - 1:
             story.append(PageBreak())
     return story
 
 
-def _header_footer(canvas, document) -> None:
-    canvas.saveState()
-    canvas.setFont("Helvetica", 7)
-    canvas.setFillColor(colors.HexColor("#5b6573"))
-    canvas.drawString(18 * mm, 10 * mm, "QSRR-Predict · PSet 3")
-    canvas.drawRightString(192 * mm, 10 * mm, f"Página {document.page}")
-    canvas.restoreState()
+def _footer(label: str):
+    def draw(canvas, document) -> None:
+        canvas.saveState()
+        canvas.setFont(FONT, 9)
+        canvas.setFillColor(colors.HexColor("#5b6573"))
+        canvas.drawString(18 * mm, 10 * mm, label)
+        canvas.drawRightString(192 * mm, 10 * mm, f"Página {document.page}")
+        canvas.restoreState()
+
+    return draw
+
+
+_header_footer = _footer("QSRR-Predict · PSet 3")
+_annex_footer = _footer("QSRR-Predict · PSet 3 · Anexo")
+
+
+def _split_annex(story: list) -> tuple[list, list]:
+    """Split the story at the PageBreak that precedes the first "Anexo" heading."""
+    for position, flowable in enumerate(story):
+        if isinstance(flowable, Paragraph) and flowable.getPlainText().startswith("Anexo"):
+            body = story[:position]
+            while body and isinstance(body[-1], PageBreak):
+                body.pop()
+            return body, story[position:]
+    return story, []
 
 
 def build_pdf() -> None:
+    _register_fonts()
     _prepare_figures()
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(
             name="MemoTitle",
             parent=styles["Title"],
-            fontName="Helvetica-Bold",
-            fontSize=15,
+            fontName=FONT_BOLD,
+            fontSize=TITLE_SIZE,
             leading=17,
             alignment=TA_CENTER,
-            textColor=colors.HexColor("#17365d"),
-            spaceAfter=5,
+            textColor=colors.black,
+            spaceAfter=8,
         )
     )
     styles.add(
         ParagraphStyle(
             name="MemoHeading",
             parent=styles["Heading2"],
-            fontName="Helvetica-Bold",
-            fontSize=9.4,
-            leading=11,
-            textColor=colors.HexColor("#17365d"),
-            spaceBefore=5,
-            spaceAfter=2,
+            fontName=FONT_BOLD,
+            fontSize=TITLE_SIZE,
+            leading=17,
+            textColor=colors.black,
+            spaceBefore=10,
+            spaceAfter=4,
+            keepWithNext=True,
+        )
+    )
+    styles.add(
+        ParagraphStyle(
+            name="MemoSubheading",
+            parent=styles["Heading3"],
+            fontName=FONT_BOLD,
+            fontSize=SUBTITLE_SIZE,
+            leading=14.5,
+            textColor=SUBTITLE_COLOR,
+            spaceBefore=6,
+            spaceAfter=3,
+            keepWithNext=True,
         )
     )
     styles.add(
         ParagraphStyle(
             name="MemoBody",
             parent=styles["BodyText"],
-            fontName="Helvetica",
-            fontSize=7.1,
-            leading=8.7,
-            spaceAfter=2,
+            fontName=FONT,
+            fontSize=BODY_SIZE,
+            leading=12,
+            alignment=TA_JUSTIFY,
+            spaceAfter=3,
         )
     )
     styles.add(
         ParagraphStyle(
             name="MemoTable",
             parent=styles["BodyText"],
-            fontName="Helvetica",
-            fontSize=5.8,
-            leading=7.1,
+            fontName=FONT,
+            fontSize=TABLE_SIZE,
+            leading=10.5,
             spaceAfter=0,
         )
     )
@@ -428,32 +548,41 @@ def build_pdf() -> None:
         ParagraphStyle(
             name="Caption",
             parent=styles["BodyText"],
-            fontName="Helvetica-Oblique",
-            fontSize=6,
-            leading=7,
+            fontName=FONT_ITALIC,
+            fontSize=9,
+            leading=11,
             alignment=TA_CENTER,
-            textColor=colors.HexColor("#5b6573"),
-            spaceAfter=2,
+            textColor=colors.HexColor("#404040"),
+            spaceAfter=4,
         )
     )
 
-    document = SimpleDocTemplate(
-        str(OUTPUT),
-        pagesize=A4,
-        rightMargin=18 * mm,
-        leftMargin=18 * mm,
-        topMargin=11 * mm,
-        bottomMargin=15 * mm,
-        title="Documento técnico — QSRR-Predict PSet 3",
-        author="Jonatan Buenaño",
-    )
-    document.build(
-        _build_story(styles, document),
-        onFirstPage=_header_footer,
-        onLaterPages=_header_footer,
-    )
-    print(f"PDF generado: {OUTPUT}")
+    def make_document(path: Path, title: str) -> SimpleDocTemplate:
+        return SimpleDocTemplate(
+            str(path),
+            pagesize=A4,
+            rightMargin=18 * mm,
+            leftMargin=18 * mm,
+            topMargin=11 * mm,
+            bottomMargin=15 * mm,
+            title=title,
+            author="Jonatan Buenaño",
+            initialFontName=FONT,
+            initialFontSize=BODY_SIZE,
+        )
 
+    document = make_document(OUTPUT, "Documento técnico — QSRR-Predict PSet 3")
+    body, annex = _split_annex(_build_story(styles, document))
+    document.build(body, onFirstPage=_header_footer, onLaterPages=_header_footer)
+    if document.page > BODY_PAGE_LIMIT:
+        raise RuntimeError(
+            f"El cuerpo tiene {document.page} páginas; la rúbrica permite {BODY_PAGE_LIMIT}."
+        )
+    print(f"PDF generado: {OUTPUT} ({document.page} páginas)")
+    if annex:
+        annex_document = make_document(ANNEX_OUTPUT, "Anexo — QSRR-Predict PSet 3")
+        annex_document.build(annex, onFirstPage=_annex_footer, onLaterPages=_annex_footer)
+        print(f"PDF generado: {ANNEX_OUTPUT} ({annex_document.page} páginas)")
 
 if __name__ == "__main__":
     build_pdf()

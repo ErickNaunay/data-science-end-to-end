@@ -63,9 +63,10 @@ conexión no imprime ni registra credenciales.
   `docs/llm_benchmark_predictions_20261118T013622Z.csv`: benchmark zero-shot
   de Gemini 3.5 Flash-Lite en 50 compuestos, comparado con los modelos
   champion/challenger sobre la misma muestra.
-- `docs/memo_tecnico.md` y `docs/PSet3_memo_Buenaño_Peñafiel.pdf`: memo de
-  resultados y límites del experimento. El PDF respeta el nombre requerido
-  por la rúbrica.
+- `docs/memo_tecnico.md`, `docs/PSet3_memo_Buenaño_Peñafiel.pdf` (6 páginas,
+  límite de la rúbrica) y `docs/PSet3_anexo_Buenaño_Peñafiel.pdf` (evidencia de
+  MLflow). Ambos PDF se generan con `python scripts/build_memo_pdf.py`, que
+  falla si el cuerpo supera 6 páginas.
 
 ## Reproducir
 
