@@ -74,7 +74,7 @@ En total exporté **112 ejecuciones** del experimento `qsrr-predict-c18` al arch
 
 ### Qué se registra en cada ejecución
 
-Cada ejecución guarda la fase y familia, la configuración, la semilla, el esquema de validación, el origen y hash de los datos, la muestra, las métricas de train y CV, la brecha y los tiempos; en el tuning se añaden los hiperparámetros. Los modelos finales incluyen el artefacto con firma y dependencias, las métricas de holdout y los parámetros de recursos. Las capturas del run de comparación y sus métricas están en el anexo.
+Cada ejecución guarda la fase y familia, la configuración, la semilla, el esquema de validación, el origen y hash de los datos, la muestra, las métricas de train y CV, la brecha y los tiempos; en el tuning se añaden los hiperparámetros. Los modelos finales incluyen el artefacto con firma y dependencias, las métricas de holdout y los parámetros de recursos. Las capturas del run de comparación y sus métricas están en el anexo. Las 90 corridas hijas del tuning registran parámetros y métricas de CV, pero no el modelo serializado: guardar 90 bosques y redes habría excedido el almacenamiento del Codespace (un solo Random Forest final pesa 159 MB). Las dos finalistas se reentrenan y se registran con firma y ejemplo de entrada.
 
 ## 5. Resultados
 
@@ -100,7 +100,7 @@ El tiempo que reporto es la duración observada de la CV de cinco pliegues en el
 
 ### Espacio de búsqueda y resultados
 
-Tomé las tres mejores familias según el RMSE de CV y evalué **30 configuraciones por familia (90 trials)** con búsqueda aleatoria y semilla 42. La regularización y las tasas de aprendizaje se muestrearon en escala logarítmica.
+Tomé las tres mejores familias según el RMSE de CV y evalué **30 configuraciones por familia (90 trials)** con búsqueda aleatoria y semilla 42. La regularización y las tasas de aprendizaje se muestrearon en escala logarítmica porque su efecto es multiplicativo. Elegí búsqueda aleatoria (`ParameterSampler`, equivalente a `RandomizedSearchCV`) en lugar de grid u Optuna: con 30 pruebas explora más valores distintos de los parámetros continuos que un grid, y cada configuración es independiente y reproducible, por lo que se registra como corrida hija bajo una corrida padre por familia, con el mismo `GroupKFold`.
 
 | Familia | Espacio explorado | Mejor configuración y resultado | Mejora frente al default |
 |---|---|---|---:|
